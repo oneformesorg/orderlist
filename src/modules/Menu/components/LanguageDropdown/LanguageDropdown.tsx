@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { faEarthAmericas } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,8 +25,7 @@ const listItem = [
 ];
 
 export default function LanguageDropdown() {
-  const { t } = useTranslation();
-  const id = useId();
+  const { t, i18n } = useTranslation();
   return (
     <Dropdown>
       <Dropdown.Toggle variant="light" id="dropdown-basic">
@@ -34,11 +33,14 @@ export default function LanguageDropdown() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {listItem.map(({ Flag, textContent }) => (
-          <Dropdown.Item 
-            href="#/action-1"
-            key={id}
+        {listItem.map(({ Flag, textContent, value }, i) => (
+          <Dropdown.Item
+            as={'button'}
+            key={`${i}_${value}`}
             className={style.menuItem}
+            onClick={() => {
+              i18n.changeLanguage(value);
+            }}
           >
             <Flag/> {textContent}
           </Dropdown.Item>
