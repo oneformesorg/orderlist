@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "yarn eslint src --ext .ts,.tsx",
+    "lint:staged": "yarn eslint --ext $(git diff --name-only --cached | grep -E '*.ts|*.tsx')",
     "lint:fix": "yarn eslint --fix src --ext .ts,.tsx"
   },
   "dependencies": {
