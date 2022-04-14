@@ -40,6 +40,22 @@ const childCatalog:[ChildSize, number][] = [
   ['16', 0],
 ];
 
+const catalogContext = React.createContext<{
+  dispatch: React.Dispatch<CatalogReducerAction>
+  state: CatalogContent
+}>(null);
+export function CatalogProvider({ children }: CatalogProviderProps) {
+  const { dispatch, state } = CatalogReducer();
+  return (
+    <catalogContext.Provider value={{
+      dispatch,
+      state
+    }}>
+      { children }
+    </catalogContext.Provider>
+  );
+}
+
 const catalogActionContext = React.createContext<React.Dispatch<CatalogReducerAction>>(null);
 export function CatalogActionProvider({ children }: CatalogProviderProps) {
   const { dispatch } = CatalogReducer();
@@ -60,6 +76,11 @@ export function CatalogStateProvider({ children }: CatalogProviderProps) {
   );
 }
 
+export function useCatalog(){
+  const catalogContent = React.useContext(catalogContext);
+
+  return catalogContent;
+}
 export function useCatalogAction(){
   const catalogContent = React.useContext(catalogActionContext);
 
