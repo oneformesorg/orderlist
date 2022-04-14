@@ -1,7 +1,7 @@
 import { ClothingParts } from '@shared/index';
 
 export type PriceTable = {
-  [value in ClothingParts]: number[]
+  [value in Exclude<ClothingParts, 'socks'>]: number[]
 }
 
 export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'
@@ -15,10 +15,12 @@ export type CatalogContent = {
     socks: [number]
   }
 }
-export type ReducerActionType = 'name' | 'email' | 'setPrice'
-export type CatalogReducerAction = {
-  payload?: {
-    value: any,
-  }
-  type: ReducerActionType
+export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables'
+export type CatalogReducerAction =
+| { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'projectName' | 'companyEmail'> }
+| { type: 'setPriceTables', payload: {
+    target: TablesName
+    priceTable: PriceTable
+  } 
 }
+| { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}

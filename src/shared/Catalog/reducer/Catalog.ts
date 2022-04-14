@@ -3,10 +3,19 @@ import { CatalogContent, CatalogReducerAction } from '../interfaces';
 
 function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogContent {
   switch (action.type) {
-  case 'email':
-    return { ...state, companyEmail: action.payload.value };
-  case 'name':
-    return { ...state, projectName: action.payload.value };
+  case 'setCompanyInfos':
+    return { 
+      ...state, ...action.payload
+    };
+  case 'setPriceTables':
+    return {
+      ...state, 
+      [action.payload.target]: action.payload.priceTable 
+    };
+  case 'setPriceUniqueTables':
+    return {
+      ...state, ...action.payload
+    };
   default:
     throw new Error();
   }
@@ -18,7 +27,6 @@ const initialCatalog: CatalogContent = {
   priceTableChildish: {
     pants: [0,0,0,0,0,0,0,0],
     shorts: [0,0,0,0,0,0,0,0],
-    socks: [0,0,0,0,0,0,0,0],
     tanktop: [0,0,0,0,0,0,0,0],
     tshirt: [0,0,0,0,0,0,0,0],
     tshirtLong: [0,0,0,0,0,0,0,0],
@@ -27,7 +35,6 @@ const initialCatalog: CatalogContent = {
   priceTableFemale: {
     pants: [0,0,0,0,0,0,0,0,0],
     shorts: [0,0,0,0,0,0,0,0,0],
-    socks: [0,0,0,0,0,0,0,0,0],
     tanktop: [0,0,0,0,0,0,0,0,0],
     tshirt: [0,0,0,0,0,0,0,0,0],
     tshirtLong: [0,0,0,0,0,0,0,0,0],
@@ -36,7 +43,6 @@ const initialCatalog: CatalogContent = {
   priceTableMale: {
     pants: [0,0,0,0,0,0,0,0,0],
     shorts: [0,0,0,0,0,0,0,0,0],
-    socks: [0,0,0,0,0,0,0,0,0],
     tanktop: [0,0,0,0,0,0,0,0,0],
     tshirt: [0,0,0,0,0,0,0,0,0],
     tshirtLong: [0,0,0,0,0,0,0,0,0],
