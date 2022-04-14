@@ -1,23 +1,24 @@
-import { ClothingParts } from '@/shared';
+import { ClothingParts } from '@shared/index';
 
+export type PriceTable = {
+  [value in ClothingParts]: number[]
+}
+
+export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'
 export type CatalogContent = {
   projectName: string
   companyEmail: string
-  priceTableChildish: {
-    [value in ClothingParts]: number[]
-  }
-  priceTableFemale: {
-    [value in ClothingParts]: number[]
-  }
-  priceTableMale: {
-    [value in ClothingParts]: number[]
-  }
+  priceTableChildish: PriceTable
+  priceTableFemale: PriceTable
+  priceTableMale: PriceTable
   priceTableUnique: {
     socks: [number]
   }
 }
-export type ReducerActionType = 'name' | 'email'
+export type ReducerActionType = 'name' | 'email' | 'setPrice'
 export type CatalogReducerAction = {
-  payload?: any
+  payload?: {
+    value: any,
+  }
   type: ReducerActionType
 }
