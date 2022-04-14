@@ -1,14 +1,18 @@
-import { PriceTable } from '@shared/Catalog';
+import { CatalogContent, PriceTable } from '@shared/Catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { TableItemInput } from '../TableItemInput/TableItemInput';
 
 type Props = {
   sizes: string[]
   prices: PriceTable
-  reference: string
+  reference: keyof Pick<CatalogContent, 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'>
+}
+export type CatalogRef = {
+  submitEvent: () => void
 }
 
 function sanitizeForTable(obj: PriceTable) {
@@ -17,16 +21,34 @@ function sanitizeForTable(obj: PriceTable) {
   ));
   return value;
 }
+function sanitizeForReducer(arr: Array<number | string>[]){
+  return arr.reduce((prev, [propName, ...propValue]) => ({
+    ...prev,
+    [propName]: propValue
+  }), {}) as unknown as PriceTable;
+}
 
-export function CatalogTable({ sizes, prices, reference }: Props) {
+export const CatalogTable = React.forwardRef<CatalogRef, Props>(function CatalogTable({ sizes, prices, reference }, ref) {
   const { t } = useTranslation();
-  const [tablePrices, setTablePrices] = React.useState([] as Array<string | number>[]);
-  React.useEffect(() => {
+  const [tablePrices, setTablePrices] = useState([] as Array<string | number>[]);
+  const { dispatch }= useCatalog();
+
+  useEffect(() => {
     setTablePrices(sanitizeForTable(prices));
   }, []);
-  React.useEffect(() => {
-    console.log(tablePrices);
-  }, [tablePrices]);
+  
+  useImperativeHandle(ref, () => ({
+    submitEvent() {
+      dispatch({
+        type: 'setPriceTables',
+        payload: {
+          target: reference,
+          priceTable: sanitizeForReducer(tablePrices)
+        }
+      });
+      console.log(tablePrices);
+    }
+  }), [tablePrices]);
 
   return (
     <Table bordered hover>
@@ -59,7 +81,6 @@ export function CatalogTable({ sizes, prices, reference }: Props) {
                       onBlur={(e) => {
                         setTablePrices((old) => old.map((item, row) =>
                           item.map((value, col) => {
-                            // row === mainRow && col === mainCol ?? e.target.valueAsNumber : undefined;
                             if(row === mainRow && col === mainCol) return e.target.valueAsNumber || 0;
                             return value;
                           })
@@ -76,4 +97,4 @@ export function CatalogTable({ sizes, prices, reference }: Props) {
       
     </Table>
   );
-}
+});
