@@ -1,5 +1,4 @@
-import { ClothingParts } from '@shared/index';
-
+export type ClothingParts = 'pants' | 'shorts' | 'socks' | 'tanktop' | 'tshirt' | 'tshirtLong' | 'vest'
 export type PriceTable = {
   [value in Exclude<ClothingParts, 'socks'>]: number[]
 }
