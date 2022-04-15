@@ -1,7 +1,7 @@
 import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
@@ -20,32 +20,32 @@ export function FormInputs() {
   const emailCompanyRef = React.useRef<HTMLInputElement>(null);
   const projectNameRef = React.useRef<HTMLInputElement>(null);
   const socksRef = React.useRef<HTMLInputElement>(null);
-
+  const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
+    e.preventDefault();
+    console.log(socksRef.current);
+    childishTableRef.current.submitEvent();
+    maleTableRef.current.submitEvent();
+    femaleTableRef.current.submitEvent();
+    dispatch({
+      type: 'setPriceUniqueTables',
+      payload: {
+        priceTableUnique: {
+          socks: [socksRef.current.valueAsNumber]
+        }
+      }
+    });
+    dispatch({
+      type: 'setCompanyInfos',
+      payload: {
+        companyEmail: emailCompanyRef.current.value,
+        projectName: projectNameRef.current.value,
+      }
+    });
+  }; 
   return (
     <Container>
       <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log(socksRef.current);
-          childishTableRef.current.submitEvent();
-          maleTableRef.current.submitEvent();
-          femaleTableRef.current.submitEvent();
-          dispatch({
-            type: 'setPriceUniqueTables',
-            payload: {
-              priceTableUnique: {
-                socks: [socksRef.current.valueAsNumber]
-              }
-            }
-          });
-          dispatch({
-            type: 'setCompanyInfos',
-            payload: {
-              companyEmail: emailCompanyRef.current.value,
-              projectName: projectNameRef.current.value,
-            }
-          });
-        }}
+        onSubmit={submitHandler}
       >
         <Row>
           <Col>
