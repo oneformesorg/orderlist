@@ -1,3 +1,24 @@
+//         ┌───────────────────────────────────┐
+//         │                                   │
+//         │ tabela de preços do state global  │
+//         │                                   │
+//         └─┬───────────────────────────────▲─┘
+//           │                               │
+//           │                               │
+//  ┌────────▼───────┐                   ┌───┴──────────────────┐
+//  │  CatalogTable  │                   │sanitizeForReducer()  │
+//  └────────┬───────┘                   └──────────▲───────────┘
+//           │                                      │
+//           │                                      │
+// ┌─────────▼────────┐                    ┌────────┴────────┐
+// │sanitizeForTable()│                    │  submitEvent()  │
+// └─────────┬────────┘                    └────────▲────────┘
+//           │                                      │
+//           │                                      │
+//           │         ┌────────────────┐           │
+//           └─────────► Gerando tabela ├───────────┘
+//                     └────────────────┘
+
 import { CatalogContent, PriceTable } from '@shared/Catalog';
 import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
