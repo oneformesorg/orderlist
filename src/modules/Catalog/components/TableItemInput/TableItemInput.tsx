@@ -1,5 +1,4 @@
 import React, { ComponentProps } from 'react';
-import InputMask from 'react-input-mask';
 import style from './style.module.css';
 
 type Props = {
