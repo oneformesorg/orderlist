@@ -1,23 +1,25 @@
-import { ClothingParts } from '@/shared';
+export type ClothingParts = 'pants' | 'shorts' | 'socks' | 'tanktop' | 'tshirt' | 'tshirtLong' | 'vest'
+export type PriceTable = {
+  [value in Exclude<ClothingParts, 'socks'>]: number[]
+}
 
+export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'
 export type CatalogContent = {
   projectName: string
   companyEmail: string
-  priceTableChildish: {
-    [value in ClothingParts]: number[]
-  }
-  priceTableFemale: {
-    [value in ClothingParts]: number[]
-  }
-  priceTableMale: {
-    [value in ClothingParts]: number[]
-  }
+  priceTableChildish: PriceTable
+  priceTableFemale: PriceTable
+  priceTableMale: PriceTable
   priceTableUnique: {
     socks: [number]
   }
 }
-export type ReducerActionType = 'name' | 'email'
-export type CatalogReducerAction = {
-  payload?: any
-  type: ReducerActionType
+export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables'
+export type CatalogReducerAction =
+| { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'projectName' | 'companyEmail'> }
+| { type: 'setPriceTables', payload: {
+    target: TablesName
+    priceTable: PriceTable
+  } 
 }
+| { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}
