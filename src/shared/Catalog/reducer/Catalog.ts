@@ -16,6 +16,11 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
     return {
       ...state, ...action.payload
     };
+  case 'currentInfos':
+    action.stateFunction(state);
+    return {
+      ...state
+    };
   default:
     throw new Error();
   }

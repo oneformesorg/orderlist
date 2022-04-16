@@ -14,7 +14,7 @@ export type CatalogContent = {
     socks: [number]
   }
 }
-export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables'
+export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables' | 'currentInfos'
 export type CatalogReducerAction =
 | { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'projectName' | 'companyEmail'> }
 | { type: 'setPriceTables', payload: {
@@ -23,3 +23,4 @@ export type CatalogReducerAction =
   } 
 }
 | { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}
+| { type: 'currentInfos', stateFunction: (catalog: CatalogContent) => void }
