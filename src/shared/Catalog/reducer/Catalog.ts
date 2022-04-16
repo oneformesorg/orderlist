@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { CatalogContent, CatalogReducerAction } from '../interfaces';
 
 function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogContent {
@@ -15,6 +15,11 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
   case 'setPriceUniqueTables':
     return {
       ...state, ...action.payload
+    };
+  case 'currentInfos':
+    action.stateFunction(state);
+    return {
+      ...state
     };
   default:
     throw new Error();
@@ -55,5 +60,17 @@ const initialCatalog: CatalogContent = {
 
 export function CatalogReducer() {
   const [state, dispatch] = useReducer(reducer, initialCatalog);
+  useEffect(() => {
+    const catalog = localStorage.getItem('@orderlist/catalog');
+    if(catalog){
+      dispatch({ type: 'setCompanyInfos', payload: JSON.parse(catalog) as unknown as CatalogContent });
+    }
+  }, []);
+  useEffect(() => {
+    if(JSON.stringify(state) !== JSON.stringify(initialCatalog)){
+      localStorage.setItem('@orderlist/catalog', JSON.stringify(state));
+    }
+  }, [state]);
+
   return { state, dispatch };
 }

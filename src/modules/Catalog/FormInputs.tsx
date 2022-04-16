@@ -6,10 +6,9 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable';
-import styles from './formInput.module.css';
-
-const adultSizes = ['T-PP', 'T-P', 'T-M', 'T-G', 'T-GG', 'T-XG', 'T-2XG', 'T-3XG', 'T-4XG'];
-const childSize = ['T-2A', 'T-4A', 'T-6A', 'T-8A', 'T-10A', 'T-12A','T-14A', 'T-16A'];
+import { adultSizes, childSize } from '@config/static';
+import { OneformesAPI } from '@shared/api/useAxios';
+import { CopyToClipboard } from '@modules/CopyToClipboard/CopyToClipboard';
 
 export function FormInputs() {
   const { t } = useTranslation();
@@ -20,9 +19,11 @@ export function FormInputs() {
   const emailCompanyRef = React.useRef<HTMLInputElement>(null);
   const projectNameRef = React.useRef<HTMLInputElement>(null);
   const socksRef = React.useRef<HTMLInputElement>(null);
+  const [catalogQuery, setCatalogQuery] = React.useState('');
+  
   const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
     e.preventDefault();
-    console.log(socksRef.current);
+
     childishTableRef.current.submitEvent();
     maleTableRef.current.submitEvent();
     femaleTableRef.current.submitEvent();
@@ -39,6 +40,15 @@ export function FormInputs() {
       payload: {
         companyEmail: emailCompanyRef.current.value,
         projectName: projectNameRef.current.value,
+      }
+    });
+    dispatch({
+      type: 'currentInfos',
+      stateFunction: (state) => {
+        OneformesAPI<string>({
+          path: 'generate',
+          body: state
+        }).then(q => setCatalogQuery(q));
       }
     });
   }; 
@@ -95,7 +105,7 @@ export function FormInputs() {
               </td>
               <td style={{ width: '100px' }}>
                 <input
-                  className={styles.input}
+                  className="tableItemInput"
                   type='number'
                   min={0}
                   defaultValue={state.priceTableUnique.socks[0]}
@@ -113,6 +123,9 @@ export function FormInputs() {
           {t('GENERATE_LINK')}
         </button>
       </Form>
+      {catalogQuery ? (
+        <CopyToClipboard text={`${window.location.origin}?q=${catalogQuery}`}/>
+      ) : null}
     </Container>
   );
 }

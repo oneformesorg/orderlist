@@ -3,11 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@styles/global.css';
 import { appWithTranslation } from 'next-i18next';
 import { SSRProvider } from 'react-bootstrap';
+import { CatalogActionProvider } from '@shared/Catalog/context/catalog';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SSRProvider>
-      <Component {...pageProps} />
+      <CatalogActionProvider>
+        <Component {...pageProps} />
+      </CatalogActionProvider>
     </SSRProvider>
   );
 }
