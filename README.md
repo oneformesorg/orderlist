@@ -10,3 +10,9 @@
   ### Ferramentas no geral
   - [i18next](https://www.i18next.com/)
   - Typescript
+
+### Observações
+Para rodar o projeto com o husky, digite: 
+```
+npx husky install
+```
