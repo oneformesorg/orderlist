@@ -67,7 +67,6 @@ export const CatalogTable = React.forwardRef<CatalogRef, Props>(function Catalog
           priceTable: sanitizeForReducer(tablePrices)
         }
       });
-      console.log(tablePrices);
     }
   }), [tablePrices]);
 
