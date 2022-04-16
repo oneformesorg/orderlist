@@ -6,8 +6,10 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { CatalogProvider } from '@shared/Catalog/context/catalog';
+import { useTranslation } from 'next-i18next';
 
 const Catalog: NextPage = () => {
+  const { t } = useTranslation();
   return(
     <>
       <Menu />
@@ -17,7 +19,7 @@ const Catalog: NextPage = () => {
             className="btn btn-primary d-inline-flex gap-2 align-items-center mb-4"
           >
             <FontAwesomeIcon icon={faArrowLeft} />
-            Voltar
+            {t('GOBACK')}
           </a>
         </Link>
         <CatalogProvider>
