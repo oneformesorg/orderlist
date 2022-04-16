@@ -6,9 +6,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable';
-
-const adultSizes = ['T-PP', 'T-P', 'T-M', 'T-G', 'T-GG', 'T-XG', 'T-2XG', 'T-3XG', 'T-4XG'];
-const childSize = ['T-2A', 'T-4A', 'T-6A', 'T-8A', 'T-10A', 'T-12A','T-14A', 'T-16A'];
+import { adultSizes, childSize } from '@config/static';
 
 export function FormInputs() {
   const { t } = useTranslation();
