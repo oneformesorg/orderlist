@@ -7,10 +7,12 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
+import { useCatalogAction } from '@shared/Catalog/context/catalog';
 
 const Home: NextPage = () => {
   const { t } = useTranslation();
   const { query } = useRouter();
+  const catalogDispatch = useCatalogAction();
   
   useEffect(() => {
     console.log(query);
@@ -19,7 +21,10 @@ const Home: NextPage = () => {
         path: 'load',
         query: query.q
       }).then(res => {
-        console.log(res);
+        catalogDispatch({
+          type: 'setCompanyInfos',
+          payload: res
+        });
       });
     }
   }, [query]);
