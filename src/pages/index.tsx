@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
 import { useCatalogAction } from '@shared/Catalog/context/catalog';
+import { ListActionProvider } from '@shared/List';
+import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 
 const Home: NextPage = () => {
   const { t } = useTranslation();
@@ -15,7 +17,6 @@ const Home: NextPage = () => {
   const catalogDispatch = useCatalogAction();
   
   useEffect(() => {
-    console.log(query);
     if(typeof query.q === 'string'){
       OneformesAPI<CatalogContent>({
         path: 'load',
@@ -36,7 +37,9 @@ const Home: NextPage = () => {
       </Head>
       <Menu />
       <div className="container-md">
-        <h1>{t('MALE')}</h1>
+        <ListActionProvider>
+          <CreateItemForm />
+        </ListActionProvider>
       </div>
     </>
   );
