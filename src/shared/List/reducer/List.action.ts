@@ -1,11 +1,20 @@
-import { ListReducerActions } from '../interfaces';
+import { ListReducerType } from '../interfaces';
 
-export const listAction:ListReducerActions = (state, { type, payload }) => {
+export const listActionReducer:ListReducerType = (state, { type, payload }) => {
   switch (type) {
   case 'add':
-    return [...state, payload ];
+    return { ...state, items: [...state.items, payload] };
   case 'delete':
-    return state.filter(({ id }) => id !== payload.id);
+    return {
+      ...state, listsArray: state.items.filter(({ id }) => id !== payload.id)
+    };
+  case 'changeList':
+    return {
+      ...state, listsArray: state.items.map((item) => {
+        if(item.id === payload.id) return { ...item, list: payload.list };
+        return item;
+      })
+    };
   default:
     return state;
   }
