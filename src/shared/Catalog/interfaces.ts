@@ -16,7 +16,7 @@ export type CatalogContent = {
 }
 export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables' | 'currentInfos'
 export type CatalogReducerAction =
-| { type: 'setCompanyInfos', payload: CatalogContent }
+| { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'companyEmail' | 'projectName'> }
 | { type: 'setPriceTables', payload: {
     target: TablesName
     priceTable: PriceTable
