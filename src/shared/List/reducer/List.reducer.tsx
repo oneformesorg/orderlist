@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { ListReducerType, ListItem, ListState } from '../interfaces';
+import { ListItem } from '../interfaces';
 import { listActionReducer } from './List.action';
 
 export function ListReducer() {
