@@ -1,12 +1,29 @@
-export type ClothingParts = 'pants' | 'shorts' | 'socks' | 'tanktop' | 'tshirt' | 'tshirtLong' | 'vest'
+export type ClothingParts = 'pants' 
+| 'shorts'
+| 'socks'
+| 'tanktop'
+| 'tshirt'
+| 'tshirtLong'
+| 'vest'
+
+export type CyclingClothingParts = 'pants' | 'shorts' | 'tshirt' | 'tshirtLong'
+
 export type PriceTable = {
   [value in Exclude<ClothingParts, 'socks'>]: number[]
 }
+export type CyclingPriceTable = {
+  [value in CyclingClothingParts]: number[]
+}
 
-export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'
+export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale' | 'cyclingPriceTableMale' | 'cyclingPriceTableFemale' | 'cyclingPriceTableChildish'
+
+// export type CyclingTablesName = 
 export type CatalogContent = {
   projectName: string
   companyEmail: string
+  cyclingPriceTableFemale: CyclingPriceTable
+  cyclingPriceTableMale: CyclingPriceTable
+  cyclingPriceTableChildish: CyclingPriceTable
   priceTableChildish: PriceTable
   priceTableFemale: PriceTable
   priceTableMale: PriceTable
@@ -19,7 +36,7 @@ export type CatalogReducerAction =
 | { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'companyEmail' | 'projectName'> }
 | { type: 'setPriceTables', payload: {
     target: TablesName
-    priceTable: PriceTable
+    priceTable: PriceTable | CyclingPriceTable
   } 
 }
 | { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}

@@ -30,31 +30,49 @@ const initialCatalog: CatalogContent = {
   companyEmail: '',
   projectName: '',
   priceTableChildish: {
-    pants: [0,0,0,0,0,0,0,0],
-    shorts: [0,0,0,0,0,0,0,0],
-    tanktop: [0,0,0,0,0,0,0,0],
-    tshirt: [0,0,0,0,0,0,0,0],
-    tshirtLong: [0,0,0,0,0,0,0,0],
-    vest: [0,0,0,0,0,0,0,0],
+    pants: [0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0],
+    tanktop: [0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0],
+    vest: [0, 0, 0, 0, 0, 0, 0, 0],
   },
   priceTableFemale: {
-    pants: [0,0,0,0,0,0,0,0,0],
-    shorts: [0,0,0,0,0,0,0,0,0],
-    tanktop: [0,0,0,0,0,0,0,0,0],
-    tshirt: [0,0,0,0,0,0,0,0,0],
-    tshirtLong: [0,0,0,0,0,0,0,0,0],
-    vest: [0,0,0,0,0,0,0,0,0],
+    pants: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tanktop: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    vest: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   priceTableMale: {
-    pants: [0,0,0,0,0,0,0,0,0],
-    shorts: [0,0,0,0,0,0,0,0,0],
-    tanktop: [0,0,0,0,0,0,0,0,0],
-    tshirt: [0,0,0,0,0,0,0,0,0],
-    tshirtLong: [0,0,0,0,0,0,0,0,0],
-    vest: [0,0,0,0,0,0,0,0,0],
+    pants: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tanktop: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    vest: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   priceTableUnique: {
     socks: [0]
+  },
+  cyclingPriceTableFemale: {
+    pants: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  cyclingPriceTableMale: {
+    pants: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  cyclingPriceTableChildish: {
+    pants: [0, 0, 0, 0, 0, 0, 0, 0],
+    shorts: [0, 0, 0, 0, 0, 0, 0, 0],
+    tshirt: [0, 0, 0, 0, 0, 0, 0, 0],
+    tshirtLong: [0, 0, 0, 0, 0, 0, 0, 0]
   }
 };
 
