@@ -9,6 +9,7 @@ import { CatalogContent } from '@shared/Catalog';
 import { useCatalogAction } from '@shared/Catalog/context/catalog';
 import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
+import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
 
 const Home: NextPage = () => {
   const { query } = useRouter();
@@ -37,6 +38,9 @@ const Home: NextPage = () => {
       <div className="container-md">
         <ListActionProvider>
           <CreateItemForm />
+          <section className="mt-3 d-flex justify-content-center border-top p-3">
+            <CreateListModal />
+          </section>
         </ListActionProvider>
       </div>
     </>
