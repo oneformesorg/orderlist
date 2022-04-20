@@ -1,15 +1,17 @@
-import { ClothingParts } from '@shared/Catalog/interfaces';
+import { ClothingParts, CyclingClothingParts } from '@shared/Catalog/interfaces';
 
 export type AdultCloths = {
+  isCycling: boolean
   size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
   priceIndex: number
-  clothe: ClothingParts
+  clothe: ClothingParts | CyclingClothingParts
   quantity: number
 }
 export type ChildishCloths = {
+  isCycling: boolean
   size: 'T-2A' | 'T-4A' | 'T-6A' | 'T-8A' | 'T-10A' | 'T-12A' |'T-14A' | 'T-16A'
   priceIndex: number
-  clothe: ClothingParts
+  clothe: ClothingParts | CyclingClothingParts
   quantity: number
 }
 
