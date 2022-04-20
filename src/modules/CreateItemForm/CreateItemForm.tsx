@@ -83,7 +83,7 @@ export function CreateItemForm() {
         numberRef.current.value = '';
         if(gender === 'CHILDISH'){
           return dispatch({
-            type: 'add',
+            type: 'addItem',
             payload: {
               list,
               isCycling,
@@ -96,7 +96,7 @@ export function CreateItemForm() {
           });
         }
         dispatch({
-          type: 'add',
+          type: 'addItem',
           payload: {
             list,
             isCycling,
