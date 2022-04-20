@@ -19,7 +19,7 @@
 //           └─────────► Gerando tabela ├───────────┘
 //                     └────────────────┘
 
-import { CatalogContent, PriceTable } from '@shared/Catalog';
+import { CyclingPriceTable, PriceTable, TablesName } from '@shared/Catalog';
 import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
@@ -29,14 +29,15 @@ import { TableItemInput } from '../TableItemInput/TableItemInput';
 
 type Props = {
   sizes: string[]
-  prices: PriceTable
-  reference: keyof Pick<CatalogContent, 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale'>
+  prices: PriceTable | CyclingPriceTable
+  reference: TablesName
+  isCycling?: boolean
 }
 export type CatalogRef = {
   submitEvent: () => void
 }
 
-function sanitizeForTable(obj: PriceTable) {
+function sanitizeForTable(obj: PriceTable | CyclingPriceTable) {
   const value = Object.entries(obj).map(([key, value]) => (
     [key, ...value]
   ));
@@ -49,14 +50,14 @@ function sanitizeForReducer(arr: Array<number | string>[]){
   }), {}) as unknown as PriceTable;
 }
 
-export const CatalogTable = React.forwardRef<CatalogRef, Props>(function CatalogTable({ sizes, prices, reference }, ref) {
+export const CatalogTable = React.forwardRef<CatalogRef, Props>(function CatalogTable({ sizes, prices, reference, isCycling }, ref) {
   const { t } = useTranslation();
   const [tablePrices, setTablePrices] = useState([] as Array<string | number>[]);
   const { dispatch }= useCatalog();
 
   useEffect(() => {
     setTablePrices(sanitizeForTable(prices));
-  }, []);
+  }, [prices]);
   
   useImperativeHandle(ref, () => ({
     submitEvent() {
@@ -68,7 +69,7 @@ export const CatalogTable = React.forwardRef<CatalogRef, Props>(function Catalog
         }
       });
     }
-  }), [tablePrices]);
+  }), [tablePrices, dispatch, reference]);
 
   return (
     <Table bordered hover>
@@ -89,7 +90,7 @@ export const CatalogTable = React.forwardRef<CatalogRef, Props>(function Catalog
               <td key={`${item}_${mainCol}`}>
                 {mainCol === 0 ? (
                   <Image
-                    src={`/images/${rowItem}.png`}
+                    src={isCycling ? `/images/cycling/${rowItem}.png` : `/images/${rowItem}.png`}
                     height={25}
                     width={25}
                     alt={`${rowItem} illustration`}
