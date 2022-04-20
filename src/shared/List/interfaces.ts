@@ -34,16 +34,22 @@ export type ListState = {
 }
 
 export type ListAction = {
-  type: 'add'
+  type: 'addItem'
   payload: ListItem
 } | {
-  type: 'delete'
+  type: 'deleteItem'
   payload: {
     id: string
   }
 } | {
   type: 'changeList'
   payload: Pick<ListItem, 'id' | 'list'>
+} | {
+  type: 'deleteList'
+  payload: string
+} | {
+  type: 'addList'
+  payload: string
 }
 
 export type ListReducerType = (state: ListState, action: ListAction) => ListState
