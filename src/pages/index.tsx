@@ -1,5 +1,4 @@
 import type { GetStaticProps, NextPage } from 'next';
-import { useTranslation }  from 'next-i18next';
 import { serverSideTranslations }  from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { Menu } from '@modules/Menu/Menu';
@@ -12,7 +11,6 @@ import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 
 const Home: NextPage = () => {
-  const { t } = useTranslation();
   const { query } = useRouter();
   const catalogDispatch = useCatalogAction();
   
@@ -28,7 +26,7 @@ const Home: NextPage = () => {
         });
       });
     }
-  }, [query]);
+  }, [query, catalogDispatch]);
 
   return (
     <>

@@ -1,10 +1,13 @@
 import { faPlus, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AdultCloths, ChildishCloths, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
 import { MicInput } from './components/MicInput/MicInput';
+
+const generateId = () => Math.random().toString(16).slice(2);
 
 export function CreateItemForm() {
   const { t, i18n } = useTranslation();
@@ -12,6 +15,7 @@ export function CreateItemForm() {
   const formModalRef = useRef<FormModalRef>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
+  const { dispatch } = useList();
   useEffect(() => {
     if(typeof window !== 'undefined'){
       setHasWindow(true);
@@ -73,8 +77,37 @@ export function CreateItemForm() {
           </Form.Group>
         </Col>
       </Row>
-      <FormModal ref={formModalRef} sendForList={(cloth, gender, list) => {
-        console.log(cloth, gender, list, nameRef.current.value, numberRef.current.value);
+      <FormModal ref={formModalRef} sendForList={(cloth, gender, list, isCycling) => {
+        console.log(cloth, gender, list, isCycling,nameRef.current.value, numberRef.current.value);
+        nameRef.current.value = '';
+        numberRef.current.value = '';
+        if(gender === 'CHILDISH'){
+          return dispatch({
+            type: 'add',
+            payload: {
+              list,
+              isCycling,
+              name: nameRef.current.value,
+              number: numberRef.current.value,
+              id: generateId(),
+              clothes: Object.entries(cloth).map(([key, value]) => ({ [key]: { ...value, clothe: key } })) as unknown as ChildishCloths[],
+              gender: gender,
+            }
+          });
+        }
+        dispatch({
+          type: 'add',
+          payload: {
+            list,
+            isCycling,
+            name: nameRef.current.value,
+            number: numberRef.current.value,
+            id: generateId(),
+            clothes: Object.entries(cloth).map(([key, value]) => ({ [key]: { ...value, clothe: key } })) as unknown as AdultCloths[],
+            gender: gender,
+          }
+        });
+        
       }}/>
     </form>
   );
