@@ -16,6 +16,9 @@ export function FormInputs() {
   const maleTableRef = React.useRef<CatalogRef>(null);
   const femaleTableRef = React.useRef<CatalogRef>(null);
   const childishTableRef = React.useRef<CatalogRef>(null);
+  const cyclingMaleTableRef = React.useRef<CatalogRef>(null);
+  const cyclingFemaleTableRef = React.useRef<CatalogRef>(null);
+  const cyclingChildishTableRef = React.useRef<CatalogRef>(null);
   const emailCompanyRef = React.useRef<HTMLInputElement>(null);
   const projectNameRef = React.useRef<HTMLInputElement>(null);
   const socksRef = React.useRef<HTMLInputElement>(null);
@@ -27,6 +30,9 @@ export function FormInputs() {
     childishTableRef.current.submitEvent();
     maleTableRef.current.submitEvent();
     femaleTableRef.current.submitEvent();
+    cyclingMaleTableRef.current.submitEvent();
+    cyclingFemaleTableRef.current.submitEvent();
+    cyclingChildishTableRef.current.submitEvent();
     dispatch({
       type: 'setPriceUniqueTables',
       payload: {
@@ -81,6 +87,19 @@ export function FormInputs() {
             </Form.Group>
           </Col>
         </Row>
+        <h3>{t('CYCLING_CLOTHING')}</h3>
+        <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
+          <Tab eventKey="male" title={t('MALE')}>
+            <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={adultSizes} reference={'cyclingPriceTableMale'} />
+          </Tab>
+          <Tab eventKey="female" title={t('FEMALE')}>
+            <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={adultSizes} reference={'cyclingPriceTableFemale'} />
+          </Tab>
+          <Tab eventKey="childish" title={t('CHILDISH')}>
+            <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={childSize} reference={'cyclingPriceTableChildish'} />
+          </Tab>
+        </Tabs>
+        <h3>{t('CLOTHES')}</h3>
         <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
           <Tab eventKey="male" title={t('MALE')}>
             <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={adultSizes} reference={'priceTableMale'} />

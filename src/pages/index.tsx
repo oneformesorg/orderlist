@@ -1,5 +1,4 @@
 import type { GetStaticProps, NextPage } from 'next';
-import { useTranslation }  from 'next-i18next';
 import { serverSideTranslations }  from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { Menu } from '@modules/Menu/Menu';
@@ -8,14 +7,15 @@ import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
 import { useCatalogAction } from '@shared/Catalog/context/catalog';
+import { ListActionProvider } from '@shared/List';
+import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
+import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
 
 const Home: NextPage = () => {
-  const { t } = useTranslation();
   const { query } = useRouter();
   const catalogDispatch = useCatalogAction();
   
   useEffect(() => {
-    console.log(query);
     if(typeof query.q === 'string'){
       OneformesAPI<CatalogContent>({
         path: 'load',
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
         });
       });
     }
-  }, [query]);
+  }, [query, catalogDispatch]);
 
   return (
     <>
@@ -36,7 +36,12 @@ const Home: NextPage = () => {
       </Head>
       <Menu />
       <div className="container-md">
-        <h1>{t('MALE')}</h1>
+        <ListActionProvider>
+          <CreateItemForm />
+          <section className="mt-3 d-flex justify-content-center border-top p-3">
+            <CreateListModal />
+          </section>
+        </ListActionProvider>
       </div>
     </>
   );

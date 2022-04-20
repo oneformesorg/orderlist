@@ -1,5 +1,5 @@
 import { CatalogReducer } from './reducer/Catalog';
-import { CatalogContent, CatalogReducerAction, PriceTable } from './interfaces';
+import { CatalogContent, CatalogReducerAction, PriceTable, CyclingPriceTable, TablesName, ClothingParts, CyclingClothingParts } from './interfaces';
 
 export {
   CatalogReducer
@@ -7,5 +7,9 @@ export {
 export type {
   CatalogContent,
   CatalogReducerAction,
-  PriceTable
+  PriceTable,
+  CyclingPriceTable,
+  TablesName,
+  ClothingParts,
+  CyclingClothingParts
 };
