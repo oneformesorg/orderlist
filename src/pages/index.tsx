@@ -10,6 +10,7 @@ import { useCatalogAction } from '@shared/Catalog/context/catalog';
 import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
+import { OrderTable } from '@modules/OrderTable/OrderTable';
 
 const Home: NextPage = () => {
   const { query } = useRouter();
@@ -41,6 +42,7 @@ const Home: NextPage = () => {
           <section className="mt-3 d-flex justify-content-center border-top p-3">
             <CreateListModal />
           </section>
+          <OrderTable />
         </ListActionProvider>
       </div>
     </>
