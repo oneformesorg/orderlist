@@ -81,6 +81,8 @@ export function CreateItemForm() {
         if(gender === 'CHILDISH'){
           return dispatch({
             type: 'addItem',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             payload: {
               list,
               isCycling,
@@ -96,6 +98,8 @@ export function CreateItemForm() {
         }
         dispatch({
           type: 'addItem',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           payload: {
             list,
             isCycling,
