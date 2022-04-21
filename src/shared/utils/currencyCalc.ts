@@ -20,6 +20,10 @@ export function sanitizeValue(
       if(quantity){
         const constSizePos = childSize.reduce((prev, curr, i) => curr === size ? i : 0, 0);
         
+        if(key === 'socks'){
+          return prev += catalog.priceTableUnique.socks[0] * quantity;
+        }
+
         return prev += priceCatalog[gender]()[key][constSizePos] * quantity;
       }
       return prev;
@@ -31,7 +35,6 @@ export function sanitizeValue(
       const constSizePos = childSize.reduce((prev, curr, i) => curr === size ? i : 0, 0);
       
       if(key === 'socks'){
-        
         return prev += catalog.priceTableUnique.socks[0] * quantity;
       }
       return prev += priceCatalog[gender]()[key][constSizePos] * quantity;
