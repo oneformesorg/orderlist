@@ -6,7 +6,7 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
     return { ...state, items: [...state.items, payload] };
   case 'deleteItem':
     return {
-      ...state, listsArray: state.items.filter(({ id }) => id !== payload.id)
+      ...state, items: state.items.filter(({ id }) => id !== payload)
     };
   case 'changeList':
     return {
