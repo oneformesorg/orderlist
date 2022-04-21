@@ -6,6 +6,7 @@ import { ListItem, useList } from '@shared/List';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
 import { useTranslation } from 'next-i18next';
 import React, { useState } from 'react';
+import { ViewAndEditItem } from '../VIewItem';
 import style from './style.module.css';
 
 type Props = {
@@ -68,13 +69,15 @@ export function TableBody({ list, clothingList }: Props) {
               {currencyConv(sanitizeValue(catalogState, props.gender, props.isCycling, props.clothes))}              
             </td>
             <td className={`${style.tableCell} d-none d-md-table-cell`}>
-              <FontAwesomeIcon icon={faEdit} />
+              {/* <FontAwesomeIcon icon={faEdit} /> */}
+              <ViewAndEditItem id={props.id} icon={faEdit}/>
             </td>
             <td className={`${style.tableCell} text-danger d-none d-md-table-cell`}>
               <FontAwesomeIcon icon={faTrash} />
             </td>
             <th className={`${style.tableCell} d-table-cell d-md-none`}>
-              <FontAwesomeIcon icon={faEye} />
+              {/* <FontAwesomeIcon icon={faEye} /> */}
+              <ViewAndEditItem id={props.id} icon={faEye}/>
             </th>
           </tr>
         ))}

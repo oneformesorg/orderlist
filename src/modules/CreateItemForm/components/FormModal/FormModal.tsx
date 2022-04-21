@@ -6,6 +6,7 @@ import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { adultSizes, childSize } from '@config/static';
 import { useList } from '@shared/List';
+import { verifyClothList } from '@shared/utils/verifyClothList';
 
 export type FormModalRef = {
   showModal: () => void
@@ -53,14 +54,6 @@ const initialClothList: ClothList = {
     quantity: 0
   }
 };
-
-function verifyClothList(list: ClothList){
-  const sanitizedClothList = Object.entries(list).filter(([, { size, quantity }]) => (
-    size !== '' && quantity
-  )
-  ).length;
-  return !!sanitizedClothList;
-}
 
 type Props = {
   sendForList: (clothes: ClothList, gender: Gender, list: string, isCycling: boolean) => void
