@@ -52,9 +52,7 @@ export type ListAction = {
   payload: ListItem
 } | {
   type: 'deleteItem'
-  payload: {
-    id: string
-  }
+  payload: string
 } | {
   type: 'changeList'
   payload: Pick<ListItem, 'id' | 'list'>
