@@ -28,6 +28,10 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
       return { ...state }; 
     }
     return { ...state, lists: [...state.lists, payload] };
+  case 'deleteMultipleItems':
+    return { ...state, items: payload.reduce((prev, curr) => {
+      return prev.filter(({ id }) => id !== curr);
+    }, state.items) };
   default:
     return state;
   }
