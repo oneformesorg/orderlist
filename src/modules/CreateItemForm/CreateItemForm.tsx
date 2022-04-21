@@ -78,9 +78,6 @@ export function CreateItemForm() {
         </Col>
       </Row>
       <FormModal ref={formModalRef} sendForList={(cloth, gender, list, isCycling) => {
-        console.log(cloth, gender, list, isCycling,nameRef.current.value, numberRef.current.value);
-        nameRef.current.value = '';
-        numberRef.current.value = '';
         if(gender === 'CHILDISH'){
           return dispatch({
             type: 'addItem',
@@ -90,7 +87,9 @@ export function CreateItemForm() {
               name: nameRef.current.value,
               number: numberRef.current.value,
               id: generateId(),
-              clothes: Object.entries(cloth).map(([key, value]) => ({ [key]: { ...value, clothe: key } })) as unknown as ChildishCloths[],
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              clothes: Object.entries(cloth).reduce((prev,[key, value]) => ({ ...prev, [key]: { ...value } }), {}),
               gender: gender,
             }
           });
@@ -103,11 +102,16 @@ export function CreateItemForm() {
             name: nameRef.current.value,
             number: numberRef.current.value,
             id: generateId(),
-            clothes: Object.entries(cloth).map(([key, value]) => ({ [key]: { ...value, clothe: key } })) as unknown as AdultCloths[],
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            clothes: Object.entries(cloth).reduce((prev,[key, value]) => ({ ...prev, [key]: { ...value } }), {}),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             gender: gender,
           }
         });
-        
+        nameRef.current.value = '';
+        numberRef.current.value = '';
       }}/>
     </form>
   );
