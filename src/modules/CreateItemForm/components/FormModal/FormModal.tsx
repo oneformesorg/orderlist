@@ -54,6 +54,14 @@ const initialClothList: ClothList = {
   }
 };
 
+function verifyClothList(list: ClothList){
+  const sanitizedClothList = Object.entries(list).filter(([, { size, quantity }]) => (
+    size !== '' && quantity
+  )
+  ).length;
+  return !!sanitizedClothList;
+}
+
 type Props = {
   sendForList: (clothes: ClothList, gender: Gender, list: string, isCycling: boolean) => void
 }
@@ -97,7 +105,8 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         </InputGroup>
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('GENDER')}</label>
-          <Select 
+          <Select
+            defaultValue={[{ value: 'MALE', label: t('MALE') }]}
             options={genderList}
             onChange={(e) => setGender(e.value as Gender)}
           />
@@ -239,12 +248,15 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <Button variant="secondary" onClick={handleClose}>
           {t('CLOSE')}
         </Button>
-        <Button variant="primary" onClick={() => {
-          sendForList(clothList, gender, list, isCycling);
-          setClothList(initialClothList);
-          setIsCycling(false);
-          handleClose();
-        }}>
+        <Button
+          disabled={!verifyClothList(clothList)}
+          variant="primary" 
+          onClick={() => {
+            sendForList(clothList, gender, list, isCycling);
+            setClothList(initialClothList);
+            setIsCycling(false);
+            handleClose();
+          }}>
           {t('SAVE_CHANGES')}
         </Button>
       </Modal.Footer>
