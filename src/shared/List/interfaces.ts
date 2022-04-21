@@ -67,6 +67,12 @@ export type ListAction = {
 } | {
   type: 'deleteMultipleItems'
   payload: string[]
+} | {
+  type: 'editItem'
+  payload: {
+    id: string,
+    listItem: Omit<ListItem, 'id'>
+  }
 }
 
 export type ListReducerType = (state: ListState, action: ListAction) => ListState

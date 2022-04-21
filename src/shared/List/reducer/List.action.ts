@@ -32,6 +32,13 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
     return { ...state, items: payload.reduce((prev, curr) => {
       return prev.filter(({ id }) => id !== curr);
     }, state.items) };
+  case 'editItem':
+    return { ...state, items: state.items.map((current) => {
+      if(current.id === payload.id){
+        return { id: current.id, ...payload.listItem };
+      }
+      return current;
+    }) };
   default:
     return state;
   }
