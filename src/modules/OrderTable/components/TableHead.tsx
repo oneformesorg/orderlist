@@ -5,12 +5,13 @@ import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 import React from 'react';
 
-const clothings:ClothingParts[] = ['pants', 'shorts', 'socks', 'tanktop', 'tshirt', 'tshirtLong', 'vest'];
 type Props = {
   listLength: number
+  clothings: ClothingParts[]
+  isCycling?: boolean
 }
 
-export function TableHead({ listLength }: Props) {
+export function TableHead({ listLength, clothings, isCycling }: Props) {
   const { t } = useTranslation();
   return (
     <thead>
@@ -32,7 +33,9 @@ export function TableHead({ listLength }: Props) {
           <th key={`${i}_${cloth}`} className="d-none d-md-table-cell">
             <Image
               alt={'cloths illustration'}
-              src={`/images/${cloth}.png`}
+              src={
+                isCycling && cloth !== 'socks' ? `/images/cycling/${cloth}.png` : `/images/${cloth}.png`
+              }
               height={25}
               width={25}
             />
