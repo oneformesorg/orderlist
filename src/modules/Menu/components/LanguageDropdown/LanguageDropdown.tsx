@@ -28,8 +28,11 @@ export default function LanguageDropdown() {
   const { t, i18n } = useTranslation();
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="light" id="dropdown-basic">
-        <FontAwesomeIcon icon={faEarthAmericas} /> {t('LANGUAGE')}
+      <Dropdown.Toggle variant="light" id="dropdown-basic" className='d-flex align-items-center gap-2'>
+        <FontAwesomeIcon icon={faEarthAmericas} /> 
+        <span className='d-none d-sm-inline'>
+          {t('LANGUAGE')}
+        </span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
