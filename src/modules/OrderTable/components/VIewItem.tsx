@@ -11,7 +11,7 @@ export function ViewAndEditItem({ id , icon }: Props) {
   const modalRef = useRef<EditItemModalRef>(null);
   return (
     <>
-      <button onClick={() => modalRef.current.showModal()}>
+      <button className="text-primary" onClick={() => modalRef.current.showModal()}>
         <FontAwesomeIcon icon={icon} />
       </button>
       <EditItemModal id={id} ref={modalRef} />
