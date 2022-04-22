@@ -37,7 +37,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
   const [list, setList] = useState(currentItem.list);
   const [clothList, setClothList] = useState<ClothList>(
-    listState.items.filter(({ id: currId }) => id === currId)[0].clothes
+    listState.items.filter(({ id: currId }) => id === currId)[0]?.clothes
   );
   const { isCycling } = currentItem;
 
@@ -213,8 +213,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
           variant="primary" 
           onClick={() => {
             const { nameRef, numberRef } = formNumberNameRef.current;
-            // sendForList(clothList, gender, list, isCycling);
-            console.log('foi?');
+            
             listDispatch({
               type: 'editItem',
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
