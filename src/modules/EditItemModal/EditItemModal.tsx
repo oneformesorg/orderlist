@@ -226,7 +226,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                   isCycling,
                   list,
                   name: nameRef.current.value,
-                  number: numberRef.current.valueAsNumber
+                  number: numberRef.current.valueAsNumber || ''
                 }
               }
             });
