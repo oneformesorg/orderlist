@@ -1,10 +1,12 @@
-import { CatalogStateProvider, useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { TableHead } from './components/TableHead';
 import { TableBody } from './components/TableBody';
 import { ClothingParts } from '@shared/Catalog';
+import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
+import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -26,45 +28,47 @@ export function OrderTable() {
           ...old.filter(([nameList]) => nameList !== name), [name, [normal, cycling]]
         ];
       });
-      console.log(sublists, cycling, normal);
     });
     setSublist(old => old.filter(([listName]) => state.items.some(({ list }) => list === listName)));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catalogState, state]);
-
   return (
     <section>
-      <CatalogStateProvider>
-        {normalList.length > 0 && !catalogState.isCycling && (
-          <Table id="tableOrderListItems" striped bordered hover>
-            <TableHead listLength={normalList.length} clothings={clothings}/>
-            <TableBody list={normalList} clothingList={clothings}/>
-          </Table>
-        )}
-        {cyclingList.length > 0 && catalogState.isCycling && (
-          <Table id="tableOrderListItems" striped bordered hover>
-            <TableHead listLength={cyclingList.length} clothings={cyclingClothings} isCycling={true}/>
-            <TableBody list={cyclingList} clothingList={cyclingClothings}/>
-          </Table>
-        )}
-        {sublists.map(([name, [normal, cycling]], i) => (
-          <>
-            <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
-            {normalList.length > 0 && !catalogState.isCycling && (
-              <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
-                <TableHead listLength={normal.length} clothings={clothings}/>
-                <TableBody list={normal} clothingList={clothings}/>
-              </Table>
-            )}
-            {cycling.length > 0 && catalogState.isCycling && (
-              <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
-                <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
-                <TableBody list={cycling} clothingList={cyclingClothings}/>
-              </Table>
-            )}
-          </>
-        ))}
-      </CatalogStateProvider>
+      {normalList.length > 0 && !catalogState.isCycling && (
+        <Table id="tableOrderListItems" striped bordered hover>
+          <TableHead listLength={normalList.length} clothings={clothings}/>
+          <TableBody list={normalList} clothingList={clothings}/>
+        </Table>
+      )}
+      {cyclingList.length > 0 && catalogState.isCycling && (
+        <Table id="tableOrderListItems" striped bordered hover>
+          <TableHead listLength={cyclingList.length} clothings={cyclingClothings} isCycling={true}/>
+          <TableBody list={cyclingList} clothingList={cyclingClothings}/>
+        </Table>
+      )}
+      {sublists.map(([name, [normal, cycling]], i) => (
+        <>
+          <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
+          {normalList.length > 0 && !catalogState.isCycling && (
+            <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
+              <TableHead listLength={normal.length} clothings={clothings}/>
+              <TableBody list={normal} clothingList={clothings}/>
+            </Table>
+          )}
+          {cycling.length > 0 && catalogState.isCycling && (
+            <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
+              <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
+              <TableBody list={cycling} clothingList={cyclingClothings}/>
+            </Table>
+          )}
+        </>
+      ))}
+      {sublists.length > 0 || normalList.length > 0 || cyclingList.length > 0 ? (
+        <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
+          <DownloadCSVModal />
+          <SendEmailModal />
+        </section>
+      ) : null}
     </section>
   );
 }

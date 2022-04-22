@@ -11,8 +11,6 @@ import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 import { OrderTable } from '@modules/OrderTable/OrderTable';
 import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
-import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
-import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 
 const Home: NextPage = () => {
@@ -45,8 +43,6 @@ const Home: NextPage = () => {
             <CreateItemForm />
             <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
               <PasteListModal />
-              <DownloadCSVModal />
-              <SendEmailModal />
               <ImportCSVButton />
             </section>
 
