@@ -101,7 +101,10 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           <Select
             defaultValue={[{ value: 'MALE', label: t('MALE') }]}
             options={genderList}
-            onChange={(e) => setGender(e.value as Gender)}
+            onChange={(e) => {
+              setClothList(initialClothList);
+              setGender(e.value as Gender);
+            }}
           />
         </InputGroup>
         <InputGroup className='d-flex flex-column mb-3'>
@@ -175,22 +178,24 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select options={
-                    gender !== 'CHILDISH' ? (
-                      sizes.adult.map((size) => ({
-                        value: size, label: t(size)
-                      }))
-                    ) : (
-                      sizes.childish.map((size) => ({
-                        value: size, label: t(size)
-                      }))
-                    )
-                  }
-                  onChange={e => {
-                    setClothList(list => ({ ...list, [clothe]: {
-                      size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
-                    } }));
-                  }}
+                  <Select 
+                    value={{ value: clothList[clothe].size, label: t(clothList[clothe].size) }}
+                    options={
+                      gender !== 'CHILDISH' ? (
+                        sizes.adult.map((size) => ({
+                          value: size, label: t(size)
+                        }))
+                      ) : (
+                        sizes.childish.map((size) => ({
+                          value: size, label: t(size)
+                        }))
+                      )
+                    }
+                    onChange={e => {
+                      setClothList(list => ({ ...list, [clothe]: {
+                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                      } }));
+                    }}
                   />
                 </Col>
                 <Col xs={5}>
