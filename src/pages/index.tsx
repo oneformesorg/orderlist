@@ -6,10 +6,9 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
-import { useCatalogAction } from '@shared/Catalog/context/catalog';
+import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
 import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
-import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
 import { OrderTable } from '@modules/OrderTable/OrderTable';
 import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
@@ -42,15 +41,17 @@ const Home: NextPage = () => {
       <Menu />
       <div className="container-md">
         <ListActionProvider>
-          <CreateItemForm />
-          <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-            <CreateListModal />
-            <PasteListModal />
-            <DownloadCSVModal />
-            <SendEmailModal />
-            <ImportCSVButton />
-          </section>
-          <OrderTable />
+          <CatalogStateProvider>
+            <CreateItemForm />
+            <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
+              <PasteListModal />
+              <DownloadCSVModal />
+              <SendEmailModal />
+              <ImportCSVButton />
+            </section>
+
+            <OrderTable />
+          </CatalogStateProvider>
         </ListActionProvider>
       </div>
     </>

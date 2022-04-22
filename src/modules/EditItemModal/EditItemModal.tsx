@@ -8,6 +8,7 @@ import { adultSizes, childSize } from '@config/static';
 import { useList } from '@shared/List';
 import { FormNameNumber, FormNameNumberRef } from './components/FormNameNumber/FormNameNumber';
 import { verifyClothList } from '@shared/utils/verifyClothList';
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 
 export type EditItemModalRef = {
   showModal: () => void
@@ -29,7 +30,8 @@ type Props = {
 
 // TODO: Improve this component!!
 export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function EditItemModal({ id }, ref) {
-  const { state: listState } = useList();
+  const { dispatch: listDispatch, state: listState } = useList();
+  const catalogState = useCatalogState();
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
   const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
@@ -37,8 +39,8 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   const [clothList, setClothList] = useState<ClothList>(
     listState.items.filter(({ id: currId }) => id === currId)[0].clothes
   );
-  console.log(currentItem.isCycling);
-  const [isCycling, setIsCycling] = useState(currentItem.isCycling);
+  const { isCycling } = currentItem;
+
   const formNumberNameRef = useRef<FormNameNumberRef>(null);
   const { t } = useTranslation();
   const genderList = [
@@ -52,8 +54,6 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   useImperativeHandle(ref, () => ({
     showModal
   }));
-
-  const { state, dispatch: listDispatch } = useList();
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -69,7 +69,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
           <label>{t('LIST')}:</label>
           <Select
             defaultValue={{ value: list, label: list }}
-            options={state.lists.map(item => ({ value: item, label: item }))}
+            options={catalogState.list.map(item => ({ value: item, label: item }))}
             onChange={(e) => setList(e.value)}
           />
         </InputGroup>
@@ -81,17 +81,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
             onChange={(e) => setGender(e.value as Gender)}
           />
         </InputGroup>
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('CYCLING_CLOTHING')}</label>
-          <Select
-            value={isCycling ? { value: 'YES', label: t('YES') } : { value: '', label: t('NO') }}
-            options={[
-              { value: 'YES', label: t('YES') },
-              { value: '', label: t('NO') }
-            ]}
-            onChange={(e) => setIsCycling(!!e.value)}
-          />
-        </InputGroup>
+
         {isCycling ? (
           <>
             {cyclingClothes.map((clothe, i) => (
@@ -241,7 +231,6 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                 }
               }
             });
-            setIsCycling(false);
             handleClose();
           }}>
           {t('SAVE_CHANGES')}

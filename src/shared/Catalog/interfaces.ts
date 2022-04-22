@@ -21,6 +21,8 @@ export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTable
 export type CatalogContent = {
   projectName: string
   companyEmail: string
+  list: string[]
+  isCycling: boolean
   cyclingPriceTableFemale: CyclingPriceTable
   cyclingPriceTableMale: CyclingPriceTable
   cyclingPriceTableChildish: CyclingPriceTable
@@ -41,3 +43,11 @@ export type CatalogReducerAction =
 }
 | { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}
 | { type: 'currentInfos', stateFunction: (catalog: CatalogContent) => void }
+| { type: 'cyclingMode', payload: boolean }
+| {
+  type: 'deleteList'
+  payload: string
+} | {
+  type: 'addList'
+  payload: string
+} 

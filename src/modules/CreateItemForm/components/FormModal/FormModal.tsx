@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { adultSizes, childSize } from '@config/static';
-import { useList } from '@shared/List';
 import { verifyClothList } from '@shared/utils/verifyClothList';
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 
 export type FormModalRef = {
   showModal: () => void
@@ -63,9 +63,10 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
   const [list, setList] = useState('');
-  const [isCycling, setIsCycling] = useState(false);
   const [clothList, setClothList] = useState<ClothList>(initialClothList);
   const { t } = useTranslation();
+  const catalogState = useCatalogState();
+  const isCycling = catalogState.isCycling;
   const genderList = [
     { value: 'MALE', label: t('MALE') },
     { value: 'FEMALE', label: t('FEMALE') },
@@ -77,8 +78,6 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
   useImperativeHandle(ref, () => ({
     showModal
   }));
-
-  const { state } = useList();
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -92,7 +91,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('LIST')}:</label>
           <Select 
-            options={state.lists.map(item => ({ value: item, label: item }))}
+            options={catalogState.list.map(item => ({ value: item, label: item }))}
             onChange={(e) => setList(e.value)}
           />
         </InputGroup>
@@ -105,17 +104,6 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
               setClothList(initialClothList);
               setGender(e.value as Gender);
             }}
-          />
-        </InputGroup>
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('CYCLING_CLOTHING')}</label>
-          <Select
-            value={isCycling ? { value: 'YES', label: t('YES') } : { value: '', label: t('NO') }}
-            options={[
-              { value: 'YES', label: t('YES') },
-              { value: '', label: t('NO') }
-            ]}
-            onChange={(e) => setIsCycling(!!e.value)}
           />
         </InputGroup>
         {isCycling ? (
@@ -252,7 +240,6 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           onClick={() => {
             sendForList(clothList, gender, list, isCycling);
             setClothList(initialClothList);
-            setIsCycling(false);
             handleClose();
           }}>
           {t('SAVE_CHANGES')}

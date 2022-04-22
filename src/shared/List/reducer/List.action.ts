@@ -15,19 +15,6 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
         return item;
       })
     };
-  case 'deleteList':
-    return { 
-      items: state.items.map(({ list, ...item }) => {
-        if(list === payload) return { ...item, list: '' };
-        return { ...item, list };
-      }),
-      lists: state.lists.filter(list => list !== payload)
-    };
-  case 'addList':
-    if(state.lists.some(listName => listName === payload)){
-      return { ...state }; 
-    }
-    return { ...state, lists: [...state.lists, payload] };
   case 'deleteMultipleItems':
     return { ...state, items: payload.reduce((prev, curr) => {
       return prev.filter(({ id }) => id !== curr);

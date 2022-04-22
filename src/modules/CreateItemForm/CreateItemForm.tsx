@@ -1,6 +1,6 @@
 import { faPlus, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AdultCloths, ChildishCloths, useList } from '@shared/List';
+import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';

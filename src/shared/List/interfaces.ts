@@ -43,7 +43,6 @@ export type ListItem = {
   clothes: ChildishClothStructure
 }
 export type ListState = {
-  lists: string[]
   items: Array<ListItem>
 }
 
@@ -56,12 +55,6 @@ export type ListAction = {
 } | {
   type: 'changeList'
   payload: Pick<ListItem, 'id' | 'list'>
-} | {
-  type: 'deleteList'
-  payload: string
-} | {
-  type: 'addList'
-  payload: string
 } | {
   type: 'deleteMultipleItems'
   payload: string[]

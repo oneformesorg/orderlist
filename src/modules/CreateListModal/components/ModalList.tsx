@@ -3,8 +3,8 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { Button, Modal, Row, Col, Form, ButtonGroup } from 'react-bootstrap';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useList } from '@shared/List';
 import { ListTable } from './ListTable';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 
 export type ModalRef = {
   openModal: () => void
@@ -14,7 +14,7 @@ const ModalList = forwardRef<ModalRef>(function ModalList(props, ref) {
   const [isOpen, setIsOpen] = useState(false);
   const [newListName, setNewListName] = useState('');
   const { t } = useTranslation();
-  const list = useList();
+  const { dispatch: catalogDispatch, state: catalogState } = useCatalog();
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -33,7 +33,7 @@ const ModalList = forwardRef<ModalRef>(function ModalList(props, ref) {
           onSubmit={e => {
             e.preventDefault();
             if(!isSubmitted){
-              list.dispatch({
+              catalogDispatch({
                 type: 'addList',
                 payload: newListName
               });
@@ -67,13 +67,12 @@ const ModalList = forwardRef<ModalRef>(function ModalList(props, ref) {
         </form>
         <ListTable 
           onDeleteList={(listName) => {
-            list.dispatch({
+            catalogDispatch({
               type: 'deleteList',
               payload: listName
             });
-            console.log(list.state.lists, listName);
           }}
-          lists={list.state.lists}
+          lists={catalogState.list}
         />
       </Modal.Body>
       <Modal.Footer>

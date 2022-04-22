@@ -9,6 +9,8 @@ import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable
 import { adultSizes, childSize } from '@config/static';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CopyToClipboard } from '@modules/CopyToClipboard/CopyToClipboard';
+import Switch from 'react-input-switch';
+import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
 
 export function FormInputs() {
   const { t } = useTranslation();
@@ -23,16 +25,26 @@ export function FormInputs() {
   const projectNameRef = React.useRef<HTMLInputElement>(null);
   const socksRef = React.useRef<HTMLInputElement>(null);
   const [catalogQuery, setCatalogQuery] = React.useState('');
+  const [cyclingMode, setCyclingMode] = React.useState(false);
   
+  React.useEffect(() => {
+    setCyclingMode(state.isCycling);
+  }, [state]);
   const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
     e.preventDefault();
-
-    childishTableRef.current.submitEvent();
-    maleTableRef.current.submitEvent();
-    femaleTableRef.current.submitEvent();
-    cyclingMaleTableRef.current.submitEvent();
-    cyclingFemaleTableRef.current.submitEvent();
-    cyclingChildishTableRef.current.submitEvent();
+    if(cyclingMode){
+      cyclingMaleTableRef.current.submitEvent();
+      cyclingFemaleTableRef.current.submitEvent();
+      cyclingChildishTableRef.current.submitEvent();
+    } else {
+      childishTableRef.current.submitEvent();
+      maleTableRef.current.submitEvent();
+      femaleTableRef.current.submitEvent();
+    }
+    dispatch({
+      type: 'cyclingMode',
+      payload: !!cyclingMode
+    });
     dispatch({
       type: 'setPriceUniqueTables',
       payload: {
@@ -60,9 +72,16 @@ export function FormInputs() {
   }; 
   return (
     <Container>
+      <section className='d-flex justify-content-end'>
+        <CreateListModal />
+      </section>
       <Form
         onSubmit={submitHandler}
       >
+        <Form.Group className='d-flex gap-2  p-2 align-items-center justify-content-end border-bottom mb-3'>
+          <label>{t('CYCLING_CLOTHING')}</label>
+          <Switch value={cyclingMode} onChange={setCyclingMode}/>
+        </Form.Group>
         <Row>
           <Col>
             <Form.Group className="mb-3">
@@ -87,30 +106,31 @@ export function FormInputs() {
             </Form.Group>
           </Col>
         </Row>
-        <h3>{t('CYCLING_CLOTHING')}</h3>
-        <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
-          <Tab eventKey="male" title={t('MALE')}>
-            <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={adultSizes} reference={'cyclingPriceTableMale'} />
-          </Tab>
-          <Tab eventKey="female" title={t('FEMALE')}>
-            <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={adultSizes} reference={'cyclingPriceTableFemale'} />
-          </Tab>
-          <Tab eventKey="childish" title={t('CHILDISH')}>
-            <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={childSize} reference={'cyclingPriceTableChildish'} />
-          </Tab>
-        </Tabs>
-        <h3>{t('CLOTHES')}</h3>
-        <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
-          <Tab eventKey="male" title={t('MALE')}>
-            <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={adultSizes} reference={'priceTableMale'} />
-          </Tab>
-          <Tab eventKey="female" title={t('FEMALE')}>
-            <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={adultSizes} reference={'priceTableFemale'} />
-          </Tab>
-          <Tab eventKey="childish" title={t('CHILDISH')}>
-            <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={childSize} reference={'priceTableChildish'} />
-          </Tab>
-        </Tabs>
+        {cyclingMode ? (
+          <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
+            <Tab eventKey="male" title={t('MALE')}>
+              <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={adultSizes} reference={'cyclingPriceTableMale'} />
+            </Tab>
+            <Tab eventKey="female" title={t('FEMALE')}>
+              <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={adultSizes} reference={'cyclingPriceTableFemale'} />
+            </Tab>
+            <Tab eventKey="childish" title={t('CHILDISH')}>
+              <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={childSize} reference={'cyclingPriceTableChildish'} />
+            </Tab>
+          </Tabs>
+        ) : (
+          <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
+            <Tab eventKey="male" title={t('MALE')}>
+              <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={adultSizes} reference={'priceTableMale'} />
+            </Tab>
+            <Tab eventKey="female" title={t('FEMALE')}>
+              <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={adultSizes} reference={'priceTableFemale'} />
+            </Tab>
+            <Tab eventKey="childish" title={t('CHILDISH')}>
+              <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={childSize} reference={'priceTableChildish'} />
+            </Tab>
+          </Tabs>
+        )}
         <Table bordered hover className='d-inline-block'>
           <tbody>
             <tr className="text-center">

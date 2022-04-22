@@ -5,6 +5,7 @@ import { ListItem, ListState } from '@shared/List/interfaces';
 import { useTranslation } from 'next-i18next';
 import React from 'react';
 import JsZip from 'jszip';
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 
 const clothingCSV = {
   'tshirt': 'CSVID_TSHIRT', 
@@ -24,6 +25,7 @@ const csvGender = {
 export function DownloadCSVModal() {
   const { t } = useTranslation();
   const { state: listState } = useList();
+  const catalogState = useCatalogState();
   const csvHeader = [
     t('CSVID_GENDER'),
     t('CSVID_NAME'),
@@ -62,7 +64,7 @@ export function DownloadCSVModal() {
   }
   const createCSV = (list: ListState) => {
 
-    const listItems = list.lists.map((listName) => {
+    const listItems = catalogState.list.map((listName) => {
       return [listName, list.items.filter(({ list }) => listName === list)];
     });
     const defaultList = list.items.filter(({ list }) => !list);

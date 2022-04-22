@@ -21,14 +21,25 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
     return {
       ...state
     };
+  case 'cyclingMode':
+    return { ...state, isCycling: action.payload };
+  case 'addList':
+    if(state.list.some(listName => listName === action.payload)){
+      return { ...state };
+    }
+    return { ...state, list: [...state.list, action.payload] };
+  case 'deleteList':
+    return { ...state, list: state.list.filter((listName) => listName !== action.payload) };
   default:
     throw new Error();
   }
 }
 
 const initialCatalog: CatalogContent = {
+  list: [],
   companyEmail: '',
   projectName: '',
+  isCycling: false,
   priceTableChildish: {
     pants: [0, 0, 0, 0, 0, 0, 0, 0],
     shorts: [0, 0, 0, 0, 0, 0, 0, 0],
