@@ -6,7 +6,7 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
     return { ...state, items: [...state.items, payload] };
   case 'deleteItem':
     return {
-      ...state, listsArray: state.items.filter(({ id }) => id !== payload.id)
+      ...state, items: state.items.filter(({ id }) => id !== payload)
     };
   case 'changeList':
     return {
@@ -28,6 +28,17 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
       return { ...state }; 
     }
     return { ...state, lists: [...state.lists, payload] };
+  case 'deleteMultipleItems':
+    return { ...state, items: payload.reduce((prev, curr) => {
+      return prev.filter(({ id }) => id !== curr);
+    }, state.items) };
+  case 'editItem':
+    return { ...state, items: state.items.map((current) => {
+      if(current.id === payload.id){
+        return { id: current.id, ...payload.listItem };
+      }
+      return current;
+    }) };
   default:
     return state;
   }

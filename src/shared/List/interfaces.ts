@@ -11,6 +11,20 @@ export type ChildishCloths = {
   quantity: number
 }
 
+export type AdultCLothStructure = {
+  [value in ClothingParts]: {
+    size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
+    quantity: number
+  }
+}
+
+export type ChildishClothStructure = {
+  [value in ClothingParts]: {
+    size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
+    quantity: number
+  }
+}
+
 export type ListItem = {
   gender: 'MALE' | 'FEMALE'
   name: string
@@ -18,7 +32,7 @@ export type ListItem = {
   isCycling: boolean
   list: string
   id: string
-  clothes: AdultCloths[] 
+  clothes: AdultCLothStructure 
 } | {
   gender: 'CHILDISH'
   name: string
@@ -26,7 +40,7 @@ export type ListItem = {
   isCycling: boolean
   list: string
   id: string
-  clothes: ChildishCloths[]
+  clothes: ChildishClothStructure
 }
 export type ListState = {
   lists: string[]
@@ -38,9 +52,7 @@ export type ListAction = {
   payload: ListItem
 } | {
   type: 'deleteItem'
-  payload: {
-    id: string
-  }
+  payload: string
 } | {
   type: 'changeList'
   payload: Pick<ListItem, 'id' | 'list'>
@@ -50,6 +62,15 @@ export type ListAction = {
 } | {
   type: 'addList'
   payload: string
+} | {
+  type: 'deleteMultipleItems'
+  payload: string[]
+} | {
+  type: 'editItem'
+  payload: {
+    id: string,
+    listItem: Omit<ListItem, 'id'>
+  }
 }
 
 export type ListReducerType = (state: ListState, action: ListAction) => ListState

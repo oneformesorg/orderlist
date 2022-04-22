@@ -14,7 +14,9 @@ export function CreateListModal(){
         className='btn btn-secondary btn-sm d-flex gap-2 align-items-center'
       >
         <FontAwesomeIcon icon={faList} />
-        {t('LIST_MANAGER')}
+        <span className='ml-1 d-none d-md-inline'>
+          {t('LIST_MANAGER')}
+        </span>
       </button>
       <ModalList ref={modalRef}/>
     </>

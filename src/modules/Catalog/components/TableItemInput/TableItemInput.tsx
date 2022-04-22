@@ -14,6 +14,7 @@ export function TableItemInput({ onChange, value, onBlur }: Props) {
       defaultValue={value}
       type="number"
       min={0}
+      step={'any'}
       onBlur={onBlur}
       className="tableItemInput"/>
   );

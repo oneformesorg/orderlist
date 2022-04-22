@@ -1,14 +1,15 @@
 import { ClothingParts, CyclingClothingParts } from '@shared/Catalog';
 import { useTranslation } from 'next-i18next';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { adultSizes, childSize } from '@config/static';
 import { useList } from '@shared/List';
+import { FormNameNumber, FormNameNumberRef } from './components/FormNameNumber/FormNameNumber';
 import { verifyClothList } from '@shared/utils/verifyClothList';
 
-export type FormModalRef = {
+export type EditItemModalRef = {
   showModal: () => void
 }
 const clothes: ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshirtLong', 'vest'];
@@ -18,53 +19,27 @@ const sizes = {
   childish: childSize
 };
 type Gender = 'MALE' | 'FEMALE' | 'CHILDISH'
-
 type ClothList = Record<ClothingParts, {
   quantity: number
   size: string
 }>
-
-const initialClothList: ClothList = {
-  'pants': {
-    size: '',
-    quantity: 0
-  },
-  'shorts': {
-    size: '',
-    quantity: 0
-  },
-  'tanktop': {
-    size: '',
-    quantity: 0
-  },
-  'tshirt': {
-    size: '',
-    quantity: 0
-  },
-  'tshirtLong': {
-    size: '',
-    quantity: 0
-  },
-  'vest': {
-    size: '',
-    quantity: 0
-  },
-  'socks': {
-    size: '',
-    quantity: 0
-  }
-};
-
 type Props = {
-  sendForList: (clothes: ClothList, gender: Gender, list: string, isCycling: boolean) => void
+  id: string
 }
+
 // TODO: Improve this component!!
-export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModal({ sendForList }, ref) {
+export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function EditItemModal({ id }, ref) {
+  const { state: listState } = useList();
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
-  const [list, setList] = useState('');
-  const [isCycling, setIsCycling] = useState(false);
-  const [clothList, setClothList] = useState<ClothList>(initialClothList);
+  const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
+  const [list, setList] = useState(currentItem.list);
+  const [clothList, setClothList] = useState<ClothList>(
+    listState.items.filter(({ id: currId }) => id === currId)[0].clothes
+  );
+  console.log(currentItem.isCycling);
+  const [isCycling, setIsCycling] = useState(currentItem.isCycling);
+  const formNumberNameRef = useRef<FormNameNumberRef>(null);
   const { t } = useTranslation();
   const genderList = [
     { value: 'MALE', label: t('MALE') },
@@ -78,7 +53,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
     showModal
   }));
 
-  const { state } = useList();
+  const { state, dispatch: listDispatch } = useList();
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -89,9 +64,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <p>
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
+        <FormNameNumber name={currentItem.name} number={Number(currentItem.number)} ref={formNumberNameRef}/>
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('LIST')}:</label>
-          <Select 
+          <Select
+            defaultValue={{ value: list, label: list }}
             options={state.lists.map(item => ({ value: item, label: item }))}
             onChange={(e) => setList(e.value)}
           />
@@ -99,12 +76,9 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('GENDER')}</label>
           <Select
-            defaultValue={[{ value: 'MALE', label: t('MALE') }]}
             options={genderList}
-            onChange={(e) => {
-              setClothList(initialClothList);
-              setGender(e.value as Gender);
-            }}
+            defaultValue={[{ value: currentItem.gender as string, label: t(currentItem.gender) }]}
+            onChange={(e) => setGender(e.value as Gender)}
           />
         </InputGroup>
         <InputGroup className='d-flex flex-column mb-3'>
@@ -178,24 +152,22 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select 
-                    value={{ value: clothList[clothe].size, label: t(clothList[clothe].size) }}
-                    options={
-                      gender !== 'CHILDISH' ? (
-                        sizes.adult.map((size) => ({
-                          value: size, label: t(size)
-                        }))
-                      ) : (
-                        sizes.childish.map((size) => ({
-                          value: size, label: t(size)
-                        }))
-                      )
-                    }
-                    onChange={e => {
-                      setClothList(list => ({ ...list, [clothe]: {
-                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
-                      } }));
-                    }}
+                  <Select options={
+                    gender !== 'CHILDISH' ? (
+                      sizes.adult.map((size) => ({
+                        value: size, label: t(size)
+                      }))
+                    ) : (
+                      sizes.childish.map((size) => ({
+                        value: size, label: t(size)
+                      }))
+                    )
+                  }
+                  onChange={e => {
+                    setClothList(list => ({ ...list, [clothe]: {
+                      size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                    } }));
+                  }}
                   />
                 </Col>
                 <Col xs={5}>
@@ -250,8 +222,25 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           disabled={!verifyClothList(clothList)}
           variant="primary" 
           onClick={() => {
-            sendForList(clothList, gender, list, isCycling);
-            setClothList(initialClothList);
+            const { nameRef, numberRef } = formNumberNameRef.current;
+            // sendForList(clothList, gender, list, isCycling);
+            console.log('foi?');
+            listDispatch({
+              type: 'editItem',
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              payload: {
+                id,
+                listItem: {
+                  clothes: clothList,
+                  gender,
+                  isCycling,
+                  list,
+                  name: nameRef.current.value,
+                  number: numberRef.current.valueAsNumber
+                }
+              }
+            });
             setIsCycling(false);
             handleClose();
           }}>

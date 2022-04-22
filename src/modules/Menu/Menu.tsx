@@ -19,9 +19,12 @@ export function Menu() {
         <li>
           <Link href="/catalog/create">
             <a
-              className='btn btn-light'
+              className='btn btn-light d-flex align-items-center gap-2'
             >
-              <FontAwesomeIcon icon={faDollar} /> {t('PRICES')}
+              <FontAwesomeIcon icon={faDollar} /> 
+              <span className='d-none d-sm-inline'>
+                {t('PRICES')}
+              </span>
             </a>
           </Link>
         </li> 
