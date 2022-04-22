@@ -33,7 +33,7 @@ export function ImportCSVButton() {
         payload: item
       });
     });
-  }, [listItem]);
+  }, [listItem, dispatchList]);
 
   return (
     <>
