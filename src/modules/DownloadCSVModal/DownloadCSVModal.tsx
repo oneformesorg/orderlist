@@ -68,7 +68,6 @@ export function DownloadCSVModal() {
       return [listName, list.items.filter(({ list }) => listName === list)];
     });
     const defaultList = list.items.filter(({ list }) => !list);
-    console.log(listItems, defaultList);
 
     const jsZip = new JsZip();
     const csvFolder = jsZip.folder('csv');
@@ -86,7 +85,7 @@ export function DownloadCSVModal() {
   };
   return (
     <button 
-      className='btn btn-secondary btn-sm d-flex align-items-center gap-2'
+      className='btn btn-success btn-sm d-flex align-items-center gap-2'
       onClick={() => createCSV(listState)}
     >
       <FontAwesomeIcon icon={faFileCsv} />
