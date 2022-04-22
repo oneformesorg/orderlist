@@ -19,18 +19,20 @@ export function OrderTable() {
   const normalList = state.items.filter(({ isCycling, list }) => !isCycling && !list);
   const cyclingList = state.items.filter(({ isCycling, list }) => isCycling && !list);
   const catalogState = useCatalogState();
+
   useEffect(() => {
     catalogState.list.map((name) => {
       const cycling = state.items.filter(({ list, isCycling }) => list === name && isCycling);
       const normal = state.items.filter(({ list, isCycling }) => list === name && !isCycling);
-      setSublist(old => {
-        return [
-          ...old.filter(([nameList]) => nameList !== name), [name, [normal, cycling]]
-        ];
-      });
+      setSublist(old => ([
+        ...old.filter(([nameList]) => nameList !== name), [name, [normal, cycling]]
+      ]
+      ));
     });
-    setSublist(old => old.filter(([listName]) => state.items.some(({ list }) => list === listName)));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSublist(old => {
+      return old.filter(([listName]) => state.items.some(({ list }) => list === listName));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catalogState, state]);
   return (
     <section>
@@ -46,24 +48,32 @@ export function OrderTable() {
           <TableBody list={cyclingList} clothingList={cyclingClothings}/>
         </Table>
       )}
-      {sublists.map(([name, [normal, cycling]], i) => (
+      {sublists?.map(([name, [normal, cycling]], i) => (
         <>
           <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
-          {normalList.length > 0 && !catalogState.isCycling && (
-            <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
-              <TableHead listLength={normal.length} clothings={clothings}/>
-              <TableBody list={normal} clothingList={clothings}/>
-            </Table>
+          {catalogState.isCycling ? (
+            <>
+              {cycling.length > 0 && (
+                <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
+                  <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
+                  <TableBody list={cycling} clothingList={cyclingClothings}/>
+                </Table>
+              )}
+            </>  
+          ) : (
+            <>
+              {normal.length > 0 && (
+                <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
+                  <TableHead listLength={normal.length} clothings={clothings}/>
+                  <TableBody list={normal} clothingList={clothings}/>
+                </Table>
+              )}
+            </>
           )}
-          {cycling.length > 0 && catalogState.isCycling && (
-            <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
-              <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
-              <TableBody list={cycling} clothingList={cyclingClothings}/>
-            </Table>
-          )}
+          
         </>
       ))}
-      {sublists.length > 0 || normalList.length > 0 || cyclingList.length > 0 ? (
+      {sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0 ? (
         <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
           <DownloadCSVModal />
           <SendEmailModal />
