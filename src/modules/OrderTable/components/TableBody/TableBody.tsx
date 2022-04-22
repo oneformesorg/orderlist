@@ -54,7 +54,7 @@ export function TableBody({ list, clothingList }: Props) {
               {props.name}
             </td>
             <td className={style.tableCell}>
-              {props.number}
+              {props.number || ''}
             </td>
             {clothingList.map((currCloth, i) => (
               <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>

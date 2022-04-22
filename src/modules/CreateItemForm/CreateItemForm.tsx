@@ -1,13 +1,12 @@
 import { faPlus, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useList } from '@shared/List';
+import { generateId } from '@shared/utils/generateId';
 import { useTranslation } from 'next-i18next';
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
 import { MicInput } from './components/MicInput/MicInput';
-
-const generateId = () => Math.random().toString(16).slice(2);
 
 export function CreateItemForm() {
   const { t, i18n } = useTranslation();
