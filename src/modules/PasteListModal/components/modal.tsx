@@ -47,7 +47,7 @@ const ModalPasteList = forwardRef<ModalPasteListRef, Props>(function ModalPasteL
     selectedClothes.find(([name]) => name === clotheName)[1]
   );
   const setSwitch = (clotheName: string, index:number, isSelected: boolean) => { 
-    SetSelectedClothes(old => old.map((infos, i) => (
+    SetSelectedClothes(old => old.map((infos) => (
       clotheName === infos[0] ? [clotheName, isSelected] : infos
     )));
   };
