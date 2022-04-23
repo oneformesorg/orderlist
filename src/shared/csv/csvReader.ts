@@ -29,7 +29,6 @@ const sizesForTranslate: [string, [string, string, string]][] = [
 ];
 
 const translateSizeForSystem = (size: string[] | string) => {
-  console.log(size);
   const sizeNormalized = typeof size === 'string' ? size : size.join('-');
   const sizeForSystem = sizesForTranslate.filter(([, langs]) => {
     const [en, es, pt] = langs;
@@ -87,7 +86,6 @@ export function csvReader(
   catalogList: string[]
 ): ListItem[]{
   return items.map((row) => {
-    console.log(list, catalogList);
     const cells = row.split(',');
     return {
       gender: genderCSV[cells[0].toLocaleLowerCase()],
