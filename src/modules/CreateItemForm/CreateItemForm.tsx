@@ -6,7 +6,6 @@ import { useTranslation } from 'next-i18next';
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
-import { MicInput } from './components/MicInput/MicInput';
 
 export function CreateItemForm() {
   const { t, i18n } = useTranslation();
@@ -26,7 +25,7 @@ export function CreateItemForm() {
       className='d-flex gap-2 flex-wrap align-items-center justify-content-center'
       onSubmit={e => e.preventDefault()}
     >
-      {hasWindow && <MicInput locale={i18n.language}/>}
+      {/*hasWindow && <MicInput locale={i18n.language}/>*/}
       <Row>
         <Col xs="6" sm="6" md="5" lg="5" xl="5">
           <Form.Group>
