@@ -80,7 +80,7 @@ export function FormInputs() {
       >
         <Form.Group className='d-flex gap-2  p-2 align-items-center justify-content-end border-bottom mb-3'>
           <label>{t('CYCLING_CLOTHING')}</label>
-          <Switch value={cyclingMode} onChange={setCyclingMode}/>
+          <Switch value={cyclingMode ? 1 : 0} onChange={setCyclingMode}/>
         </Form.Group>
         <Row>
           <Col>
