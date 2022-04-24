@@ -4,7 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Menu } from '@modules/Menu/Menu';
 import Link from 'next/link';
 
-const Teste:NextPage = () => {
+const Relatorio:NextPage = () => {
   const { t } = useTranslation();
   return(
     <>
@@ -25,4 +25,4 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export default Teste;
+export default Relatorio;

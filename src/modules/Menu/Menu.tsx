@@ -17,7 +17,7 @@ export function Menu() {
       </Link>
       <menu className='d-flex align-items-center gap-3'>
         <li>
-          <Link href="/catalog/create">
+          <Link href="/catalog">
             <a
               className='btn btn-light d-flex align-items-center gap-2'
             >
