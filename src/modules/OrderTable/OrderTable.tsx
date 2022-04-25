@@ -49,10 +49,11 @@ export function OrderTable() {
         </Table>
       )}
       {sublists?.map(([name, [normal, cycling]], i) => (
-        <>
-          <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
+        <section key={`section_mai--${i}`}>
+    
           {catalogState.isCycling ? (
             <>
+              <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 && (
                 <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
                   <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
@@ -63,15 +64,18 @@ export function OrderTable() {
           ) : (
             <>
               {normal.length > 0 && (
-                <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
-                  <TableHead listLength={normal.length} clothings={clothings}/>
-                  <TableBody list={normal} clothingList={clothings}/>
-                </Table>
+                <>
+                  <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
+                  <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
+                    <TableHead listLength={normal.length} clothings={clothings}/>
+                    <TableBody list={normal} clothingList={clothings}/>
+                  </Table>
+                </>
               )}
             </>
           )}
           
-        </>
+        </section>
       ))}
       {sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0 ? (
         <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
