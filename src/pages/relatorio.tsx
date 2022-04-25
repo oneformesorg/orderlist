@@ -1,5 +1,4 @@
 import { GetStaticProps, NextPage } from 'next';
-import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Menu } from '@modules/Menu/Menu';
 import { CatalogStateProvider } from '@shared/Catalog/context/catalog';
@@ -10,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 const Relatorio:NextPage = () => {
-  const { t } = useTranslation();
   return(
     <>
       <Menu />
