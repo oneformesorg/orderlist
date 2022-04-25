@@ -1,4 +1,3 @@
-import { ClothingParts } from '@shared/Catalog';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
