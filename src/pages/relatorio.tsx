@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 const Relatorio:NextPage = () => {
-  const { t } = useTranslation();
   return(
     <>
       <Menu />
