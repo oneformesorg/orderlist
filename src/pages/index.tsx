@@ -38,17 +38,17 @@ const Home: NextPage = () => {
       </Head>
       <Menu />
       <div className="container-md">
-        <ListActionProvider>
-          <CatalogStateProvider>
-            <CreateItemForm />
-            <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-              <PasteListModal />
-              <ImportCSVButton />
-            </section>
+      
+        <CatalogStateProvider>
+          <CreateItemForm />
+          <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
+            <PasteListModal />
+            <ImportCSVButton />
+          </section>
 
-            <OrderTable />
-          </CatalogStateProvider>
-        </ListActionProvider>
+          <OrderTable />
+        </CatalogStateProvider>
+        
       </div>
     </>
   );
