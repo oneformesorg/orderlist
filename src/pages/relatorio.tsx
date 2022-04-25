@@ -5,22 +5,26 @@ import { Menu } from '@modules/Menu/Menu';
 import { CatalogStateProvider } from '@shared/Catalog/context/catalog';
 import { ReportInfos } from '@modules/ReportInfos/ReportInfos';
 import styles from '@styles/relatorio.module.css';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 const Relatorio:NextPage = () => {
   const { t } = useTranslation();
   return(
     <>
       <Menu />
-      <section className={`${styles.relatorioButtons} container-lg d-flex justify-content-end px-5 py-2 border-bottom mb-3`}>
+      <section className={`${styles.relatorioButtons} container-lg d-flex justify-content-end gap-2 px-5 py-2 border-bottom mb-3`}>
+        <CatalogStateProvider>
+          <ImportCSVButton />
+        </CatalogStateProvider>
         <button 
           onClick={() =>{
             window.print();
           }}
           className='btn btn-info btn-sm text-light'
         >
-          Print
+          <FontAwesomeIcon icon={faPrint} /> Print
         </button>
       </section>
       <CatalogStateProvider>
