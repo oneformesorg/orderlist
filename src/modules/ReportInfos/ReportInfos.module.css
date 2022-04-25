@@ -1,7 +1,11 @@
 .docA4 {
   table, tbody, tr, td {
     border: 1px solid #000;
-  } 
+  }
+  
+  thead > td {
+    padding: 0 1rem;
+  }
 }
 .headerA4 {
   max-width: 100%;
