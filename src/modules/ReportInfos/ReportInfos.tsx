@@ -1,32 +1,31 @@
 import { ClothingParts } from '@shared/Catalog';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
-import { useList } from '@shared/List';
+import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { TbodyBoilerPlate } from './components/TbodyBoilerPlate';
+import { TheadBoilerplate } from './components/TheadBoilerplate';
 import styles from './ReportInfos.module.css';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
 );
 
-const clothes: ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshirtLong', 'vest', 'socks'];
-const cyclingClothes = ['pants', 'shorts', 'tshirt', 'tshirtLong', 'socks'];
-
 export function ReportInfos() {
   const { t, i18n } = useTranslation();
   const { projectName, isCycling } = useCatalogState();
   const { state: listState } = useList();
   const { list } = useCatalogState();
+  const [defaultList, setDefaultList] = useState<ListItem[]>([]);
+  const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
   useEffect(() => {
-    const defaultList = listState.items.filter(item => item.list === '');
-    const sublists = list.reduce((prev, curr) => ({
+    setDefaultList(listState.items.filter(item => item.list === ''));
+    setSublists(list.reduce((prev, curr) => ({
       ...prev, [curr]: listState.items.filter(item => item.list === curr)
-    }),{});
-
-    console.log(defaultList, sublists);
+    }),{}));
   }, [listState, list]);
   return (
-    <section className={`container-sm ${styles.docA4}`} id='docForPrint'>
+    <section className={`${styles.docA4} container-sm`} id='docForPrint'>
       <section className={styles.headerA4}>
         <section className="companyInfos">
           <input 
@@ -91,19 +90,37 @@ export function ReportInfos() {
           </table>
         </section>
       </section>
-      <h1>
+      <h1 className='mt-3'>
         {
           isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
         }
       </h1>
-      <table className='reportTable'>
-        <thead>
-          <th>
-            {t('GENDER')}
-          </th>
-          <th></th>
-        </thead>
-      </table>
+      {defaultList && (
+        <table className='reportTable mx-auto'>
+          <TheadBoilerplate isCycling={isCycling}/>
+          <TbodyBoilerPlate isCycling={isCycling} list={defaultList}/>
+        </table>
+      )}
+      {
+        Object.entries(sublists).map(([key, listItems], i) =>(
+          <>
+            {list && (
+              <section
+                className='mt-4'
+                key={`${key}__section__${i}`}
+              >
+                <h4 className='text-center'>{key}</h4>
+                <table
+                  className='mx-auto'
+                >
+                  <TheadBoilerplate isCycling={isCycling}/>
+                  <TbodyBoilerPlate isCycling={isCycling} list={listItems}/>
+                </table>
+              </section>
+            )}
+          </>
+        ))
+      }
     </section>
   );
 }
