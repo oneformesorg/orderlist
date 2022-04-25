@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
 import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
-import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 import { OrderTable } from '@modules/OrderTable/OrderTable';
 import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
