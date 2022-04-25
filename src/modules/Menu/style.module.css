@@ -1,3 +1,10 @@
 .logo {
   height: 32px;
 }
+
+.NavMenu {
+  @media print {
+    display: none !important;
+    
+  }
+}

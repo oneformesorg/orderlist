@@ -2,7 +2,7 @@ import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 import React, { ComponentProps } from 'react';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faTable } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable';
@@ -11,6 +11,7 @@ import { OneformesAPI } from '@shared/api/useAxios';
 import { CopyToClipboard } from '@modules/CopyToClipboard/CopyToClipboard';
 import Switch from 'react-input-switch';
 import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
+import Link from 'next/link';
 
 export function FormInputs() {
   const { t } = useTranslation();
@@ -72,7 +73,13 @@ export function FormInputs() {
   }; 
   return (
     <Container>
-      <section className='d-flex justify-content-end'>
+      <section className='d-flex justify-content-end gap-3'>
+        <Link href="/relatorio">
+          <a className='btn btn-info sm-btn d-flex gap-2 align-items-center text-light'>
+            <FontAwesomeIcon icon={faTable} />
+            {t('REPORT')}
+          </a>
+        </Link>
         <CreateListModal />
       </section>
       <Form

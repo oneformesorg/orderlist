@@ -1,0 +1,5 @@
+.relatorioButtons {
+  @media print {
+    &{display: none !important;}
+  }
+}
