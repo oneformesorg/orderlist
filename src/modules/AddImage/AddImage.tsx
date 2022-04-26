@@ -1,7 +1,7 @@
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useRef } from 'react';
-import { imagesCardContext } from 'src/pages/relatorio';
+import { imagesCardContext } from '@pages/catalog/relatorio';
 import { ModalImageAdd, ModalImageAddRef } from './components/Modal';
 
 export type ImageState = {image: string, description: string}[]

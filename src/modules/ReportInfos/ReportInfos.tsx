@@ -4,7 +4,7 @@ import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useContext, useEffect, useState } from 'react';
-import { imagesCardContext } from 'src/pages/relatorio';
+import { imagesCardContext } from '@pages/catalog/relatorio';
 import { TbodyBoilerPlate } from './components/TbodyBoilerPlate';
 import { TheadBoilerplate } from './components/TheadBoilerplate';
 import styles from './ReportInfos.module.css';
