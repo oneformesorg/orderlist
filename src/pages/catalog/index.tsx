@@ -7,11 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { CatalogProvider } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
 const Catalog: NextPage = () => {
   const { t } = useTranslation();
   return(
     <>
+      <Head>
+        <title>List</title>
+      </Head>
       <Menu />
       <main className='container-sm px-5 py-2 justify-content-stretch'>
         <Link href="/">

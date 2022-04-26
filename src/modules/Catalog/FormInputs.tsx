@@ -74,7 +74,7 @@ export function FormInputs() {
   return (
     <Container>
       <section className='d-flex justify-content-end gap-3'>
-        <Link href="/relatorio">
+        <Link href="/catalog/relatorio">
           <a className='btn btn-info sm-btn d-flex gap-2 align-items-center text-light'>
             <FontAwesomeIcon icon={faTable} />
             {t('REPORT')}
