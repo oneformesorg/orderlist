@@ -25,6 +25,13 @@ export type ChildishClothStructure = {
   }
 }
 
+export type GenericClothStructure = {
+  [value in ClothingParts]: {
+    size: string
+    quantity: number
+  }
+}
+
 export type ListItem = {
   gender: 'MALE' | 'FEMALE'
   name: string
@@ -32,7 +39,7 @@ export type ListItem = {
   isCycling: boolean
   list: string
   id: string
-  clothes: AdultCLothStructure 
+  clothes: GenericClothStructure 
 } | {
   gender: 'CHILDISH'
   name: string
@@ -40,7 +47,7 @@ export type ListItem = {
   isCycling: boolean
   list: string
   id: string
-  clothes: ChildishClothStructure
+  clothes: GenericClothStructure
 }
 export type ListState = {
   items: Array<ListItem>

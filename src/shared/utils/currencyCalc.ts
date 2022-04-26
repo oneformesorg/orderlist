@@ -1,12 +1,12 @@
 import { childSize } from '@config/static';
 import { CatalogContent } from '@shared/Catalog';
-import { AdultCLothStructure, ChildishClothStructure } from '@shared/List';
+import { GenericClothStructure } from '@shared/List';
 
 export function sanitizeValue(
   catalog: CatalogContent,
   gender:  'MALE' | 'FEMALE' | 'CHILDISH',
   isCycling: boolean,
-  clothes: AdultCLothStructure | ChildishClothStructure
+  clothes: GenericClothStructure
 ){
   const priceCatalog = {
     'MALE': () => isCycling ? catalog.cyclingPriceTableMale : catalog.priceTableMale,
@@ -15,7 +15,7 @@ export function sanitizeValue(
   };
 
   if(gender === 'CHILDISH'){
-    const clothesObj = clothes as ChildishClothStructure;
+    const clothesObj = clothes;
     return Object.entries(clothesObj).reduce((prev, [key, { quantity, size }]) => {
       if(quantity){
         const constSizePos = childSize.reduce((prev, curr, i) => curr === size ? i : 0, 0);
@@ -29,7 +29,7 @@ export function sanitizeValue(
       return prev;
     }, 0);
   }
-  const clothesObj = clothes as AdultCLothStructure;
+  const clothesObj = clothes;
   return Object.entries(clothesObj).reduce((prev, [key, { quantity, size }]) => {
     if(quantity){
       const constSizePos = childSize.reduce((prev, curr, i) => curr === size ? i : 0, 0);

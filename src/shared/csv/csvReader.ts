@@ -1,4 +1,4 @@
-import { AdultCloths, ChildishCloths, ListItem } from '@shared/List';
+import { GenericClothStructure, ListItem } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 
 const genderCSV = {
@@ -41,7 +41,7 @@ const translateSizeForSystem = (size: string[] | string) => {
 /**
  * This function sanitize list based in ORDER OF CSV, warning when edit csv generator!!
  */
-const sanitizeClothes = (cloth: string[]): ChildishCloths | AdultCloths => {
+const sanitizeClothes = (cloth: string[]): GenericClothStructure => {
   const sanitizedList = cloth.splice(3).map(item => item.split('=')[1]);
   return {
     tshirt: {
