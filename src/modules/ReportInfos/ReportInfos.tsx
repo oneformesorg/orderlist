@@ -104,7 +104,7 @@ export function ReportInfos({ onDelete }: Props) {
           isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
         }
       </h1>
-      {defaultList && (
+      {defaultList.length > 0 && (
         <table className='reportTable mx-auto'>
           <TheadBoilerplate isCycling={isCycling}/>
           <TbodyBoilerPlate isCycling={isCycling} list={defaultList}/>
