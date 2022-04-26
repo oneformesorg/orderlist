@@ -1,7 +1,10 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { imagesCardContext } from 'src/pages/relatorio';
 import { TbodyBoilerPlate } from './components/TbodyBoilerPlate';
 import { TheadBoilerplate } from './components/TheadBoilerplate';
 import styles from './ReportInfos.module.css';
@@ -10,13 +13,20 @@ const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
 );
 
-export function ReportInfos() {
+type Props = {
+  onDelete: (id: number) => void
+}
+
+export function ReportInfos({ onDelete }: Props) {
+
   const { t, i18n } = useTranslation();
   const { projectName, isCycling } = useCatalogState();
   const { state: listState } = useList();
   const { list } = useCatalogState();
   const [defaultList, setDefaultList] = useState<ListItem[]>([]);
   const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
+  const { images } = useContext(imagesCardContext);
+
   useEffect(() => {
     setDefaultList(listState.items.filter(item => item.list === ''));
     setSublists(list.reduce((prev, curr) => ({
@@ -120,6 +130,40 @@ export function ReportInfos() {
           </>
         ))
       }
+      <section className="m-3 mt-5 form-floating">
+        <textarea className="form-control" placeholder="" id="floatingTextarea"></textarea>
+        <label htmlFor="floatingTextarea">{t('ANNOTATIONS')}</label>
+      </section>
+      <section className='mb-5'>
+        {images.length > 0 && (
+          <h2 className='border-bottom'>Images</h2>
+        )}
+        <section className="d-flex gap-2">
+          {images.map(({ image, description }, i) => (
+            <section 
+              key={`card-image__${i}`}
+              className={`card ${styles.imageCard}`}
+              style={{ width: '50%' }}
+            >
+              <button 
+                onClick={() => onDelete(i)}
+                className={`${styles.deleteImageButton} btn btn-danger rounded`}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>    
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image} className="card-img-top" alt="..." />
+              {description && (
+                <section className="card-body">
+                  <p className="card-text">
+                    {description}
+                  </p>
+                </section>
+              )}
+            </section>
+          ))}
+        </section>
+      </section>
     </section>
   );
 }

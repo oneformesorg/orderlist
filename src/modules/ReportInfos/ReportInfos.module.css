@@ -48,3 +48,16 @@
     font-size: 12px !important;
   }
 }
+
+.imageCard {
+  position: relative;
+}
+.deleteImageButton{
+  position: absolute;
+  right: -1px;
+  top: 0px;
+
+  @media print {
+    display: none !important;
+  }
+}
