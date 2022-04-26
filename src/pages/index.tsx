@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
 import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
-import { ListActionProvider } from '@shared/List';
 import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 import { OrderTable } from '@modules/OrderTable/OrderTable';
 import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
@@ -38,17 +37,17 @@ const Home: NextPage = () => {
       </Head>
       <Menu />
       <div className="container-md">
-        <ListActionProvider>
-          <CatalogStateProvider>
-            <CreateItemForm />
-            <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-              <PasteListModal />
-              <ImportCSVButton />
-            </section>
+      
+        <CatalogStateProvider>
+          <CreateItemForm />
+          <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
+            <PasteListModal />
+            <ImportCSVButton />
+          </section>
 
-            <OrderTable />
-          </CatalogStateProvider>
-        </ListActionProvider>
+          <OrderTable />
+        </CatalogStateProvider>
+        
       </div>
     </>
   );

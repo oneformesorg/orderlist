@@ -4,12 +4,15 @@ import '@styles/global.css';
 import { appWithTranslation } from 'next-i18next';
 import { SSRProvider } from 'react-bootstrap';
 import { CatalogActionProvider } from '@shared/Catalog/context/catalog';
+import { ListActionProvider } from '@shared/List';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SSRProvider>
       <CatalogActionProvider>
-        <Component {...pageProps} />
+        <ListActionProvider>
+          <Component {...pageProps} />
+        </ListActionProvider>
       </CatalogActionProvider>
     </SSRProvider>
   );

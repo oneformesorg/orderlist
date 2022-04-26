@@ -9,7 +9,7 @@ import Link from 'next/link';
 export function Menu() {
   const { t } = useTranslation();
   return (
-    <nav className='container-sm px-5 py-2 d-flex justify-content-between align-items-center'>
+    <nav className={`${style.NavMenu} container-sm px-5 py-2 d-flex justify-content-between align-items-center`}>
       <Link href="/">
         <a>
           <img src="/images/logo.png" alt="logo" className={style.logo}/>
@@ -17,7 +17,7 @@ export function Menu() {
       </Link>
       <menu className='d-flex align-items-center gap-3'>
         <li>
-          <Link href="/catalog/create">
+          <Link href="/catalog">
             <a
               className='btn btn-light d-flex align-items-center gap-2'
             >
