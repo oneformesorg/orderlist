@@ -112,8 +112,8 @@ export function ReportInfos({ onDelete }: Props) {
       )}
       {
         Object.entries(sublists).map(([key, listItems], i) =>(
-          <>
-            {list && (
+          <section key={`sublist__item__${i}`}>
+            {listItems.length > 0 ? (
               <section
                 className='mt-4'
                 key={`${key}__section__${i}`}
@@ -126,8 +126,8 @@ export function ReportInfos({ onDelete }: Props) {
                   <TbodyBoilerPlate isCycling={isCycling} list={listItems}/>
                 </table>
               </section>
-            )}
-          </>
+            ) : null}
+          </section> 
         ))
       }
       <section className="m-3 mt-5 form-floating">
