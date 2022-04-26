@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { AddImage, ImageState } from '@modules/AddImage/AddImage';
 import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import Head from 'next/head';
 
 type ImagesContext = {
   images: ImageState
@@ -20,6 +21,9 @@ const Relatorio:NextPage = () => {
   
   return(
     <>
+      <Head>
+        <title>List</title>
+      </Head>
       <Menu />
       <imagesCardContext.Provider value={{
         images, setImages
