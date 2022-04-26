@@ -29,7 +29,7 @@ export function TbodyBoilerPlate({ list, isCycling }: TbodyBoilerPlateProps){
               {
                 clotheName === 'socks' 
                   ? (
-                    clothes[clotheName].quantity || ''
+                    clothes[clotheName].quantity || '-'
                   ) 
                   : `${clothes[clotheName].quantity || ''}-${t(clothes[clotheName].size)}`
               }
