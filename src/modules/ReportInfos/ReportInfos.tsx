@@ -5,11 +5,10 @@ import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useContext, useEffect, useState } from 'react';
 import { imagesCardContext } from '@pages/catalog/relatorio';
-import { TbodyBoilerPlate } from './components/TbodyBoilerPlate';
-import { TheadBoilerplate } from './components/TheadBoilerplate';
 import styles from './ReportInfos.module.css';
 import { clotheSwitch } from './utils/clotheSwitch';
 import Image from 'next/image';
+import { TableForPrint } from './components/TableForPrint';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
@@ -126,10 +125,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         }
       </h1>
       {defaultList.length > 0 && (
-        <table className='reportTable mx-auto'>
-          <TheadBoilerplate isCycling={isCycling}/>
-          <TbodyBoilerPlate isCycling={isCycling} list={defaultList}/>
-        </table>
+        <TableForPrint isCycling={isCycling} list={defaultList}/>
       )}
       {
         Object.entries(sublists).map(([key, listItems], i) =>(
@@ -140,12 +136,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
                 key={`${key}__section__${i}`}
               >
                 <h4 className='text-center'>{key}</h4>
-                <table
-                  className='mx-auto'
-                >
-                  <TheadBoilerplate isCycling={isCycling}/>
-                  <TbodyBoilerPlate isCycling={isCycling} list={listItems}/>
-                </table>
+                <TableForPrint isCycling={isCycling} list={listItems}/>
               </section>
             ) : null}
           </section> 
