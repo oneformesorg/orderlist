@@ -51,6 +51,7 @@
 
 .imageCard {
   position: relative;
+  /* break-after: void; */
 }
 .deleteImageButton{
   position: absolute;
