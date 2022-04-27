@@ -8,17 +8,18 @@ import { imagesCardContext } from '@pages/catalog/relatorio';
 import { TbodyBoilerPlate } from './components/TbodyBoilerPlate';
 import { TheadBoilerplate } from './components/TheadBoilerplate';
 import styles from './ReportInfos.module.css';
+import { clotheSwitch } from './utils/clotheSwitch';
+import Image from 'next/image';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
 );
 
-type Props = {
+export type ReportInfosProps = {
   onDelete: (id: number) => void
 }
 
-export function ReportInfos({ onDelete }: Props) {
-
+export function ReportInfos({ onDelete }: ReportInfosProps) {
   const { t, i18n } = useTranslation();
   const { projectName, isCycling } = useCatalogState();
   const { state: listState } = useList();
@@ -26,6 +27,26 @@ export function ReportInfos({ onDelete }: Props) {
   const [defaultList, setDefaultList] = useState<ListItem[]>([]);
   const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
   const { images } = useContext(imagesCardContext);
+  const [textArea, setTextArea] = useState('');
+
+  const countPieces = (piece: string) => {
+    return listState.items
+      .filter(({ isCycling: cyclingMode }) => cyclingMode === isCycling)
+      .reduce((prev, { clothes }) => {
+        return prev + (clothes[piece].quantity | 0) ;
+      }, 0);
+    return 0;
+  };
+  const totalCountPieces = () => {
+    return listState.items
+      .filter(({ isCycling: cyclingMode }) => cyclingMode === isCycling)
+      .reduce((prev, { clothes }) => {
+        const clotheCount = Object.entries(clothes)
+          .reduce((prev, [,{ quantity }]) => prev+=(quantity | 0), 0);
+        return prev += clotheCount;
+      }, 0);
+    return 0;
+  };
 
   useEffect(() => {
     setDefaultList(listState.items.filter(item => item.list === ''));
@@ -130,8 +151,44 @@ export function ReportInfos({ onDelete }: Props) {
           </section> 
         ))
       }
-      <section className="m-3 mt-5 form-floating">
-        <textarea className="form-control" placeholder="" id="floatingTextarea"></textarea>
+      <section className='my-4'>
+        <h4>{t('REPORT_PIECES_COUNTING')}</h4>
+        <table className='mx-auto'>
+          <tbody>
+            {clotheSwitch(isCycling).map((clothe, i) => (
+              <React.Fragment key={`${clothe}__${i}`}>
+                <td className='p-2'>
+                  <Image
+                    src={
+                      isCycling 
+                        ? `/images/cycling/${clothe}.png`
+                        : `/images/${clothe}.png`
+                    }
+                    alt={`${clothe} illustration`}
+                    height={25}
+                    width={25}
+                  />
+                </td>
+                <td className='p-3'>
+                  {countPieces(clothe)}
+                </td>
+              </React.Fragment>
+            ))}
+            <td className='font-weight-bold p-3'>
+              Total
+            </td>
+            <td className='p-3'>
+              {totalCountPieces()}
+            </td>
+          </tbody>
+        </table>
+      </section>
+      <section className={`m-3 mt-5 form-floating ${textArea ? '' : styles.textArea}`}>
+        <textarea 
+          className="form-control" placeholder="" id="floatingTextarea"
+          value={textArea}
+          onChange={e => setTextArea(e.target.value)}
+        ></textarea>
         <label htmlFor="floatingTextarea">{t('ANNOTATIONS')}</label>
       </section>
       <section className='mb-5'>
