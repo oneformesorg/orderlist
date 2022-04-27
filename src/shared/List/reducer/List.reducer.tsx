@@ -7,14 +7,18 @@ export function ListReducer() {
     items: [] as Array<ListItem>
   });
   useEffect(() => {
-    const list = localStorage.getItem('@orderlist/list');
-    if(list){
-      dispatch({ type: 'addItems', payload: JSON.parse(list) as unknown as ListItem[] });
+    if (typeof window !== 'undefined') {
+      const list = localStorage.getItem('@orderlist/list') || '';
+      if(list){
+        dispatch({ type: 'addItems', payload: JSON.parse(list) as unknown as ListItem[] });
+      }
     }
   }, []);
   useEffect(() => {
-    if(JSON.stringify(state) !== JSON.stringify({ items: [] })){
-      localStorage.setItem('@orderlist/list', JSON.stringify(state.items));
+    if (typeof window !== 'undefined') {
+      if(JSON.stringify(state) !== JSON.stringify({ items: [] })){
+        localStorage.setItem('@orderlist/list', JSON.stringify(state.items));
+      }
     }
   }, [state]);
 
