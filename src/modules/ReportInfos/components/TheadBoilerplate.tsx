@@ -2,11 +2,11 @@ import { useTranslation } from 'next-i18next';
 import { clotheSwitch } from '../utils/clotheSwitch';
 
 const clotheTranslated = {
-  'pants': 'CSVID_TSHIRT', 
-  'shorts': 'CSVID_TSHIRTLONG', 
-  'tanktop': 'CSVID_SHORTS', 
-  'tshirt': 'CSVID_PANTS', 
-  'tshirtLong': 'CSVID_TANKTOP', 
+  'pants': 'CSVID_PANTS', 
+  'shorts': 'CSVID_SHORTS', 
+  'tanktop': 'CSVID_TANKTOP', 
+  'tshirt': 'CSVID_TSHIRT', 
+  'tshirtLong': 'CSVID_TSHIRTLONG', 
   'vest': 'CSVID_VEST', 
   'socks': 'CSVID_SOCKS'
 };

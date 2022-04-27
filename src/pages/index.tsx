@@ -11,6 +11,7 @@ import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 import { OrderTable } from '@modules/OrderTable/OrderTable';
 import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
+import { ListActionProvider } from '@shared/List';
 
 const Home: NextPage = () => {
   const { query } = useRouter();
@@ -39,13 +40,15 @@ const Home: NextPage = () => {
       <div className="container-md">
       
         <CatalogStateProvider>
-          <CreateItemForm />
-          <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-            <PasteListModal />
-            <ImportCSVButton />
-          </section>
+          <ListActionProvider>
+            <CreateItemForm />
+            <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
+              <PasteListModal />
+              <ImportCSVButton />
+            </section>
 
-          <OrderTable />
+            <OrderTable />
+          </ListActionProvider>
         </CatalogStateProvider>
         
       </div>
