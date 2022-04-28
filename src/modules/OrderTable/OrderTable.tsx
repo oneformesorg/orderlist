@@ -7,6 +7,16 @@ import { TableBody } from './components/TableBody';
 import { ClothingParts } from '@shared/Catalog';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
 import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'next-i18next';
+import html2canvas from 'html2canvas';
+
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+};
+
+
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -15,7 +25,9 @@ const clothings:ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshi
 const cyclingClothings:ClothingParts[] = ['pants', 'shorts', 'tshirt', 'tshirtLong', 'socks'];
 export function OrderTable() {
   const { state } = useList();
+  const { t } = useTranslation();
   const [sublists, setSublist] = useState<Lists>([]);
+  const [isPrinted, setIsPrinted] = useState(false);
   const normalList = state.items.filter(({ isCycling, list }) => !isCycling && !list);
   const cyclingList = state.items.filter(({ isCycling, list }) => isCycling && !list);
   const catalogState = useCatalogState();
@@ -35,17 +47,17 @@ export function OrderTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catalogState, state]);
   return (
-    <section>
+    <section id='tables-container'>
       {normalList.length > 0 && !catalogState.isCycling && (
         <Table id="tableOrderListItems" striped bordered hover>
-          <TableHead listLength={normalList.length} clothings={clothings}/>
-          <TableBody list={normalList} clothingList={clothings}/>
+          <TableHead isPrinted={isPrinted} listLength={normalList.length} clothings={clothings}/>
+          <TableBody isPrinted={isPrinted} list={normalList} clothingList={clothings}/>
         </Table>
       )}
       {cyclingList.length > 0 && catalogState.isCycling && (
         <Table id="tableOrderListItems" striped bordered hover>
-          <TableHead listLength={cyclingList.length} clothings={cyclingClothings} isCycling={true}/>
-          <TableBody list={cyclingList} clothingList={cyclingClothings}/>
+          <TableHead isPrinted={isPrinted} listLength={cyclingList.length} clothings={cyclingClothings} isCycling={true}/>
+          <TableBody isPrinted={isPrinted} list={cyclingList} clothingList={cyclingClothings}/>
         </Table>
       )}
       {sublists?.map(([name, [normal, cycling]], i) => (
@@ -56,8 +68,8 @@ export function OrderTable() {
               <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 && (
                 <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
-                  <TableHead listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
-                  <TableBody list={cycling} clothingList={cyclingClothings}/>
+                  <TableHead isPrinted={isPrinted} listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
+                  <TableBody isPrinted={isPrinted} list={cycling} clothingList={cyclingClothings}/>
                 </Table>
               )}
             </>  
@@ -67,8 +79,8 @@ export function OrderTable() {
                 <>
                   <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
                   <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
-                    <TableHead listLength={normal.length} clothings={clothings}/>
-                    <TableBody list={normal} clothingList={clothings}/>
+                    <TableHead isPrinted={isPrinted} listLength={normal.length} clothings={clothings}/>
+                    <TableBody isPrinted={isPrinted} list={normal} clothingList={clothings}/>
                   </Table>
                 </>
               )}
@@ -77,10 +89,60 @@ export function OrderTable() {
           
         </section>
       ))}
-      {sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0 ? (
+      {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
         <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
           <DownloadCSVModal />
           <SendEmailModal />
+          <button 
+            className='btn btn-primary d-flex gap-2 align-items-center'
+            onClick={async () => {
+              setIsPrinted(true);
+
+              // CHANGE VIEWPORT TO SHOW ALL CONTENT AS DESKTOP
+              const vp = document.getElementById('viewportMeta').getAttribute('content');
+              document
+                .getElementById('viewportMeta')
+                .setAttribute('content', 'width=1000');
+
+              // DISABLE SCROLL TO PREVENT MESSED UP SCREENSHORT
+              document.body.style.overflow = 'hidden';
+              await sleep(1000);
+              html2canvas(document.getElementById('tables-container'), {
+                scrollY: -window.scrollY,
+              })
+                .then(canvas => {
+                  const targetCanvas = canvas;
+                  targetCanvas.style.setProperty('display','none');
+                  document.body.appendChild(targetCanvas);
+  
+                  // CREATE LINK DO ACTIVE IMAGE DOWNLOAD
+                  const a = document.createElement('a');
+                  a.href = targetCanvas.toDataURL();
+                  a.download = `${t('MAIN_TITLE')}.png`;
+                  document.body.appendChild(a);
+                  a.click();
+  
+                  // REMOVE DOM ELEMENTS TO PREVENT DUPLICATES
+                  a.remove();
+                  console.log(targetCanvas.toDataURL());
+                  targetCanvas.remove();
+                })
+                .then(() => {
+                  setIsPrinted(false);
+
+                  // RESTORE VIEWPORT TO FIT DEVICE
+                  document.getElementById('viewportMeta').setAttribute('content', vp);
+
+                  // ENABLE SCROLL AGAIN
+                  document.body.style.overflow = 'unset';
+                });
+
+
+            }}
+          >
+            <FontAwesomeIcon icon={faCamera} />
+            {t('TAKE_SCREENSHOT')}
+          </button>
         </section>
       ) : null}
     </section>
