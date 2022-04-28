@@ -3,29 +3,42 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { useTranslation } from 'next-i18next';
-import React, { useRef } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
+import { MicInput } from './components/MicInput/MicInput';
+
+export const numberAndNameContext = createContext<{
+  setName: React.Dispatch<React.SetStateAction<string>>
+  setNumber: React.Dispatch<React.SetStateAction<string>>
+}>(null);
 
 export function CreateItemForm() {
-  const { t } = useTranslation();
-  // const [hasWindow, setHasWindow] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [hasWindow, setHasWindow] = useState(false);
   const formModalRef = useRef<FormModalRef>(null);
-  const nameRef = useRef<HTMLInputElement>(null);
-  const numberRef = useRef<HTMLInputElement>(null);
+  // const nameRef = useRef<HTMLInputElement>(null);
+  // const numberRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
   const { dispatch } = useList();
-  // useEffect(() => {
-  //   if(typeof window !== 'undefined'){
-  //     setHasWindow(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if(typeof window !== 'undefined'){
+      setHasWindow(true);
+    }
+  }, []);
 
   return (
     <form 
       className='d-flex gap-2 flex-wrap align-items-center justify-content-center'
       onSubmit={e => e.preventDefault()}
     >
-      {/*hasWindow && <MicInput locale={i18n.language}/>*/}
+      <numberAndNameContext.Provider value={{
+        setName,
+        setNumber
+      }}>
+        {hasWindow && <MicInput locale={i18n.language}/>}
+      </numberAndNameContext.Provider>
       <Row>
         <Col xs="6" sm="6" md="5" lg="5" xl="5">
           <Form.Group>
@@ -36,7 +49,8 @@ export function CreateItemForm() {
                 <FontAwesomeIcon icon={faUser} />
               </InputGroup.Text>
               <FormControl
-                ref={nameRef}
+                value={name}
+                onChange={e => setName(e.target.value)}
                 placeholder={`${t('EXAMPLE_ABBREV')} ${t('NAME_PLACEHOLDER')}`}
               />
             </InputGroup>
@@ -52,7 +66,8 @@ export function CreateItemForm() {
                 <FontAwesomeIcon icon={faPen} />
               </InputGroup.Text>
               <FormControl
-                ref={numberRef}
+                value={number}
+                onChange={e => setNumber(e.target.value)}
                 type='number'
                 placeholder={`${t('EXAMPLE_ABBREV')} 256`}
               />
@@ -84,8 +99,8 @@ export function CreateItemForm() {
             payload: {
               list,
               isCycling,
-              name: nameRef.current.value,
-              number: numberRef.current.value,
+              name,
+              number,
               id: generateId(),
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -101,8 +116,8 @@ export function CreateItemForm() {
           payload: {
             list,
             isCycling,
-            name: nameRef.current.value,
-            number: numberRef.current.value,
+            name,
+            number,
             id: generateId(),
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -112,8 +127,8 @@ export function CreateItemForm() {
             gender: gender,
           }
         });
-        nameRef.current.value = '';
-        numberRef.current.value = '';
+        setName('');
+        setNumber('');
       }}/>
     </form>
   );
