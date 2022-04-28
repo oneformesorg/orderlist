@@ -10,13 +10,6 @@ import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'next-i18next';
-import html2canvas from 'html2canvas';
-
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -97,47 +90,9 @@ export function OrderTable() {
             className='btn btn-primary d-flex gap-2 align-items-center'
             onClick={async () => {
               setIsPrinted(true);
-
-              // CHANGE VIEWPORT TO SHOW ALL CONTENT AS DESKTOP
-              const vp = document.getElementById('viewportMeta').getAttribute('content');
-              document
-                .getElementById('viewportMeta')
-                .setAttribute('content', 'width=1000');
-
-              // DISABLE SCROLL TO PREVENT MESSED UP SCREENSHORT
-              document.body.style.overflow = 'hidden';
-              await sleep(1000);
-              html2canvas(document.getElementById('tables-container'), {
-                scrollY: -window.scrollY,
-              })
-                .then(canvas => {
-                  const targetCanvas = canvas;
-                  targetCanvas.style.setProperty('display','none');
-                  document.body.appendChild(targetCanvas);
-  
-                  // CREATE LINK DO ACTIVE IMAGE DOWNLOAD
-                  const a = document.createElement('a');
-                  a.href = targetCanvas.toDataURL();
-                  a.download = `${t('MAIN_TITLE')}.png`;
-                  document.body.appendChild(a);
-                  a.click();
-  
-                  // REMOVE DOM ELEMENTS TO PREVENT DUPLICATES
-                  a.remove();
-                  console.log(targetCanvas.toDataURL());
-                  targetCanvas.remove();
-                })
-                .then(() => {
-                  setIsPrinted(false);
-
-                  // RESTORE VIEWPORT TO FIT DEVICE
-                  document.getElementById('viewportMeta').setAttribute('content', vp);
-
-                  // ENABLE SCROLL AGAIN
-                  document.body.style.overflow = 'unset';
-                });
-
-
+              import('./printScreen')
+                .then(mod => mod.PrintTable(t));
+              setIsPrinted(false);
             }}
           >
             <FontAwesomeIcon icon={faCamera} />

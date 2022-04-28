@@ -12,7 +12,14 @@ export function Menu() {
     <nav className={`${style.NavMenu} container-sm px-5 py-2 d-flex justify-content-between align-items-center`}>
       <Link href="/">
         <a>
-          <img src="/images/logo.png" alt="logo" className={style.logo}/>
+          
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            loading="lazy"
+            src="/images/logo.png" 
+            alt="logo"
+            className={style.logo}
+          />
         </a>
       </Link>
       <menu className='d-flex align-items-center gap-3'>

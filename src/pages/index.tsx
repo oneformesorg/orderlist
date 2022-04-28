@@ -7,11 +7,24 @@ import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
 import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
-import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
-import { OrderTable } from '@modules/OrderTable/OrderTable';
-import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
+// import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
+// import { OrderTable } from '@modules/OrderTable/OrderTable';
+// import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { ListActionProvider } from '@shared/List';
+import dynamic from 'next/dynamic';
+
+const PasteListModalDynamic = dynamic(
+  import('@modules/PasteListModal/PasteListModal').then(mod => mod.PasteListModal),
+);
+
+const OrderTableDynamic = dynamic(
+  import('@modules/OrderTable/OrderTable').then(mod => mod.OrderTable),
+);
+
+const CreateItemDynamic = dynamic(
+  import('@modules/CreateItemForm/CreateItemForm').then(mod => mod.CreateItemForm),
+);
 
 const Home: NextPage = () => {
   const { query } = useRouter();
@@ -41,13 +54,13 @@ const Home: NextPage = () => {
       
         <CatalogStateProvider>
           <ListActionProvider>
-            <CreateItemForm />
+            <CreateItemDynamic />
             <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-              <PasteListModal />
+              <PasteListModalDynamic />
               <ImportCSVButton />
             </section>
 
-            <OrderTable />
+            <OrderTableDynamic />
           </ListActionProvider>
         </CatalogStateProvider>
         
