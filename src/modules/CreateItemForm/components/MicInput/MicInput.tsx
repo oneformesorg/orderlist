@@ -1,6 +1,7 @@
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import { numberAndNameContext } from '@modules/CreateItemForm/CreateItemForm';
+import React, { useContext, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import styles from './style.module.css';
 
@@ -16,14 +17,28 @@ export function MicInput({ locale }: Props) {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
+  const { setName,setNumber } = useContext(numberAndNameContext);
 
   useEffect(() => {
-    console.log(listening, microphoneIsActive);
     if(!listening) setMicrophoneIsActive(false);
   }, [listening]);
   useEffect(() => {
-    console.log(transcript);
-  }, [transcript]);
+    if(transcript && !microphoneIsActive){
+      const text = transcript.split(/número|number/).map(item => item.trim());
+      if(text.length === 1){
+        if(isNaN(Number(text[0]))){
+          setName(text[0]);
+        }else {
+          setNumber(text[0]);
+        }
+      }else {
+        if(!isNaN(Number(text[1]))){
+          setNumber(text[1]);
+        }
+        setName(text[0]);
+      }
+    }
+  }, [transcript, microphoneIsActive, setName,setNumber]);
 
   const microphoneSwitch = () => {
     setMicrophoneIsActive(old => !old);
@@ -35,6 +50,7 @@ export function MicInput({ locale }: Props) {
   if (!browserSupportsSpeechRecognition) {
     return null;
   }
+
   return (
     <div className={styles.button}>
       {microphoneIsActive ? (
@@ -52,7 +68,6 @@ export function MicInput({ locale }: Props) {
           <FontAwesomeIcon icon={faMicrophone} />
         </button>
       )}
-      {transcript}
     </div>
   );
 }
