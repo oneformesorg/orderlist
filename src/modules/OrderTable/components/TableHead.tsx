@@ -9,9 +9,10 @@ type Props = {
   listLength: number
   clothings: ClothingParts[]
   isCycling?: boolean
+  isPrinted: boolean
 }
 
-export function TableHead({ listLength, clothings, isCycling }: Props) {
+export function TableHead({ listLength, clothings, isCycling, isPrinted }: Props) {
   const { t } = useTranslation();
   return (
     <thead>
@@ -24,9 +25,11 @@ export function TableHead({ listLength, clothings, isCycling }: Props) {
         </td>
       </tr>
       <tr className="text-center">
-        <th style={{ maxWidth: '50px' }}>
-          <FontAwesomeIcon icon={faHandHoldingUsd} />
-        </th>
+        {!isPrinted && (
+          <th style={{ maxWidth: '50px' }}>
+            <FontAwesomeIcon icon={faHandHoldingUsd} />
+          </th>
+        )}
         <th className="text-left">{t('NAME')}</th>
         <th>{t('NUMBER')}</th>
         {clothings.map((cloth, i) => (
@@ -44,15 +47,19 @@ export function TableHead({ listLength, clothings, isCycling }: Props) {
         <th>
           <FontAwesomeIcon icon={faCoins} />
         </th>
-        <th className='d-none d-md-table-cell'>
-          <FontAwesomeIcon icon={faEdit} />
-        </th>
-        <th className='d-none d-md-table-cell'>
-          <FontAwesomeIcon icon={faTrash} />
-        </th>
-        <th className='d-table-cell d-md-none'>
-          <FontAwesomeIcon icon={faEye} />
-        </th>
+        {!isPrinted && (
+          <>
+            <th className='d-none d-md-table-cell'>
+              <FontAwesomeIcon icon={faEdit} />
+            </th>
+            <th className='d-none d-md-table-cell'>
+              <FontAwesomeIcon icon={faTrash} />
+            </th>
+            <th className='d-table-cell d-md-none'>
+              <FontAwesomeIcon icon={faEye} />
+            </th>
+          </>
+        )}
       </tr>
     </thead>
   );
