@@ -5,13 +5,14 @@ import { CatalogStateProvider } from '@shared/Catalog/context/catalog';
 import styles from '@styles/relatorio.module.css';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import { faPrint, faTags } from '@fortawesome/free-solid-svg-icons';
 import { AddImage, ImageState } from '@modules/AddImage/AddImage';
 import { createContext, Dispatch, SetStateAction, useState } from 'react';
 import Head from 'next/head';
 import { ListActionProvider } from '@shared/List';
 import dynamic from 'next/dynamic';
 import { ReportInfosProps } from '@modules/ReportInfos/ReportInfos';
+import Link from 'next/link';
 
 type ImagesContext = {
   images: ImageState
@@ -39,6 +40,11 @@ const Relatorio:NextPage = () => {
           images, setImages
         }}>
           <section className={`${styles.relatorioButtons} container-lg d-flex justify-content-end gap-2 px-5 py-2 border-bottom mb-3`}>
+            <Link href={'/catalog/tags'}>
+              <a className='btn btn-primary'>
+                <FontAwesomeIcon icon={faTags} />
+              </a>
+            </Link>
             <AddImage />
             <CatalogStateProvider>
               <ImportCSVButton />

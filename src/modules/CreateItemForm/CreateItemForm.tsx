@@ -3,22 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { useTranslation } from 'next-i18next';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
 
 export function CreateItemForm() {
-  const { t, i18n } = useTranslation();
-  const [hasWindow, setHasWindow] = useState(false);
+  const { t } = useTranslation();
+  // const [hasWindow, setHasWindow] = useState(false);
   const formModalRef = useRef<FormModalRef>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
   const { dispatch } = useList();
-  useEffect(() => {
-    if(typeof window !== 'undefined'){
-      setHasWindow(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(typeof window !== 'undefined'){
+  //     setHasWindow(true);
+  //   }
+  // }, []);
 
   return (
     <form 
