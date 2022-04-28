@@ -73,6 +73,8 @@ const ModalImageAdd = forwardRef<ModalImageAddRef, Props>(function ModalImageAdd
           disabled={!currentFile}
           onClick={() => {
             onSubmit(currentFile, descriptionRef.current.value);
+            setCurrentFile('');
+            setCurrentFileName('');
             closeModal();
           }}
         >
