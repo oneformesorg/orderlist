@@ -43,13 +43,13 @@ export function OrderTable() {
     <section id='tables-container'>
       {normalList.length > 0 && !catalogState.isCycling && (
         <Table id="tableOrderListItems" striped bordered hover>
-          <TableHead isPrinted={isPrinted} listLength={normalList.length} clothings={clothings}/>
+          <TableHead isPrinted={isPrinted} list={normalList} clothings={clothings}/>
           <TableBody isPrinted={isPrinted} list={normalList} clothingList={clothings}/>
         </Table>
       )}
       {cyclingList.length > 0 && catalogState.isCycling && (
         <Table id="tableOrderListItems" striped bordered hover>
-          <TableHead isPrinted={isPrinted} listLength={cyclingList.length} clothings={cyclingClothings} isCycling={true}/>
+          <TableHead isPrinted={isPrinted} list={cyclingList} clothings={cyclingClothings} isCycling={true}/>
           <TableBody isPrinted={isPrinted} list={cyclingList} clothingList={cyclingClothings}/>
         </Table>
       )}
@@ -61,7 +61,7 @@ export function OrderTable() {
               <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 && (
                 <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--cycling`}>
-                  <TableHead isPrinted={isPrinted} listLength={cycling.length} clothings={cyclingClothings} isCycling={true}/>
+                  <TableHead isPrinted={isPrinted} list={cycling} clothings={cyclingClothings} isCycling={true}/>
                   <TableBody isPrinted={isPrinted} list={cycling} clothingList={cyclingClothings}/>
                 </Table>
               )}
@@ -72,7 +72,7 @@ export function OrderTable() {
                 <>
                   <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
                   <Table id="tableOrderListItems" striped bordered hover key={`${i}_sublist--normal`}>
-                    <TableHead isPrinted={isPrinted} listLength={normal.length} clothings={clothings}/>
+                    <TableHead isPrinted={isPrinted} list={normal} clothings={clothings}/>
                     <TableBody isPrinted={isPrinted} list={normal} clothingList={clothings}/>
                   </Table>
                 </>

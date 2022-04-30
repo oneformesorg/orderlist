@@ -1,26 +1,37 @@
 import { faCoins, faEdit, faEye, faHandHoldingUsd, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ClothingParts } from '@shared/Catalog';
+import { ListItem } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
-  listLength: number
   clothings: ClothingParts[]
+  list: ListItem[]
   isCycling?: boolean
   isPrinted: boolean
 }
 
-export function TableHead({ listLength, clothings, isCycling, isPrinted }: Props) {
+export function TableHead({ clothings, isCycling, isPrinted, list }: Props) {
   const { t } = useTranslation();
+  const [pieces, setPieces] = useState(0);
+  
+  useEffect(() => {
+    const countedPieces = list.reduce((prev, { clothes }) => {
+      const clotheCount = Object.entries(clothes)
+        .reduce((prev, [,{ quantity }]) => prev+quantity, 0);
+      return prev + clotheCount;
+    }, 0);
+    setPieces(countedPieces);
+  }, [list]);
   return (
     <thead>
       <tr>
         <td colSpan={14} className="text-center">
           <strong>
             {t('MAIN_TITLE')} -{' '}
-            {`${t('CONTAINS_N_UNITS')} ${listLength}`}
+            {`${t('CONTAINS_N_UNITS')} ${pieces}`}
           </strong>
         </td>
       </tr>
