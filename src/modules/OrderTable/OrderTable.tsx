@@ -91,8 +91,10 @@ export function OrderTable() {
             onClick={async () => {
               setIsPrinted(true);
               import('./printScreen')
-                .then(mod => mod.PrintTable(t));
-              setIsPrinted(false);
+                .then(mod => mod.PrintTable(t))
+                .finally(() => {
+                  setIsPrinted(false);
+                });
             }}
           >
             <FontAwesomeIcon icon={faCamera} />
