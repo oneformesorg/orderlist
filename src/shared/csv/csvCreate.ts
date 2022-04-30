@@ -59,7 +59,7 @@ function sanitizeCSV(list: ListItem[], t: TFunction){
     );
 }
 
-export const createCSV = (list: ListState, catalogState: CatalogContent, t: TFunction) => {
+export const createCSV = (list: ListState, catalogState: CatalogContent, t: TFunction, title: string) => {
   const listItems = catalogState.list.map((listName) => {
     return [listName, list.items.filter(({ list }) => listName === list)];
   });
@@ -80,6 +80,11 @@ export const createCSV = (list: ListState, catalogState: CatalogContent, t: TFun
 
   jsZip.generateAsync({ type:'base64' })
     .then(function(content) {
-      window.location.href = 'data:application/zip;base64,' + content;
+      const anchor = document.createElement('a');
+      anchor.href = 'data:application/zip;base64,' + content;
+      anchor.download = `${title}.zip`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
     });
 };
