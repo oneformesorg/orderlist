@@ -88,7 +88,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <p>
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
-        {list.length > 0 && (
+        {catalogState.list.length > 0 ? (
           <InputGroup className='d-flex flex-column mb-3'>
             <label>{t('LIST')}:</label>
             <Select 
@@ -97,7 +97,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
               onChange={(e) => setList(e.value)}
             />
           </InputGroup>
-        )}
+        ) : null}
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('GENDER')}</label>
           <Select

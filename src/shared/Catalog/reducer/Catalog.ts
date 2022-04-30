@@ -29,7 +29,7 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
     }
     return { ...state, list: [...state.list, action.payload] };
   case 'deleteList':
-    return { ...state, list: state.list.filter((listName) => listName !== action.payload) };
+    return { ...state, list: state.list.filter((listName) => listName !== action.payload) || [] };
   default:
     throw new Error();
   }
@@ -96,7 +96,8 @@ export function CatalogReducer() {
     }
   }, []);
   useEffect(() => {
-    if(JSON.stringify(state) !== JSON.stringify(initialCatalog)){
+    const catalog = localStorage.getItem('@orderlist/catalog');
+    if(catalog){
       localStorage.setItem('@orderlist/catalog', JSON.stringify(state));
     }
   }, [state]);
