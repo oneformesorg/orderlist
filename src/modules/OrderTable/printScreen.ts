@@ -10,7 +10,7 @@ export async function PrintTable(t: TFunction){
   const vp = document.getElementById('viewportMeta').getAttribute('content');
   document
     .getElementById('viewportMeta')
-    .setAttribute('content', 'width=1000');
+    .setAttribute('content', 'width=1280');
 
   // DISABLE SCROLL TO PREVENT MESSED UP SCREENSHORT
   document.body.style.overflow = 'hidden';

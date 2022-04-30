@@ -2,26 +2,42 @@ import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { CSVFileNameModal, CSVModalRef } from './CSVFileNameModal';
+
+const timestampForTitle = (locale: string) => (
+  new Intl.DateTimeFormat(locale, { 
+    dateStyle: 'short',
+    timeStyle: 'short' 
+  }).format(new Date)
+);
 
 export function DownloadCSVModal() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { state: listState } = useList();
   const catalogState = useCatalogState();
+  const modalRef = useRef<CSVModalRef>(null);
 
   return (
-    <button 
-      className='btn btn-success btn-sm d-flex align-items-center gap-2'
-      onClick={() => {
-        import('@shared/csv/csvCreate')
-          .then(mod => mod.createCSV(listState, catalogState, t));
-      }}
-    >
-      <FontAwesomeIcon icon={faFileCsv} />
-      <span className='ml-1 d-none d-md-inline'>
-        {t('DOWNLOAD')}
-      </span>
-    </button>
+    <>
+      <button 
+        className='btn btn-success btn-sm d-flex align-items-center gap-2'
+        onClick={() => modalRef.current.handleOpen()}
+      >
+        <FontAwesomeIcon icon={faFileCsv} />
+        <span className='ml-1 d-none d-md-inline'>
+          {t('DOWNLOAD')}
+        </span>
+      </button>
+      <CSVFileNameModal 
+        ref={modalRef}
+        onSubmit={(name) => {
+          console.log(timestampForTitle(i18n.language));
+          import('@shared/csv/csvCreate')
+            .then(mod => mod.createCSV(listState, catalogState, t, `${name} ${timestampForTitle(i18n.language)}`));
+        }}
+      />
+    </>
   );
 }
