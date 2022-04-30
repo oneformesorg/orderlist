@@ -88,16 +88,20 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <p>
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('LIST')}:</label>
-          <Select 
-            options={catalogState.list.map(item => ({ value: item, label: item }))}
-            onChange={(e) => setList(e.value)}
-          />
-        </InputGroup>
+        {list.length > 0 && (
+          <InputGroup className='d-flex flex-column mb-3'>
+            <label>{t('LIST')}:</label>
+            <Select 
+              isSearchable={false}
+              options={catalogState.list.map(item => ({ value: item, label: item }))}
+              onChange={(e) => setList(e.value)}
+            />
+          </InputGroup>
+        )}
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('GENDER')}</label>
           <Select
+            isSearchable={false}
             defaultValue={[{ value: 'MALE', label: t('MALE') }]}
             options={genderList}
             onChange={(e) => {
@@ -119,7 +123,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select options={
+                  <Select isSearchable={false} options={
                     gender !== 'CHILDISH' ? (
                       sizes.adult.map((size) => ({
                         value: size, label: t(size)
@@ -167,6 +171,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                 </Col>
                 <Col xs={5}>
                   <Select 
+                    isSearchable={false}
                     value={{ value: clothList[clothe].size, label: t(clothList[clothe].size) }}
                     options={
                       gender !== 'CHILDISH' ? (

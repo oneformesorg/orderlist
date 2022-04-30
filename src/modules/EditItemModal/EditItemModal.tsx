@@ -65,17 +65,21 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
         <FormNameNumber name={currentItem.name} number={Number(currentItem.number)} ref={formNumberNameRef}/>
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('LIST')}:</label>
-          <Select
-            defaultValue={{ value: list, label: list }}
-            options={catalogState.list.map(item => ({ value: item, label: item }))}
-            onChange={(e) => setList(e.value)}
-          />
-        </InputGroup>
+        {list.length > 0 && (
+          <InputGroup className='d-flex flex-column mb-3'>
+            <label>{t('LIST')}:</label>
+            <Select
+              isSearchable={false}
+              defaultValue={{ value: list, label: list }}
+              options={catalogState.list.map(item => ({ value: item, label: item }))}
+              onChange={(e) => setList(e.value)}
+            />
+          </InputGroup>
+        )}
         <InputGroup className='d-flex flex-column mb-3'>
           <label>{t('GENDER')}</label>
           <Select
+            isSearchable={false}
             options={genderList}
             defaultValue={[{ value: currentItem.gender as string, label: t(currentItem.gender) }]}
             onChange={(e) => setGender(e.value as Gender)}
@@ -95,7 +99,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select options={
+                  <Select isSearchable={false} options={
                     gender !== 'CHILDISH' ? (
                       sizes.adult.map((size) => ({
                         value: size, label: t(size)
@@ -142,7 +146,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select options={
+                  <Select isSearchable={false} options={
                     gender !== 'CHILDISH' ? (
                       sizes.adult.map((size) => ({
                         value: size, label: t(size)
