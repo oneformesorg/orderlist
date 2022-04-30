@@ -163,27 +163,31 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
           <tbody>
             {uniqueList.map((clothe, i) => (
               <React.Fragment key={`${clothe}__${i}`}>
-                <td className='p-2'>
-                  <Image
-                    src={
-                      isCycling 
-                        ? `/images/cycling/${clothe}.png`
-                        : `/images/${clothe}.png`
-                    }
-                    alt={`${clothe} illustration`}
-                    height={25}
-                    width={25}
-                  />
-                </td>
-                <td className='p-3'>
-                  {countPieces(clothe)}
-                </td>
+                {countPieces(clothe) ? (
+                  <>
+                    <td className='p-4'>
+                      <Image
+                        src={
+                          isCycling 
+                            ? `/images/cycling/${clothe}.png`
+                            : `/images/${clothe}.png`
+                        }
+                        alt={`${clothe} illustration`}
+                        height={25}
+                        width={25}
+                      />
+                    </td>
+                    <td className='p-4'>
+                      {countPieces(clothe)}
+                    </td>
+                  </>
+                ): null}
               </React.Fragment>
             ))}
-            <td className='font-weight-bold p-3'>
+            <td className='p-3'>
               Total
             </td>
-            <td className='p-3'>
+            <td className='p-4'>
               {totalCountPieces()}
             </td>
           </tbody>
