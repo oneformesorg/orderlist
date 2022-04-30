@@ -6,7 +6,6 @@ import { useTranslation } from 'next-i18next';
 import React, { useContext, useEffect, useState } from 'react';
 import { imagesCardContext } from '@pages/catalog/relatorio';
 import styles from './ReportInfos.module.css';
-import { clotheSwitch } from './utils/clotheSwitch';
 import Image from 'next/image';
 import { TableForPrint } from './components/TableForPrint';
 
@@ -27,6 +26,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
   const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
   const { images } = useContext(imagesCardContext);
   const [textArea, setTextArea] = useState('');
+  const [uniqueList, setUniqueList] = useState<string[]>([]);
 
   const countPieces = (piece: string) => {
     return listState.items
@@ -46,6 +46,21 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
       }, 0);
     return 0;
   };
+
+  useEffect(() => {
+    const sanitizedList = listState.items.reduce((prev, list) => {
+      return [
+        ...prev,
+        ...Object.entries(list.clothes)
+          .filter(([, { quantity }]) => quantity > 0)
+          .map(([key]) => key)
+      ];
+    }, []);
+    const uniqueList = sanitizedList.filter((cloth, pos) => (
+      sanitizedList.indexOf(cloth) === pos
+    ));
+    setUniqueList(uniqueList);
+  }, [listState]);
 
   useEffect(() => {
     setDefaultList(listState.items.filter(item => item.list === ''));
@@ -125,7 +140,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         }
       </h1>
       {defaultList.length > 0 && (
-        <TableForPrint isCycling={isCycling} list={defaultList}/>
+        <TableForPrint list={defaultList}/>
       )}
       {
         Object.entries(sublists).map(([key, listItems], i) =>(
@@ -136,7 +151,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
                 key={`${key}__section__${i}`}
               >
                 <h4 className='text-center'>{key}</h4>
-                <TableForPrint isCycling={isCycling} list={listItems}/>
+                <TableForPrint list={listItems}/>
               </section>
             ) : null}
           </section> 
@@ -146,7 +161,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         <h4>{t('REPORT_PIECES_COUNTING')}</h4>
         <table className='mx-auto'>
           <tbody>
-            {clotheSwitch(isCycling).map((clothe, i) => (
+            {uniqueList.map((clothe, i) => (
               <React.Fragment key={`${clothe}__${i}`}>
                 <td className='p-2'>
                   <Image
@@ -186,7 +201,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         {images.length > 0 && (
           <h2 className='border-bottom'>Images</h2>
         )}
-        <section className="d-flex gap-2 flex-wrap ">
+        <section className="d-flex gap-2 flex-wrap">
           {images.map(({ image, description }, i) => (
             <section 
               key={`card-image__${i}`}

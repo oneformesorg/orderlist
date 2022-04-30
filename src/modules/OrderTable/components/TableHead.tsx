@@ -25,11 +25,9 @@ export function TableHead({ listLength, clothings, isCycling, isPrinted }: Props
         </td>
       </tr>
       <tr className="text-center">
-        {!isPrinted && (
-          <th style={{ maxWidth: '50px' }}>
-            <FontAwesomeIcon icon={faHandHoldingUsd} />
-          </th>
-        )}
+        <th style={{ maxWidth: '50px' }}>
+          <FontAwesomeIcon icon={faHandHoldingUsd} />
+        </th>
         <th className="text-left">{t('NAME')}</th>
         <th>{t('NUMBER')}</th>
         {clothings.map((cloth, i) => (

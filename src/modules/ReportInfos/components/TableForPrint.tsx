@@ -1,7 +1,6 @@
 import { ListItem } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import React from 'react';
-import { clotheSwitch } from '../utils/clotheSwitch';
+import React, { useEffect, useState } from 'react';
 
 const clotheTranslated = {
   'pants': 'CSVID_PANTS', 
@@ -14,21 +13,38 @@ const clotheTranslated = {
 };
 
 type Props = {
-  isCycling: boolean
   list: ListItem[]
 }
 
-export function TableForPrint({ isCycling , list }: Props) {
+export function TableForPrint({ list }: Props) {
   const { t } = useTranslation();
+  const [clotheList, setClotheList] = useState<string[]>([]);
+  useEffect(() => {
+    const sanitizedList = list.reduce((prev, list) => {
+      return [
+        ...prev,
+        ...Object.entries(list.clothes)
+          .filter(([, { quantity }]) => quantity > 0)
+          .map(([key]) => key)
+      ];
+    }, []);
+    const uniqueList = sanitizedList.filter((cloth, pos) => (
+      sanitizedList.indexOf(cloth) === pos
+    ));
+    setClotheList(uniqueList);
+  }, [list]);
   return (
     <table className='mx-auto'>
       <thead>
+        <td>
+        -
+        </td>
         <td className='text-center'>
           {t('GENDER')}
         </td>
         <td className='text-center'>{t('NAME')}</td>
         <td className='text-center'>{t('NUMBER')}</td>
-        { clotheSwitch(isCycling).map((clotheName, i) => (
+        { clotheList.map((clotheName, i) => (
           <td 
             key={`${clotheName}_${i}`}
             className='text-center'
@@ -40,6 +56,9 @@ export function TableForPrint({ isCycling , list }: Props) {
       <tbody>
         {list.map(({ gender, name, number, clothes, id }) => (
           <tr key={id}>
+            <td>
+        ⠀
+            </td>
             <td className='text-center px-2'>
               {t(gender)}
             </td>
@@ -49,7 +68,7 @@ export function TableForPrint({ isCycling , list }: Props) {
             <td className='text-center px-2'>
               {number}
             </td>
-            {clotheSwitch(isCycling).map((clotheName, i) => (
+            {clotheList.map((clotheName, i) => (
               <td 
                 className='text-center px-2'
                 key={`${i}_${clotheName}`}

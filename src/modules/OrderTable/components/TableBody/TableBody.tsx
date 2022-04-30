@@ -50,18 +50,16 @@ export function TableBody({ list, clothingList, isPrinted }: Props) {
       <tbody>
         {list.map((props) => (
           <tr key={`${props.id}_checkbox`}>
-            {!isPrinted && (
-              <td className={style.tableCell}>
-                <input
-                  type="checkbox"
-                  onChange={e => (
-                    e.target.checked 
-                      ? setDeleteList(old => [...old, props.id])
-                      : setDeleteList(old => old.filter(id => id !== props.id))
-                  )}
-                />
-              </td>
-            )}
+            <td className={style.tableCell}>
+              <input
+                type="checkbox"
+                onChange={e => (
+                  e.target.checked 
+                    ? setDeleteList(old => [...old, props.id])
+                    : setDeleteList(old => old.filter(id => id !== props.id))
+                )}
+              />
+            </td>
             <td className={style.tableCell}>
               {props.name}
             </td>
