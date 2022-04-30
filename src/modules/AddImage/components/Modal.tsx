@@ -9,13 +9,14 @@ export type ModalImageAddRef = {
 }
 
 type Props = {
-  onSubmit: (currentFile: string, description: string) => void
+  onSubmit: (currentFile: string, description: string, widthPercent: string) => void
 }
 
 const ModalImageAdd = forwardRef<ModalImageAddRef, Props>(function ModalImageAdd({ onSubmit }, ref) {
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputRangeRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const closeModal = () => setShow(false);
   const openModal = () => setShow(true);
@@ -58,6 +59,18 @@ const ModalImageAdd = forwardRef<ModalImageAddRef, Props>(function ModalImageAdd
               reader.onload = () => setCurrentFile(reader.result as unknown as string);
             }}
           />
+          <div className='w-100 mt-2'>
+            <label htmlFor="size-image" className='form-label mb-0'>{t('SIZE')}</label>
+            <input 
+              ref={inputRangeRef}
+              type="range" 
+              id="size-image" 
+              className="form-range" 
+              defaultValue={30} 
+              min={10} 
+              max={100}
+            />
+          </div>
         </section>
         <section className="form-floating">
           <textarea ref={descriptionRef} className="form-control" id="floatingTextarea"></textarea>
@@ -72,7 +85,12 @@ const ModalImageAdd = forwardRef<ModalImageAddRef, Props>(function ModalImageAdd
           variant="primary"
           disabled={!currentFile}
           onClick={() => {
-            onSubmit(currentFile, descriptionRef.current.value);
+            const widthPercent = `${inputRangeRef.current.value}%`;
+            onSubmit(
+              currentFile,
+              descriptionRef.current.value,
+              widthPercent
+            );
             setCurrentFile('');
             setCurrentFileName('');
             closeModal();

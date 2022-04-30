@@ -4,7 +4,7 @@ import React, { useContext, useRef } from 'react';
 import { imagesCardContext } from '@pages/catalog/relatorio';
 import { ModalImageAdd, ModalImageAddRef } from './components/Modal';
 
-export type ImageState = {image: string, description: string}[]
+export type ImageState = {image: string, description: string, width: string}[]
 
 export function AddImage() {
   const modal = useRef<ModalImageAddRef>(null);
@@ -19,10 +19,12 @@ export function AddImage() {
         <FontAwesomeIcon icon={faImage}/>
           Add images
       </button>
-      <ModalImageAdd ref={modal} onSubmit={(currentFile, description) => {
+      <ModalImageAdd ref={modal} onSubmit={(currentFile, description, width) => {
         setImages(old => ([
           ...old, {
-            description, image: currentFile
+            description, 
+            image: currentFile,
+            width
           }
         ]));
       }}/>

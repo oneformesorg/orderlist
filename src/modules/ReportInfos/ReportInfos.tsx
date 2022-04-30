@@ -206,11 +206,11 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
           <h2 className='border-bottom'>Images</h2>
         )}
         <section className="d-flex gap-2 flex-wrap">
-          {images.map(({ image, description }, i) => (
+          {images.map(({ image, description, width }, i) => (
             <section 
               key={`card-image__${i}`}
               className={`card ${styles.imageCard} align-self-start`}
-              style={{ width: '30%' }}
+              style={{ width }}
             >
               <button 
                 onClick={() => onDelete(i)}
