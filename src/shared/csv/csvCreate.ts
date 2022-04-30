@@ -53,7 +53,7 @@ function sanitizeCSV(list: ListItem[], t: TFunction){
         if(i === (list.length - 1)){
           return prev += `${curr}`;
         }
-        return prev += `${curr},`;
+        return prev += `${curr}\n`;
       },
       `${csvHeader.join(',')}\n`
     );
