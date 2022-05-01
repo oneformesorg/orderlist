@@ -59,7 +59,14 @@ function sanitizeCSV(list: ListItem[], t: TFunction){
     );
 }
 
-export const createCSV = (list: ListState, catalogState: CatalogContent, t: TFunction, title: string) => {
+type CSVTypeOutput = 'DOWNLOAD' | 'BASE64'
+export const createCSV = (
+  list: ListState,
+  catalogState: CatalogContent,
+  t: TFunction,
+  title: string,
+  outputType:CSVTypeOutput = 'DOWNLOAD'
+) => {
   const listItems = catalogState.list.map((listName) => {
     return [listName, list.items.filter(({ list }) => listName === list)];
   });
@@ -78,8 +85,11 @@ export const createCSV = (list: ListState, catalogState: CatalogContent, t: TFun
     }
   });
 
-  jsZip.generateAsync({ type:'base64' })
+  return jsZip.generateAsync({ type:'base64' })
     .then(function(content) {
+      if(outputType === 'BASE64'){
+        return content;
+      }
       const anchor = document.createElement('a');
       anchor.href = 'data:application/zip;base64,' + content;
       anchor.download = `${title}.zip`;
