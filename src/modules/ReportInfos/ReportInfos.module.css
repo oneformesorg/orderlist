@@ -51,7 +51,15 @@
 
 .imageCard {
   position: relative;
-  /* break-after: void; */
+  /* display: inline-block; */
+  /* break-after: void; */ 
+  /*page-break-before: avoid;  'always,' 'avoid,' 'left,' 'inherit,' or 'right'*/ 
+  /* page-break-after: always;   */
+  /* page-break-inside: avoid; */
+}
+
+.cardContainer {
+  page-break-inside: avoid;
 }
 .deleteImageButton{
   position: absolute;

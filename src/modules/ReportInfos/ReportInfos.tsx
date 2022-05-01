@@ -205,7 +205,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         {images.length > 0 && (
           <h2 className='border-bottom'>Images</h2>
         )}
-        <section className="d-flex gap-2 flex-wrap">
+        <section className={`d-flex gap-2 flex-wrap ${styles.cardContainer}`}>
           {images.map(({ image, description, width }, i) => (
             <section 
               key={`card-image__${i}`}
