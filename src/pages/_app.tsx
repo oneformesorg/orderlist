@@ -5,6 +5,9 @@ import { appWithTranslation } from 'next-i18next';
 import { SSRProvider } from 'react-bootstrap';
 import { CatalogActionProvider } from '@shared/Catalog/context/catalog';
 import Head from 'next/head';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
+config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
