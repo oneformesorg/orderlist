@@ -1,47 +1,85 @@
+import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { createCSV } from '@shared/csv/csvCreate';
+import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Button, Form, Modal, Alert } from 'react-bootstrap';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export type ModalEMailRef = {
   showModal: () => void
 }
 
-/**
- const postData = {
-   token: HCaptchaToken,
-   uuidPriceTable: settings.uuidFromLoadedPriceTable,
-   zipfile: zipData,
-   email: targetEmail,
-   client: clientName,
-   translatedText: JSON.stringify({
-     emailTitle: Translator('MAIN_TITLE'),
-     emailBody: Translator('EMAIL_BODY'),
-     labelClient: Translator('CLIENT'),
-   }),
- };
- 
- const postFormData = new FormData();
- Object.keys(postData).map((key) => postFormData.append(key, postData[key]));
- 
- const serverResponse = await axios
-   .post(HCAPTCHA_SERVER_CHECK, postFormData, {
-     headers: {'Content-Type': 'multipart/form-data'},
-     timeout: 15000,
-   })
-
- */
+const timestampForTitle = (locale: string) => (
+  new Intl.DateTimeFormat(locale, { 
+    dateStyle: 'short',
+    timeStyle: 'short' 
+  }).format(new Date)
+);
 
 const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const closeModal = () => setModalIsOpen(false);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaCode, setCaptchaCode] = useState('');
+  
+  const { state: listState } = useList();
+  const catalogState = useCatalogState();
+  
   const showModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
 
+  const sendEmail = async () => {
+    if(captchaCode){
+      const file = await createCSV(
+        listState,
+        catalogState,
+        t,
+        `order-list ${timestampForTitle(i18n.language)}`,
+        'BASE64'
+      );
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
+      const response = await fetch('/api/email/send', {
+        method: 'POST',
+        body: JSON.stringify({
+          key: captchaCode,
+          file,
+          email: emailRef.current.value,
+          name: nameRef.current.value
+        }),
+        headers
+      });
+      const status = response.status;
+      if(status === 200){
+        closeModal();
+      }
+      
+      return response.status;
+    }
+    return; 
+  };
+  const submitHandler = async () => {
+    const statusCode = await sendEmail();
+    if(statusCode === 200){
+      closeModal();
+    }
+  };
   useImperativeHandle(ref, () => ({
     showModal
   }));
+
+  const onReCAPTCHAChange = (captchaCode: string) => {
+    if(!captchaCode){
+      return;
+    }
+    setCaptchaCode(captchaCode);
+    recaptchaRef.current.reset();
+  };
 
   return (
     <Modal show={modalIsOpen} onHide={closeModal}>
@@ -49,14 +87,22 @@ const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
         <Modal.Title>{t('MODAL_TITLE_SENT_VIA_EMAIL')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form>
+        <Form
+          ref={formRef}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            submitHandler();
+          }}
+        >
           <Form.Group className='mb-2'>
             <Form.Label>
               {t('ASK_DESTINATION_EMAIL')}
             </Form.Label>
             <Form.Control
               type='email'
+              ref={emailRef}
               placeholder={'sample@server.com'}
+              required
             >
             </Form.Control>
           </Form.Group>
@@ -66,19 +112,11 @@ const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
             </Form.Label>
             <Form.Control
               type='text'
+              ref={nameRef}
               placeholder={t('NAME_PLACEHOLDER')}
+              required
             >
             </Form.Control>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>{t('ASK_NOT_ROBOT')}</Form.Label>
-            {/* HCAPTCHA */}
-            <HCaptcha
-              sitekey="3bb7ba5e-5cba-4ef6-88ca-8577ac7d5236"
-              onVerify={(token) => {
-                console.log(token);
-              }}
-            />
           </Form.Group>
           <Alert variant={!termsAccepted ? 'danger' : 'success'} className='mt-2'>
             <Alert.Heading>{t('ACCEPTANCE_TERM_TITLE')}</Alert.Heading>
@@ -98,19 +136,30 @@ const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
                 {t('ACCEPTANCE_CHECKBOX_CHECKED')}
               </Form.Control.Feedback>
             </Form.Check>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              size="invisible"
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onReCAPTCHAChange}
+            />
           </Alert>
-        </form>
+          <section className="d-flex justify-content-end gap-3">
+            <Button variant="secondary" onClick={closeModal}>
+              {t('CLOSE')}
+            </Button>
+            {termsAccepted ? (
+              <Button 
+                type="submit"
+                variant="primary"
+                onClick={() => recaptchaRef.current.execute()}
+              >
+                {t('CONFIRM')}
+              </Button>
+            ) : null}
+
+          </section>
+        </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={closeModal}>
-          {t('CLOSE')}
-        </Button>
-        {termsAccepted ? (
-          <Button variant="primary" onClick={closeModal}>
-            {t('CONFIRM')}
-          </Button>
-        ) : null}
-      </Modal.Footer>
     </Modal>
   );
 });
