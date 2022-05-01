@@ -25,7 +25,10 @@
       "@config/*": ["src/config/*"],
       "@styles/*": ["src/styles/*"],
       "@pages/*": ["src/pages/*"]
-    }
+    },
+    "types": [
+      "src/@types/*"
+    ]
   },
   "include": [
     "next-env.d.ts",
