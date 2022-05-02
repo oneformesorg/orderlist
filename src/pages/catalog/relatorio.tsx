@@ -5,7 +5,7 @@ import { CatalogStateProvider } from '@shared/Catalog/context/catalog';
 import styles from '@styles/relatorio.module.css';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint, faTags } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPrint, faTags } from '@fortawesome/free-solid-svg-icons';
 import { AddImage, ImageState } from '@modules/AddImage/AddImage';
 import { createContext, Dispatch, SetStateAction, useState } from 'react';
 import Head from 'next/head';
@@ -13,6 +13,7 @@ import { ListActionProvider } from '@shared/List';
 import dynamic from 'next/dynamic';
 import { ReportInfosProps } from '@modules/ReportInfos/ReportInfos';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 
 type ImagesContext = {
   images: ImageState
@@ -28,6 +29,7 @@ const ReportInfosWithoutSSR = dynamic<ReportInfosProps>(
 export const imagesCardContext = createContext<ImagesContext>(null);
 const Relatorio:NextPage = () => {
   const [images, setImages] = useState<ImageState>([]);
+  const { t } = useTranslation();
   
   return(
     <>
@@ -39,6 +41,16 @@ const Relatorio:NextPage = () => {
         <imagesCardContext.Provider value={{
           images, setImages
         }}>
+          <section className='d-flex container-lg'>
+            <Link href="/catalog">
+              <a
+                className="btn btn-primary d-flex gap-2 align-items-center"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+                {t('GOBACK')}
+              </a>
+            </Link>
+          </section>
           <section className={`${styles.relatorioButtons} container-lg d-flex justify-content-end gap-2 px-5 py-2 border-bottom mb-3`}>
             <Link href={'/catalog/tags'}>
               <a className='btn btn-primary'>

@@ -68,3 +68,12 @@ button {
 .ldio-rpinwye8j0b div {
   box-sizing: content-box;
 }
+
+@media print {
+  .not-printed {
+    display: none !important;
+  }
+  div {
+    break-inside: avoid !important;
+  }
+}
