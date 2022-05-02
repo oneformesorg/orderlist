@@ -3,7 +3,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: center;
+  page-break-inside: avoid;
   padding: 1rem;
-  
-}
+  gap: 10%;
+  p {
+    font-weight: 700;
+    font-size: clamp(0.2rem, calc( 12px + 1.100vw ), 1.650rem);
+  }
+} 
