@@ -4,7 +4,14 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styles from './ticket.module.css';
 
-export function Tickets() {
+type Props = {
+  tagSize: {
+    width: number
+    height: number
+  }
+}
+
+export function Tickets({ tagSize }: Props) {
   const { state: { items } } = useList();
   const [listItems, setListItems] = useState<string[][]>();
   const { t } = useTranslation();
@@ -12,7 +19,7 @@ export function Tickets() {
     const sanitizedItems = items.reduce((prev, curr) => {
       const arr = Object.entries(curr.clothes).map(([key, { quantity, size }]) => {
         if(quantity > 0){
-          return [key, size, quantity];
+          return [key, size, curr.gender];
         }
         return;
       }).filter(item => item);
@@ -26,8 +33,12 @@ export function Tickets() {
   return (
     <section className='d-flex flex-wrap justify-content-center'>
       {
-        listItems?.map(([clothe, size], i) => (
-          <div key={`tag__${i}`} className={styles.card}>
+        listItems?.map(([clothe, size, gender], i) => (
+          <div 
+            key={`tag__${i}`} 
+            className={styles.card}
+            style={tagSize}
+          >
             <p>
               {t(size)}
             </p>
@@ -37,6 +48,9 @@ export function Tickets() {
               width={54}
               alt=''
             />
+            <p>
+              {t(gender)}
+            </p>
           </div>
         ))
       }
