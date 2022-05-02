@@ -94,16 +94,15 @@ export function CatalogReducer() {
   useEffect(() => {
     const catalog = localStorage.getItem('@orderlist/catalog');
     if(catalog){
-      dispatch({ type: 'setCompanyInfos', payload: JSON.parse(catalog) as unknown as CatalogContent });
+      dispatch({ type: 'setCompany', payload: JSON.parse(catalog) as unknown as CatalogContent });
     }
   }, []);
   useEffect(() => {
     const catalog = localStorage.getItem('@orderlist/catalog');
     if(
-      catalog &&
-      JSON.stringify(state) !== JSON.stringify(initialCatalog) ||
-      JSON.stringify(state) !== JSON.stringify(catalog)
+      catalog !== JSON.stringify(state) && JSON.stringify(state) !== JSON.stringify(initialCatalog)
     ){
+      console.log('é diferente');
       localStorage.setItem('@orderlist/catalog', JSON.stringify(state));
     }
   }, [state]);
