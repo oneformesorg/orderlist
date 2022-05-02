@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         query: query.q
       }).then(res => {
         catalogDispatch({
-          type: 'setCompanyInfos',
+          type: 'setCompany',
           payload: res
         });
       });

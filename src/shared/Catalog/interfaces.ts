@@ -50,4 +50,7 @@ export type CatalogReducerAction =
 } | {
   type: 'addList'
   payload: string
-} 
+} | {
+  type: 'setCompany',
+  payload: CatalogContent
+}
