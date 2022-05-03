@@ -75,13 +75,20 @@ export const createCSV = (
   const jsZip = new JsZip();
   const csvFolder = jsZip.folder('csv');
 
-  const defaultCSVSanitize = sanitizeCSV(defaultList, t);
   if(defaultList.length > 0){
+    const defaultCSVSanitize = sanitizeCSV(defaultList, t);
+    const bkpFile = Buffer.from(defaultCSVSanitize, 'base64');
+    
     csvFolder.file('list.csv', `${defaultCSVSanitize}`);
+    csvFolder.file('list.bkp', bkpFile);
   }
   listItems.forEach(([key, list]) => {
     if(list.length > 0){
-      csvFolder.file(`${key}.csv`, `${sanitizeCSV(list as ListItem[], t)}`);
+      const csv = sanitizeCSV(list as ListItem[], t);
+      const bkpFile = Buffer.from(csv, 'base64');
+      
+      csvFolder.file(`${key}.csv`, csv);
+      csvFolder.file(`${key}.bkp`, bkpFile);
     }
   });
 
