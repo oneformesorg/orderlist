@@ -15,8 +15,8 @@ const clothingCSV = {
 };
 const csvGender = {
   'CHILDISH': 'c',
-  'MALE': 'MA',
-  'FEMALE': 'FE'
+  'MALE': 'ma',
+  'FEMALE': 'fe'
 };
 
 
