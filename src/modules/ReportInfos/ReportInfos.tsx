@@ -8,6 +8,7 @@ import { imagesCardContext } from '@pages/catalog/relatorio';
 import styles from './ReportInfos.module.css';
 import Image from 'next/image';
 import { TableForPrint } from './components/TableForPrint';
+import autosize from 'autosize';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
@@ -48,6 +49,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
   };
 
   useEffect(() => {
+    autosize(document.querySelector('textarea.form-control'));
     const sanitizedList = listState.items.reduce((prev, list) => {
       return [
         ...prev,
