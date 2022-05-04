@@ -15,15 +15,21 @@ export function ImportCSVButton() {
   const [listItem, setListItem] = useState<ListItem[]>([]);
   const { dispatch: dispatchList } = useList();
   useEffect(() => {
-    setListItem(
-      csvReader(
-        csvResult.split('\n')[0].split(','), 
-        csvResult.split('\n').splice(1),
-        catalogState.isCycling,
-        csvTitle,
-        catalogState.list  
-      )
-    );
+    try {
+      const csvHeader = csvResult.split('\n')[0].split(','); 
+      const csvItems = csvResult.split('\n').splice(1);
+      setListItem(
+        csvReader(
+          csvHeader, 
+          csvItems,
+          catalogState.isCycling,
+          csvTitle,
+          catalogState.list  
+        )
+      );
+    } catch (error) {
+      alert('Invalid import');
+    }
   }, [csvResult, csvTitle, catalogState]);
   
   useEffect(() => {
