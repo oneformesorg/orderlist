@@ -35,11 +35,11 @@ const ModalPasteList = forwardRef<ModalPasteListRef, Props>(function ModalPasteL
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [textArea, setTextArea] = useState('');
   const [selectedList, setSelectedList] = useState(lists[0] || '');
-  const closeModal = () => setModalIsOpen(false);
-  const showModal = () => setModalIsOpen(true);
   const [selectedClothes, SetSelectedClothes] = useState<[string, boolean][]>(clotheInitialState);
   const [gender, setGender] = useState('MALE');
-
+  
+  const closeModal = () => setModalIsOpen(false);
+  const showModal = () => setModalIsOpen(true);
   useImperativeHandle(ref, () => ({
     showModal
   }));
@@ -64,6 +64,8 @@ const ModalPasteList = forwardRef<ModalPasteListRef, Props>(function ModalPasteL
             try {
               const listItem = sanitizeText(textArea, selectedClothes, isCycling, gender, selectedList);
               onSubmit(listItem as unknown as ListItem[]);
+              setTextArea('');
+              closeModal();
             }
             catch(e) {
               alert(e.message);
@@ -164,6 +166,11 @@ const ModalPasteList = forwardRef<ModalPasteListRef, Props>(function ModalPasteL
               value={textArea}
               onChange={(e) => setTextArea(e.target.value)}
             />
+            <span className='text-secondary'>
+              <small>
+                Name, number, size
+              </small>
+            </span>
           </Form.Group>
           <Button
             disabled={selectedClothes.every((item) => !item[1]) && gender !== 'default'}
