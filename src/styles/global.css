@@ -73,7 +73,11 @@ button {
   .not-printed {
     display: none !important;
   }
-  div {
+  div, section {
     break-inside: avoid !important;
+  }
+
+  .buttons-section {
+    display: none !important;
   }
 }
