@@ -41,7 +41,7 @@ const Relatorio:NextPage = () => {
         <imagesCardContext.Provider value={{
           images, setImages
         }}>
-          <section className='d-flex container-lg'>
+          <section className='d-flex container-lg buttons-section'>
             <Link href="/catalog">
               <a
                 className="btn btn-primary d-flex gap-2 align-items-center"
