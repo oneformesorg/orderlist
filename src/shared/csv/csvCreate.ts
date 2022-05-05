@@ -65,7 +65,7 @@ export const createCSV = (
   catalogState: CatalogContent,
   t: TFunction,
   title: string,
-  outputType:CSVTypeOutput = 'DOWNLOAD'
+  outputType:CSVTypeOutput = 'DOWNLOAD',
 ) => {
   const listItems = catalogState.list.map((listName) => {
     return [listName, list.items.filter(({ list }) => listName === list)];

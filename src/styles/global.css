@@ -83,6 +83,11 @@ button {
 }
 
 #tables-container {
+  input[type='text'] {
+    outline: none;
+    border: none;
+    border-bottom: dashed 1px #ccc;
+  }
   table {
     width: 100%;
   }

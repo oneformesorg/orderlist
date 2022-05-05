@@ -1,6 +1,6 @@
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TableHead } from './components/TableHead';
 import { TableBody } from './components/TableBody';
 import { ClothingParts } from '@shared/Catalog';
@@ -31,12 +31,13 @@ export function OrderTable() {
   const { t } = useTranslation();
   const [sublists, setSublist] = useState<Lists>([]);
   const [isPrinted, setIsPrinted] = useState(false);
-  const [normalList] = useState(state.items.filter(({ isCycling, list }) => !isCycling && !list));
-  const [cyclingList] = useState(state.items.filter(({ isCycling, list }) => isCycling && !list));
+  const [normalList, setNormalList] = useState([]);
+  const [cyclingList, setCyclingList] = useState([]);
   const catalogState = useCatalogState();
   const [sublistsCloths, setSublistCloths] = useState<{[key: string]: [string[], string[]]}>({});
   const [clothList, setClothList] = useState<string[]>([]);
   const [cyclingClothList, setCyclingClothList] = useState<string[]>([]);
+  const defaultListNameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     catalogState.list.map((name) => {
@@ -50,6 +51,8 @@ export function OrderTable() {
     setSublist(old => {
       return old.filter(([listName]) => state.items.some(({ list }) => list === listName));
     });
+    setNormalList(state.items.filter(({ isCycling, list }) => !isCycling && !list));
+    setCyclingList(state.items.filter(({ isCycling, list }) => isCycling && !list));
   }, [catalogState, state]);
   
   useEffect(() => {
@@ -67,16 +70,41 @@ export function OrderTable() {
   return (
     <section id='tables-container'>
       {normalList.length > 0 && !catalogState.isCycling && (
-        <table id="tableOrderListItems">
-          <TableHead isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothings={clothings}/>
-          <TableBody isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothingList={clothings}/>
-        </table>
+        <>
+
+          {isPrinted && !defaultListNameRef.current?.value ? null : (
+            <h4 className={`mt-2 ${isPrinted ? 'text-center' : ''}`}>
+              <input 
+                placeholder={t('DOWNLOAD_DEFAULT')}
+                type="text"
+                className={`${isPrinted ? 'text-center pt-2' : ''}`}
+                ref={defaultListNameRef}
+              />
+            </h4>
+          )}
+          <table id="tableOrderListItems">
+            <TableHead isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothings={clothings}/>
+            <TableBody isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothingList={clothings}/>
+          </table>
+        </>
       )}
       {cyclingList.length > 0 && catalogState.isCycling && (
-        <table id="tableOrderListItems">
-          <TableHead isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothings={cyclingClothings} isCycling={true}/>
-          <TableBody isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothingList={cyclingClothings}/>
-        </table>
+        <>
+          {isPrinted && !defaultListNameRef.current?.value ? null : (
+            <h4 className={`mt-2 ${isPrinted ? 'text-center p-5' : ''}`}>
+              <input 
+                placeholder={t('DOWNLOAD_DEFAULT')}
+                type="text"
+                className={`${isPrinted ? 'text-center pt-2' : ''}`}
+                ref={defaultListNameRef}
+              />
+            </h4>
+          )}
+          <table id="tableOrderListItems">
+            <TableHead isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothings={cyclingClothings} isCycling={true}/>
+            <TableBody isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothingList={cyclingClothings}/>
+          </table>
+        </>
       )}
       {sublists?.map(([name, [normal, cycling]], i) => (
         <section key={`section_mai--${i}`}>
@@ -86,8 +114,8 @@ export function OrderTable() {
               <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 ? (
                 <table id="tableOrderListItems" key={`${i}_sublist--cycling`}>
-                  <TableHead isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name][1]} clothings={cyclingClothings} isCycling={true}/>
-                  <TableBody isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name][1]} clothingList={cyclingClothings}/>
+                  <TableHead isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothings={cyclingClothings} isCycling={true}/>
+                  <TableBody isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothingList={cyclingClothings}/>
                 </table>
               ) : null}
             </>  
@@ -97,8 +125,8 @@ export function OrderTable() {
                 <>
                   <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
                   <table id="tableOrderListItems" key={`${i}_sublist--normal`}>
-                    <TableHead isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name][0]} clothings={clothings}/>
-                    <TableBody isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name][0]} clothingList={clothings}/>
+                    <TableHead isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothings={clothings}/>
+                    <TableBody isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothingList={clothings}/>
                   </table>
                 </>
               ) : null}
@@ -109,7 +137,7 @@ export function OrderTable() {
       ))}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
         <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
-          <DownloadCSVModal />
+          <DownloadCSVModal/>
           <SendEmailModal />
           <button 
             className='btn btn-primary d-flex gap-2 align-items-center'
