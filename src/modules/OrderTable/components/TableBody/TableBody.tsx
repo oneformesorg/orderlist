@@ -12,11 +12,12 @@ import style from './style.module.css';
 
 type Props = {
   list: Array<ListItem>
+  clothingsInPrint: string[]
   clothingList: ClothingParts[]
   isPrinted: boolean
 }
 
-export function TableBody({ list, clothingList, isPrinted }: Props) {
+export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: Props) {
   const { t, i18n } = useTranslation();
   const catalogState = useCatalogState();
   const { dispatch } = useList();
@@ -66,16 +67,31 @@ export function TableBody({ list, clothingList, isPrinted }: Props) {
             <td className={style.tableCell}>
               {props.number || ''}
             </td>
-            {clothingList.map((currCloth, i) => (
-              <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>
-                {
-                  currCloth === 'socks' ?
-                    `${props.clothes[currCloth].quantity || '-'}` :
-                    `${props.clothes[currCloth].quantity || ''} - ${t(props.clothes[currCloth].size)}`
-                }
-              </td>
-            
-            ))}
+            {isPrinted ? (
+              <>
+                {clothingsInPrint.map((currCloth, i) => (
+                  <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>
+                    {
+                      currCloth === 'socks' ?
+                        `${props.clothes[currCloth].quantity || '-'}` :
+                        `${props.clothes[currCloth].quantity || ''} - ${t(props.clothes[currCloth].size)}`
+                    }
+                  </td>
+                ))}
+              </>
+            ) : (
+              <>
+                {clothingList.map((currCloth, i) => (
+                  <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>
+                    {
+                      currCloth === 'socks' ?
+                        `${props.clothes[currCloth].quantity || '-'}` :
+                        `${props.clothes[currCloth].quantity || ''} - ${t(props.clothes[currCloth].size)}`
+                    }
+                  </td>
+                ))}
+              </>
+            )}
             <td className={style.tableCell}>
               {currencyConv(sanitizeValue(catalogState, props.gender, props.isCycling, props.clothes))}              
             </td>
@@ -102,7 +118,7 @@ export function TableBody({ list, clothingList, isPrinted }: Props) {
         <tr>
           {
             deleteList?.length ? (
-              <td colSpan={99}>
+              <td colSpan={99} className='p-2'>
                 <button 
                   onClick={() => {
                     dispatch({
