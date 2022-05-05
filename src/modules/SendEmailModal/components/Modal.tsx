@@ -65,7 +65,6 @@ const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
       })
         .then(() => setApiIsLoading('PROMISE'))
         .catch(e => {
-          console.log(e);
           e ?? setApiIsLoading('NOT INITIALIZED');
         })
         .finally(() => {

@@ -102,7 +102,6 @@ export function CatalogReducer() {
     if(
       catalog !== JSON.stringify(state) && JSON.stringify(state) !== JSON.stringify(initialCatalog)
     ){
-      console.log('é diferente');
       localStorage.setItem('@orderlist/catalog', JSON.stringify(state));
     }
   }, [state]);

@@ -81,3 +81,45 @@ button {
     display: none !important;
   }
 }
+
+#tables-container {
+  input[type='text'] {
+    outline: none;
+    border: none;
+    border-bottom: dashed 1px #ccc;
+  }
+  table {
+    width: 100%;
+  }
+  
+  table,
+  td, th {
+    border: 1px solid #000;
+    border-collapse: collapse;
+  }
+  
+  th {
+    padding: 5.rem 1rem;
+  }
+  
+  table, td, th, thead {
+    transition: 0.1s all;
+  }
+  
+  input[type="checkbox"] {
+    transition: none !important;
+  }
+  thead {
+    background: #fff;
+  }
+  tr:hover{
+    background: #bbb;
+  }
+  
+  td:hover {
+    background: #211;
+    color: #fff;
+  }
+}
+  
+  

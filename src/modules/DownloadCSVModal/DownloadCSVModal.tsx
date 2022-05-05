@@ -33,7 +33,6 @@ export function DownloadCSVModal() {
       <CSVFileNameModal 
         ref={modalRef}
         onSubmit={(name) => {
-          console.log(timestampForTitle(i18n.language));
           import('@shared/csv/csvCreate')
             .then(mod => mod.createCSV(listState, catalogState, t, `${name} ${timestampForTitle(i18n.language)}`));
         }}

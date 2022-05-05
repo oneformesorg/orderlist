@@ -1,19 +1,19 @@
 import { faCoins, faEdit, faEye, faHandHoldingUsd, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ClothingParts } from '@shared/Catalog';
 import { ListItem } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
-  clothings: ClothingParts[]
+  clothings: string[]
+  clothingsInPrint: string[]
   list: ListItem[]
   isCycling?: boolean
   isPrinted: boolean
 }
 
-export function TableHead({ clothings, isCycling, isPrinted, list }: Props) {
+export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPrint }: Props) {
   const { t } = useTranslation();
   const [pieces, setPieces] = useState(0);
   
@@ -27,32 +27,54 @@ export function TableHead({ clothings, isCycling, isPrinted, list }: Props) {
   }, [list]);
   return (
     <thead>
-      <tr>
-        <td colSpan={14} className="text-center">
-          <strong>
+      {isPrinted ? (
+        <tr>
+          <td colSpan={14} className="text-center p-2">
             {t('MAIN_TITLE')} -{' '}
             {`${t('CONTAINS_N_UNITS')} ${pieces}`}
-          </strong>
-        </td>
-      </tr>
+            <strong>
+            </strong>
+          </td>
+        </tr>
+      ) : null}
       <tr className="text-center">
         <th style={{ maxWidth: '50px' }}>
           <FontAwesomeIcon icon={faHandHoldingUsd} />
         </th>
         <th className="text-left">{t('NAME')}</th>
         <th>{t('NUMBER')}</th>
-        {clothings.map((cloth, i) => (
-          <th key={`${i}_${cloth}`} className="d-none d-md-table-cell">
-            <Image
-              alt={'cloths illustration'}
-              src={
-                isCycling && cloth !== 'socks' ? `/images/cycling/${cloth}.png` : `/images/${cloth}.png`
-              }
-              height={25}
-              width={25}
-            />
-          </th>
-        ))}
+        {isPrinted ? (
+          <>
+            {clothingsInPrint.map((cloth, i) => (
+              <th key={`${i}_${cloth}`} className="d-none d-md-table-cell d-flex align-items-center p-1">
+                <Image
+                  alt={'cloths illustration'}
+                  src={
+                    isCycling && cloth !== 'socks' ? `/images/cycling/${cloth}.png` : `/images/${cloth}.png`
+                  }
+                  height={25}
+                  width={25}
+                />
+              </th>
+            ))}
+          </>
+        ) : (
+          <>
+            {clothings.map((cloth, i) => (
+              <th key={`${i}_${cloth}`} className="d-none d-md-table-cell d-flex align-items-center p-1">
+                <Image
+                  alt={'cloths illustration'}
+                  src={
+                    isCycling && cloth !== 'socks' ? `/images/cycling/${cloth}.png` : `/images/${cloth}.png`
+                  }
+                  height={25}
+                  width={25}
+                />
+              </th>
+            ))}
+          </>
+        )
+        }
         <th>
           <FontAwesomeIcon icon={faCoins} />
         </th>
