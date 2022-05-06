@@ -77,7 +77,7 @@ export function OrderTable() {
               <input 
                 placeholder={t('DOWNLOAD_DEFAULT')}
                 type="text"
-                className={`${isPrinted ? 'text-center pt-2' : ''}`}
+                className={`${isPrinted ? 'text-center pt-2 border-0' : ''}`}
                 ref={defaultListNameRef}
               />
             </h4>
@@ -95,7 +95,7 @@ export function OrderTable() {
               <input 
                 placeholder={t('DOWNLOAD_DEFAULT')}
                 type="text"
-                className={`${isPrinted ? 'text-center pt-2' : ''}`}
+                className={`${isPrinted ? 'text-center pt-2 border-0' : ''}`}
                 ref={defaultListNameRef}
               />
             </h4>
