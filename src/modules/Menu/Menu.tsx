@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faDollar } from '@fortawesome/free-solid-svg-icons';
+import { faDollar } from '@fortawesome/free-solid-svg-icons';
 import LanguageDropdown from './components/LanguageDropdown/LanguageDropdown';
 import style from './style.module.css';
 import { useTranslation } from 'next-i18next';
@@ -30,20 +30,10 @@ export function Menu() {
             >
               <FontAwesomeIcon icon={faDollar} /> 
               <span className='d-none d-sm-inline'>
-                {t('PRICES')}
+                {t('SETTINGS_POPUP_TITLE')}
               </span>
             </a>
           </Link>
-        </li> 
-        <li>
-          <a
-            className='btn btn-light'
-            href='https://oneformes.com/'
-            target={'_blank'}
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faEye} />
-          </a>
         </li> 
         <li>
           <LanguageDropdown />
