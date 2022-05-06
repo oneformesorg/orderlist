@@ -22,6 +22,16 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
   const catalogState = useCatalogState();
   const { dispatch } = useList();
   const [totalValue, setTotalValue] = useState(0);
+  const renderSize = (quantity: number, size: string, clothName?: string) => {
+    if(clothName === 'socks'){
+      return quantity || '-';
+    }
+    if(!size || !quantity){
+      return '-';
+    }
+    return t(size);
+  };
+
   useEffect(() => {
     const value = list.reduce((prev, props) => (
       prev+sanitizeValue(catalogState, props.gender, props.isCycling, props.clothes)
@@ -74,9 +84,11 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
                 {clothingsInPrint.map((currCloth, i) => (
                   <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>
                     {
-                      currCloth === 'socks' ?
-                        `${props.clothes[currCloth].quantity || '-'}` :
-                        `${props.clothes[currCloth].quantity || ''} - ${t(props.clothes[currCloth].size)}`
+                      renderSize(
+                        props.clothes[currCloth].quantity,
+                        `${props.gender}-${props.clothes[currCloth].size}`,
+                        currCloth
+                      )
                     }
                   </td>
                 ))}
@@ -86,9 +98,11 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
                 {clothingList.map((currCloth, i) => (
                   <td className={`${style.tableCell} d-none d-md-table-cell`} key={`clothing_${i}_quantity`}>
                     {
-                      currCloth === 'socks' ?
-                        `${props.clothes[currCloth].quantity || '-'}` :
-                        `${props.clothes[currCloth].quantity || ''} - ${t(props.clothes[currCloth].size)}`
+                      renderSize(
+                        props.clothes[currCloth].quantity,
+                        `${props.gender}-${props.clothes[currCloth].size}`,
+                        currCloth
+                      )
                     }
                   </td>
                 ))}

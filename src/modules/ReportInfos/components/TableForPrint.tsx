@@ -19,6 +19,17 @@ type Props = {
 export function TableForPrint({ list }: Props) {
   const { t } = useTranslation();
   const [clotheList, setClotheList] = useState<string[]>([]);
+
+  const renderSize = (quantity: number, size: string, clothName?: string) => {
+    if(clothName === 'socks'){
+      return quantity || '-';
+    }
+    if(!size || !quantity){
+      return '-';
+    }
+    return t(size);
+  };
+
   useEffect(() => {
     const sanitizedList = list.reduce((prev, list) => {
       return [
@@ -74,11 +85,11 @@ export function TableForPrint({ list }: Props) {
                 key={`${i}_${clotheName}`}
               >
                 {
-                  clotheName === 'socks' 
-                    ? (
-                      clothes[clotheName].quantity || '-'
-                    ) 
-                    : `${clothes[clotheName].quantity || ''}-${t(clothes[clotheName].size)}`
+                  renderSize(
+                    clothes[clotheName].quantity,
+                    `${gender}-${clothes[clotheName].size}`,
+                    clotheName  
+                  )
                 }
               </td>
             ))}
