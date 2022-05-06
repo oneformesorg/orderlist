@@ -126,11 +126,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Select isSearchable={false} options={
                     gender !== 'CHILDISH' ? (
                       sizes.adult.map((size) => ({
-                        value: size, label: t(size)
+                        value: size, label: t(`${gender}-${size}`)
                       }))
                     ) : (
                       sizes.childish.map((size) => ({
-                        value: size, label: t(size)
+                        value: size, label: t(`${gender}-${size}`)
                       }))
                     )
                   }
@@ -176,11 +176,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                     options={
                       gender !== 'CHILDISH' ? (
                         sizes.adult.map((size) => ({
-                          value: size, label: t(size)
+                          value: size, label: t(`${gender}-${size}`)
                         }))
                       ) : (
                         sizes.childish.map((size) => ({
-                          value: size, label: t(size)
+                          value: size, label: t(`${gender}-${size}`)
                         }))
                       )
                     }
