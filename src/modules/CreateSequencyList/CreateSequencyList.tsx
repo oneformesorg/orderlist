@@ -209,11 +209,11 @@ export function CreateSequencyList() {
                 <Select isSearchable={false} options={
                   gender !== 'CHILDISH' ? (
                     sizes.adult.map((size) => ({
-                      value: size, label: t(size)
+                      value: size, label: t(`${gender}-${size}`)
                     }))
                   ) : (
                     sizes.childish.map((size) => ({
-                      value: size, label: t(size)
+                      value: size, label: t(`${gender}-${size}`)
                     }))
                   )
                 }
@@ -230,10 +230,6 @@ export function CreateSequencyList() {
           <Button variant="secondary" onClick={() => onClose()}>{t('CLOSE')}</Button>
           <Button 
             onClick={() => {
-              // listDispatch({
-              //   type: 'clearList'
-              // });
-              // onClose();
               const listItem = [];
               
               for (let i = minNumber; i <= maxNumber; i++) {
@@ -264,11 +260,11 @@ export function CreateSequencyList() {
                   list: selectedList,
                   name: ''
                 });
-                
-                // listDispatch({
-                //   type: 'addItem'
-                // });
-                
+                setSelectedList('');
+                SetSelectedClothes(clotheInitialState);
+                setMinNumber(0);
+                setMaxNumber(0);
+                onClose();
               }
               listDispatch({
                 type: 'addItems',

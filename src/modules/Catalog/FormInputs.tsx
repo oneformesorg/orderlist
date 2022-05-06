@@ -28,6 +28,10 @@ export function FormInputs() {
   const [catalogQuery, setCatalogQuery] = React.useState('');
   const [cyclingMode, setCyclingMode] = React.useState(false);
   
+  const sanitizeSizes = (arr: string[], gender: string) => (
+    arr.map((item) => gender+'-'+item)
+  );
+
   React.useEffect(() => {
     setCyclingMode(state.isCycling);
   }, [state]);
@@ -116,25 +120,25 @@ export function FormInputs() {
         {cyclingMode ? (
           <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="male" title={t('MALE')}>
-              <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={adultSizes} reference={'cyclingPriceTableMale'} />
+              <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={sanitizeSizes(adultSizes, 'MALE')} reference={'cyclingPriceTableMale'} />
             </Tab>
             <Tab eventKey="female" title={t('FEMALE')}>
-              <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={adultSizes} reference={'cyclingPriceTableFemale'} />
+              <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={sanitizeSizes(adultSizes, 'FEMALE')} reference={'cyclingPriceTableFemale'} />
             </Tab>
             <Tab eventKey="childish" title={t('CHILDISH')}>
-              <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={childSize} reference={'cyclingPriceTableChildish'} />
+              <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={sanitizeSizes(childSize, 'CHILDISH')} reference={'cyclingPriceTableChildish'} />
             </Tab>
           </Tabs>
         ) : (
           <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="male" title={t('MALE')}>
-              <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={adultSizes} reference={'priceTableMale'} />
+              <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={sanitizeSizes(adultSizes, 'MALE')} reference={'priceTableMale'} />
             </Tab>
             <Tab eventKey="female" title={t('FEMALE')}>
-              <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={adultSizes} reference={'priceTableFemale'} />
+              <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={sanitizeSizes(adultSizes, 'FEMALE')} reference={'priceTableFemale'} />
             </Tab>
             <Tab eventKey="childish" title={t('CHILDISH')}>
-              <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={childSize} reference={'priceTableChildish'} />
+              <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={sanitizeSizes(childSize, 'CHILDISH')} reference={'priceTableChildish'} />
             </Tab>
           </Tabs>
         )}

@@ -34,16 +34,13 @@ function sanitizeCSV(list: ListItem[], t: TFunction){
     t('CSVID_SOCKS')
   ];
   const clothArr = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest', 'socks'];
-  
-
 
   return list.map(({ gender, name, number, clothes }) => {
     const clothings = clothArr.map((currCloth) => {
       if(currCloth === 'socks') return `${t(clothingCSV[currCloth])}=${clothes[currCloth].quantity || ''}`;
       
       if(clothes[currCloth].quantity === 0) return `${t(clothingCSV[currCloth])}=`;
-      
-      return `${t(clothingCSV[currCloth])}=${clothes[currCloth].quantity || ''}-${t(clothes[currCloth].size)}`;
+      return `${t(clothingCSV[currCloth])}=${clothes[currCloth].quantity || ''}-${t(`${gender}-${clothes[currCloth].size}`)}`;
     });
     return [csvGender[gender], name, number, ...clothings];
   })
@@ -85,6 +82,7 @@ export const createCSV = (
   listItems.forEach(([key, list]) => {
     if(list.length > 0){
       const csv = sanitizeCSV(list as ListItem[], t);
+      console.log(csv);
       const bkpFile = Buffer.from(csv, 'base64');
       
       csvFolder.file(`${key}.csv`, csv);
