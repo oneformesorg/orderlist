@@ -1,7 +1,7 @@
 import { ClothingParts, CyclingClothingParts } from '@shared/Catalog/interfaces';
 
 export type AdultCloths = {
-  size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
+  size: 'PP' | 'P' | 'M' | 'G' | 'GG' | 'XG' | '2XG' | '3XG' | '4XG'
   clothe: ClothingParts | CyclingClothingParts
   quantity: number
 }
@@ -13,14 +13,14 @@ export type ChildishCloths = {
 
 export type AdultCLothStructure = {
   [value in ClothingParts]: {
-    size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
+    size: 'PP' | 'P' | 'M' | 'G' | 'GG' | 'XG' | '2XG' | '3XG' | '4XG'
     quantity: number
   }
 }
 
 export type ChildishClothStructure = {
   [value in ClothingParts]: {
-    size: 'T-PP' | 'T-P' | 'T-M' | 'T-G' | 'T-GG' | 'T-XG' | 'T-2XG' | 'T-3XG' | 'T-4XG'
+    size: 'PP' | 'P' | 'M' | 'G' | 'GG' | 'XG' | '2XG' | '3XG' | '4XG'
     quantity: number
   }
 }
