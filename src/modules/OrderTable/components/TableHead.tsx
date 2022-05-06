@@ -27,16 +27,12 @@ export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPr
   }, [list]);
   return (
     <thead>
-      {isPrinted ? (
-        <tr>
-          <td colSpan={14} className="text-center p-2">
-            {t('MAIN_TITLE')} -{' '}
-            {`${t('CONTAINS_N_UNITS')} ${pieces}`}
-            <strong>
-            </strong>
-          </td>
-        </tr>
-      ) : null}
+      <tr className='totalPieces'>
+        <td colSpan={14} className="text-center p-2">
+          {t('MAIN_TITLE')} -{' '}
+          {`${t('CONTAINS_N_UNITS')} ${pieces}`}
+        </td>
+      </tr>
       <tr className="text-center">
         <th style={{ maxWidth: '50px' }}>
           <FontAwesomeIcon icon={faHandHoldingUsd} />

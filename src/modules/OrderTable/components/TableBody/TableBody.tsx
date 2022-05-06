@@ -52,7 +52,9 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
         {list.map((props) => (
           <tr key={`${props.id}_checkbox`}>
             <td className={style.tableCell}>
+              <label className={style.ghostLabel} htmlFor={`checkbox_${props.id}`} />
               <input
+                id={`checkbox_${props.id}`}
                 type="checkbox"
                 onChange={e => (
                   e.target.checked 
