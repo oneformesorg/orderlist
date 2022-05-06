@@ -28,6 +28,10 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
     }) };
   case 'addItems':
     return { ...state, items: payload };
+  case 'clearList':
+    return {
+      ...state, items: []
+    };
   default:
     return state;
   }

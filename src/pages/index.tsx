@@ -15,6 +15,7 @@ import { ListActionProvider } from '@shared/List';
 import dynamic from 'next/dynamic';
 import { Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'next-i18next';
+import ClearList from '@modules/ClearList/ClearList';
 
 const PasteListModalDynamic = dynamic(
   import('@modules/PasteListModal/PasteListModal').then(mod => mod.PasteListModal),
@@ -70,6 +71,9 @@ const Home: NextPage = () => {
                   </Dropdown.Item>
                   <Dropdown.Item as='button'>
                     <ImportCSVButton />
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <ClearList />
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
