@@ -16,9 +16,7 @@ export function ListReducer() {
   }, []);
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if(JSON.stringify(state) !== JSON.stringify({ items: [] })){
-        localStorage.setItem('@orderlist/list', JSON.stringify(state.items));
-      }
+      localStorage.setItem('@orderlist/list', JSON.stringify(state.items));
     }
   }, [state]);
 
