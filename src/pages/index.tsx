@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic';
 import { Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'next-i18next';
 import ClearList from '@modules/ClearList/ClearList';
+import { CreateSequencyList } from '@modules/CreateSequencyList';
 
 const PasteListModalDynamic = dynamic(
   import('@modules/PasteListModal/PasteListModal').then(mod => mod.PasteListModal),
@@ -55,12 +56,10 @@ const Home: NextPage = () => {
       </Head>
       <Menu />
       <div className="container-md">
-      
         <CatalogStateProvider>
           <ListActionProvider>
             <CreateItemDynamic />
             <section className="mt-3 d-flex justify-content-end border-top p-3 gap-3">
-              
               <Dropdown>
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
                   {t('TOOLS')}
@@ -75,10 +74,12 @@ const Home: NextPage = () => {
                   <Dropdown.Item>
                     <ClearList />
                   </Dropdown.Item>
+                  <Dropdown.Item>
+                    <CreateSequencyList />
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </section>
-
             <OrderTableDynamic />
           </ListActionProvider>
         </CatalogStateProvider>
