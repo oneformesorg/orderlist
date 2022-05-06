@@ -94,7 +94,7 @@ button {
   
   table,
   td, th {
-    border: 1px solid #000;
+    border: 1px solid #616160;
     border-collapse: collapse;
   }
   
@@ -109,16 +109,27 @@ button {
   input[type="checkbox"] {
     transition: none !important;
   }
-  thead {
+  thead > tr {
+    background: #e6e3e3;
+  }
+  thead > .totalPieces {
     background: #fff;
   }
-  tr:hover{
+  tbody > tr:hover{
     background: #bbb;
+  }
+
+  tbody td {
+    padding: .3rem;
   }
   
   td:hover {
     background: #211;
     color: #fff;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #ededed;
   }
 }
   
