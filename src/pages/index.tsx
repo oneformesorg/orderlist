@@ -13,6 +13,8 @@ import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { ListActionProvider } from '@shared/List';
 import dynamic from 'next/dynamic';
+import { Dropdown } from 'react-bootstrap';
+import { useTranslation } from 'next-i18next';
 
 const PasteListModalDynamic = dynamic(
   import('@modules/PasteListModal/PasteListModal').then(mod => mod.PasteListModal),
@@ -29,7 +31,8 @@ const CreateItemDynamic = dynamic(
 const Home: NextPage = () => {
   const { query } = useRouter();
   const catalogDispatch = useCatalogAction();
-  
+  const { t } = useTranslation();
+
   useEffect(() => {
     if(typeof query.q === 'string'){
       OneformesAPI<CatalogContent>({
@@ -55,9 +58,21 @@ const Home: NextPage = () => {
         <CatalogStateProvider>
           <ListActionProvider>
             <CreateItemDynamic />
-            <section className="mt-3 d-flex justify-content-center border-top p-3 gap-3">
-              <PasteListModalDynamic />
-              <ImportCSVButton />
+            <section className="mt-3 d-flex justify-content-end border-top p-3 gap-3">
+              
+              <Dropdown>
+                <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                  {t('TOOLS')}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as='button'>
+                    <PasteListModalDynamic />
+                  </Dropdown.Item>
+                  <Dropdown.Item as='button'>
+                    <ImportCSVButton />
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </section>
 
             <OrderTableDynamic />
