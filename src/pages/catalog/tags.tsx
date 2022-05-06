@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'next-i18next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { aspectRatio } from '@shared/utils/aspectRatio';
 
 const Relatorio:NextPage = () => {
@@ -17,9 +17,6 @@ const Relatorio:NextPage = () => {
     width: 124,
     height: 165.33
   });
-  useEffect(() => {
-    console.log(tagSize);
-  }, [tagSize]);
   return(
     <>
       <Head>
