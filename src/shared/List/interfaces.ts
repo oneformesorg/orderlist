@@ -31,23 +31,15 @@ export type GenericClothStructure = {
     quantity: number
   }
 }
-
+export type Gender = 'MALE' | 'FEMALE' | 'CHILDISH'
 export type ListItem = {
-  gender: 'MALE' | 'FEMALE'
+  gender: Gender
   name: string
   number: string
   isCycling: boolean
   list: string
   id: string
   clothes: GenericClothStructure 
-} | {
-  gender: 'CHILDISH'
-  name: string
-  number: string
-  isCycling: boolean
-  list: string
-  id: string
-  clothes: GenericClothStructure
 }
 export type ListState = {
   items: Array<ListItem>
@@ -74,6 +66,9 @@ export type ListAction = {
 } | {
   type: 'addItems'
   payload: ListItem[]
+} | {
+  type: 'clearList'
+  payload?: undefined
 }
 
 export type ListReducerType = (state: ListState, action: ListAction) => ListState

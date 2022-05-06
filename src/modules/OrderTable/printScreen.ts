@@ -32,7 +32,6 @@ export async function PrintTable(t: TFunction){
 
       // REMOVE DOM ELEMENTS TO PREVENT DUPLICATES
       a.remove();
-      console.log(targetCanvas.toDataURL());
       targetCanvas.remove();
     })
     .then(() => {

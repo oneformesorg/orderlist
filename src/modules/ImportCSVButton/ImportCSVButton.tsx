@@ -45,7 +45,7 @@ export function ImportCSVButton() {
     <>
       <button 
         onClick={() => inputRef.current.click()}
-        className='btn btn-info btn-sm d-flex align-items-center gap-2 text-light'
+        className='btn d-flex align-items-center gap-3'
       >
         <FontAwesomeIcon icon={faDownload} />
         <span className='ml-1 d-none d-md-inline'>

@@ -14,7 +14,7 @@ export function PasteListModal() {
   return (
     <>
       <button 
-        className='btn btn-success btn-sm d-flex align-items-center gap-2'
+        className='btn d-flex align-items-center gap-3'
         onClick={() => modalPasteListRef.current.showModal()}
       >
         <FontAwesomeIcon icon={faClipboard} />
