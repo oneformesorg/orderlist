@@ -71,7 +71,10 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
             <Select
               isSearchable={false}
               defaultValue={{ value: list, label: list }}
-              options={catalogState.list.map(item => ({ value: item, label: item }))}
+              options={[
+                ...catalogState.list.map(item => ({ value: item, label: item })),
+                { value: '', label: '' }
+              ]}
               onChange={(e) => setList(e.value)}
             />
           </InputGroup>

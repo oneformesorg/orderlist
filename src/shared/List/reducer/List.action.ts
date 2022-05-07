@@ -29,6 +29,11 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
   case 'addItems':
     return { ...state, items: [...state.items, ...payload] };
   case 'clearList':
+    if(payload){
+      return {
+        ...state, items: state.items.filter(({ list }) => list !== payload)  
+      };
+    }
     return {
       ...state, items: []
     };

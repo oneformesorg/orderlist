@@ -93,7 +93,10 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
             <label>{t('LIST')}:</label>
             <Select 
               isSearchable={false}
-              options={catalogState.list.map(item => ({ value: item, label: item }))}
+              options={[
+                ...catalogState.list.map(item => ({ value: item, label: item })),
+                { value: '', label: '' }
+              ]}
               onChange={(e) => setList(e.value)}
             />
           </InputGroup>

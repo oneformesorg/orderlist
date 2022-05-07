@@ -68,7 +68,7 @@ export type ListAction = {
   payload: ListItem[]
 } | {
   type: 'clearList'
-  payload?: undefined
+  payload?: string
 }
 
 export type ListReducerType = (state: ListState, action: ListAction) => ListState
