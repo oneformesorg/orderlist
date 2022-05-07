@@ -70,7 +70,7 @@ export function CreateSequencyList() {
         onClick={onOpen}
       >
         <FontAwesomeIcon icon={faBolt} />
-        <span className="ml-1 d-none d-md-inline-block">
+        <span className="ml-1">
           {t('SEQUENCY')}
         </span>
       </button>
