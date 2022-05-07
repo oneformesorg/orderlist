@@ -136,7 +136,7 @@ export function OrderTable() {
         </section>
       ))}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
-        <section className='position-relative mt-3 d-flex justify-content-center p-3 gap-3'>
+        <section className='position-relative mt-2 mb-3 d-flex justify-content-center p-3 gap-3'>
           <DownloadCSVModal/>
           <SendEmailModal />
           <section className='position-absolute w-100 d-flex align-items-center justify-content-end'>
