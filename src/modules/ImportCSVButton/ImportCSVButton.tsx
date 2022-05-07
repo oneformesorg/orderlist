@@ -48,7 +48,7 @@ export function ImportCSVButton() {
         className='btn d-flex align-items-center gap-3'
       >
         <FontAwesomeIcon icon={faDownload} />
-        <span className='ml-1 d-none d-md-inline'>
+        <span className='ml-1'>
           {t('UPLOAD')}
         </span>
       </button>

@@ -60,7 +60,7 @@ const Home: NextPage = () => {
           <ListActionProvider>
             <CreateItemDynamic />
             <CatalogActionProvider>
-              <section className="mt-3 d-flex justify-content-end border-top p-3 gap-3">
+              <section className="mt-3 d-flex justify-content-end p-3 gap-3">
                 <Dropdown>
                   <Dropdown.Toggle variant="dark" id="dropdown-basic">
                     {t('TOOLS')}

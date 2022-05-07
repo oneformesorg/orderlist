@@ -30,8 +30,7 @@ export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPr
   return (
     <thead>
       <tr className='totalPieces'>
-        <td colSpan={14} className="text-center p-2">
-          {t('MAIN_TITLE')} -{' '}
+        <td colSpan={14} className="text-end p-2">
           {`${t('CONTAINS_N_UNITS')} ${pieces}`}
         </td>
       </tr>

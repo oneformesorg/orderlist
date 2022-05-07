@@ -18,7 +18,7 @@ export function PasteListModal() {
         onClick={() => modalPasteListRef.current.showModal()}
       >
         <FontAwesomeIcon icon={faClipboard} />
-        <span className='ml-1 d-none d-md-inline'>
+        <span className='ml-1'>
           {t('PASTE_LIST')}
         </span>
       </button>
