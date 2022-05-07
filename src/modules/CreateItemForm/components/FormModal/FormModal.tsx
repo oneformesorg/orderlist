@@ -94,8 +94,8 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
             <Select 
               isSearchable={false}
               options={[
+                { value: '', label: '' },
                 ...catalogState.list.map(item => ({ value: item, label: item })),
-                { value: '', label: '' }
               ]}
               onChange={(e) => setList(e.value)}
             />
