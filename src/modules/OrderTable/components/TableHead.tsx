@@ -1,9 +1,10 @@
-import { faCoins, faEdit, faEye, faHandHoldingUsd, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faEdit, faEye, faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ListItem } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import DeleteListAndItems from './DeleteListAndItems';
 
 type Props = {
   clothings: string[]
@@ -11,9 +12,10 @@ type Props = {
   list: ListItem[]
   isCycling?: boolean
   isPrinted: boolean
+  listName: string
 }
 
-export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPrint }: Props) {
+export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPrint, listName }: Props) {
   const { t } = useTranslation();
   const [pieces, setPieces] = useState(0);
   
@@ -80,7 +82,7 @@ export function TableHead({ clothings, isCycling, isPrinted, list, clothingsInPr
               <FontAwesomeIcon icon={faEdit} />
             </th>
             <th className='d-none d-md-table-cell'>
-              <FontAwesomeIcon icon={faTrash} />
+              <DeleteListAndItems listName={listName}/>
             </th>
             <th className='d-table-cell d-md-none'>
               <FontAwesomeIcon icon={faEye} />

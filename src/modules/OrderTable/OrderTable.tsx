@@ -83,7 +83,7 @@ export function OrderTable() {
             </h4>
           )}
           <table id="tableOrderListItems">
-            <TableHead isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothings={clothings}/>
+            <TableHead listName='' isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothings={clothings}/>
             <TableBody isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothingList={clothings}/>
           </table>
         </>
@@ -101,7 +101,7 @@ export function OrderTable() {
             </h4>
           )}
           <table id="tableOrderListItems">
-            <TableHead isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothings={cyclingClothings} isCycling={true}/>
+            <TableHead listName='' isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothings={cyclingClothings} isCycling={true}/>
             <TableBody isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothingList={cyclingClothings}/>
           </table>
         </>
@@ -114,7 +114,7 @@ export function OrderTable() {
               <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 ? (
                 <table id="tableOrderListItems" key={`${i}_sublist--cycling`}>
-                  <TableHead isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothings={cyclingClothings} isCycling={true}/>
+                  <TableHead listName={name} isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothings={cyclingClothings} isCycling={true}/>
                   <TableBody isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothingList={cyclingClothings}/>
                 </table>
               ) : null}
@@ -125,7 +125,7 @@ export function OrderTable() {
                 <>
                   <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
                   <table id="tableOrderListItems" key={`${i}_sublist--normal`}>
-                    <TableHead isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothings={clothings}/>
+                    <TableHead listName={name} isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothings={clothings}/>
                     <TableBody isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothingList={clothings}/>
                   </table>
                 </>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CatalogContent } from '@shared/Catalog';
-import { CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
+import { CatalogActionProvider, CatalogStateProvider, useCatalogAction } from '@shared/Catalog/context/catalog';
 // import { CreateItemForm } from '@modules/CreateItemForm/CreateItemForm';
 // import { OrderTable } from '@modules/OrderTable/OrderTable';
 // import { PasteListModal } from '@modules/PasteListModal/PasteListModal';
@@ -59,27 +59,29 @@ const Home: NextPage = () => {
         <CatalogStateProvider>
           <ListActionProvider>
             <CreateItemDynamic />
-            <section className="mt-3 d-flex justify-content-end border-top p-3 gap-3">
-              <Dropdown>
-                <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                  {t('TOOLS')}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item as='button'>
-                    <PasteListModalDynamic />
-                  </Dropdown.Item>
-                  <Dropdown.Item as='button'>
-                    <ImportCSVButton />
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <ClearList />
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <CreateSequencyList />
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </section>
+            <CatalogActionProvider>
+              <section className="mt-3 d-flex justify-content-end border-top p-3 gap-3">
+                <Dropdown>
+                  <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                    {t('TOOLS')}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item as='button'>
+                      <PasteListModalDynamic />
+                    </Dropdown.Item>
+                    <Dropdown.Item as='button'>
+                      <ImportCSVButton />
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <ClearList />
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <CreateSequencyList />
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </section>
+            </CatalogActionProvider>
             <OrderTableDynamic />
           </ListActionProvider>
         </CatalogStateProvider>
