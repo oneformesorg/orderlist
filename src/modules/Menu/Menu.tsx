@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDollar } from '@fortawesome/free-solid-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 import LanguageDropdown from './components/LanguageDropdown/LanguageDropdown';
 import style from './style.module.css';
 import { useTranslation } from 'next-i18next';
@@ -28,7 +28,7 @@ export function Menu() {
             <a
               className='btn btn-light d-flex align-items-center gap-2'
             >
-              <FontAwesomeIcon icon={faDollar} /> 
+              <FontAwesomeIcon icon={faGear} /> 
               <span className='d-none d-sm-inline'>
                 {t('SETTINGS_POPUP_TITLE')}
               </span>

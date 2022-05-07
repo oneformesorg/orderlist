@@ -136,23 +136,24 @@ export function OrderTable() {
         </section>
       ))}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
-        <section className='mt-3 d-flex justify-content-end border-top p-3 gap-3'>
+        <section className='position-relative mt-3 d-flex justify-content-center p-3 gap-3'>
           <DownloadCSVModal/>
           <SendEmailModal />
-          <button 
-            className='btn btn-primary d-flex gap-2 align-items-center'
-            onClick={async () => {
-              setIsPrinted(true);
-              import('./printScreen')
-                .then(mod => mod.PrintTable(t))
-                .finally(() => {
-                  setIsPrinted(false);
-                });
-            }}
-          >
-            <FontAwesomeIcon icon={faCamera} />
-            {t('TAKE_SCREENSHOT')}
-          </button>
+          <section className='position-absolute w-100 d-flex align-items-center justify-content-end'>
+            <button 
+              className='btn brn-sm btn-primary d-flex align-items-center'
+              onClick={async () => {
+                setIsPrinted(true);
+                import('./printScreen')
+                  .then(mod => mod.PrintTable(t))
+                  .finally(() => {
+                    setIsPrinted(false);
+                  });
+              }}
+            >
+              <FontAwesomeIcon icon={faCamera} />
+            </button>
+          </section>
         </section>
       ) : null}
     </section>
