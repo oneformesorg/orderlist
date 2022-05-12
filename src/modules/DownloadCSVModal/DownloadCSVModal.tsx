@@ -18,7 +18,7 @@ export function DownloadCSVModal() {
   const { state: listState } = useList();
   const catalogState = useCatalogState();
   const modalRef = useRef<CSVModalRef>(null);
-  console.log(__filename);
+
   return (
     <>
       <button
