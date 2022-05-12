@@ -18,11 +18,14 @@ export function DownloadCSVModal() {
   const { state: listState } = useList();
   const catalogState = useCatalogState();
   const modalRef = useRef<CSVModalRef>(null);
-
+  console.log(__filename);
   return (
     <>
-      <button 
+      <button
         className='btn btn-secondary btn-sm d-flex align-items-center gap-2'
+        style={{
+          zIndex: '2'
+        }}
         onClick={() => modalRef.current.handleOpen()}
       >
         <FontAwesomeIcon icon={faFileCsv} />
