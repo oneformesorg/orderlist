@@ -39,7 +39,6 @@ const sizesForTranslate: [string, [string, string, string]][] = [
 
 const translateSizeForSystem = (size: string[] | string) => {
   const sizeNormalized = typeof size === 'string' ? size : size.join('-');
-  console.log(size, sizeNormalized);
   const sizeForSystem = sizesForTranslate.filter(([, langs]) => {
     const [en, es, pt] = langs;
     return sizeNormalized === en || sizeNormalized === es || sizeNormalized === pt;

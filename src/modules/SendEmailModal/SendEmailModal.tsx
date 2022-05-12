@@ -11,6 +11,9 @@ export function SendEmailModal() {
     <>
       <button 
         onClick={() => modalRef.current.showModal()}
+        style={{
+          zIndex: '2'
+        }}
         className='btn btn-secondary btn-sm d-flex align-items-center gap-2'
       >
         <FontAwesomeIcon icon={faEnvelope} />
