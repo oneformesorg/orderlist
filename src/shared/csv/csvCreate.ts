@@ -82,7 +82,6 @@ export const createCSV = (
   listItems.forEach(([key, list]) => {
     if(list.length > 0){
       const csv = sanitizeCSV(list as ListItem[], t);
-      console.log(csv);
       const bkpFile = Buffer.from(csv, 'base64');
       
       csvFolder.file(`${key}.csv`, csv);
