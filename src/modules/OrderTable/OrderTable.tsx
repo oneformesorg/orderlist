@@ -24,8 +24,8 @@ const selectedClothes = (list: ListItem[]) => {
     .filter((cloth,pos, arr) => arr.indexOf(cloth) === pos);
 };
 
-const clothings:ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshirtLong', 'vest', 'socks'];
-const cyclingClothings:ClothingParts[] = ['pants', 'shorts', 'tshirt', 'tshirtLong', 'socks'];
+const clothings:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest', 'socks'];
+const cyclingClothings:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'socks'];
 export function OrderTable() {
   const { state } = useList();
   const { t } = useTranslation();
