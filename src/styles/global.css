@@ -70,7 +70,7 @@ button {
 }
 
 @media print {
-  .not-printed {
+  .not-printed, .invisible-for-print {
     display: none !important;
   }
   div, section {

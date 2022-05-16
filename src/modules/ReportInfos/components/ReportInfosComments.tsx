@@ -34,7 +34,13 @@ export function ReportInfosComments() {
               >
                 {title}
               </p>
-              <p className='mb-0 py-2'>
+              <p 
+                className='mb-0 py-2'
+                style={{
+                  marginLeft: '2.3rem',
+                  wordBreak: 'break-all'
+                }}
+              >
                 {body}
               </p>
             </div>
