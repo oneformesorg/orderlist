@@ -13,8 +13,9 @@ import { useCatalogState } from '@shared/Catalog/context/catalog';
 export type EditItemModalRef = {
   showModal: () => void
 }
-const clothes: ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshirtLong', 'vest'];
-const cyclingClothes: CyclingClothingParts[] = ['pants', 'shorts', 'tshirt', 'tshirtLong'];
+
+const clothes:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest'];
+const cyclingClothes:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants'];
 const sizes = {
   adult: adultSizes,
   childish: childSize
@@ -102,22 +103,32 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select isSearchable={false} options={
-                    gender !== 'CHILDISH' ? (
-                      sizes.adult.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    ) : (
-                      sizes.childish.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    )
-                  }
-                  onChange={e => {
-                    setClothList(list => ({ ...list, [clothe]: {
-                      size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
-                    } }));
-                  }}
+                  <Select 
+                    isSearchable={false}
+                    defaultValue={
+                      clothList[clothe].quantity ? 
+                        {
+                          label: t(`${gender}-${clothList[clothe].size}`),
+                          value: clothList[clothe].size
+                        } :
+                        {}
+                    }
+                    options={
+                      gender !== 'CHILDISH' ? (
+                        sizes.adult.map((size) => ({
+                          value: size, label: t(`${gender}-${size}`)
+                        }))
+                      ) : (
+                        sizes.childish.map((size) => ({
+                          value: size, label: t(`${gender}-${size}`)
+                        }))
+                      )
+                    }
+                    onChange={e => {
+                      setClothList(list => ({ ...list, [clothe]: {
+                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                      } }));
+                    }}
                   />
                 </Col>
                 <Col xs={5}>
@@ -149,22 +160,32 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select isSearchable={false} options={
-                    gender !== 'CHILDISH' ? (
-                      sizes.adult.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    ) : (
-                      sizes.childish.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    )
-                  }
-                  onChange={e => {
-                    setClothList(list => ({ ...list, [clothe]: {
-                      size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
-                    } }));
-                  }}
+                  <Select
+                    defaultValue={
+                      clothList[clothe].quantity ? 
+                        {
+                          label: t(`${gender}-${clothList[clothe].size}`),
+                          value: clothList[clothe].size
+                        } :
+                        {}
+                    }
+                    isSearchable={false} 
+                    options={
+                      gender !== 'CHILDISH' ? (
+                        sizes.adult.map((size) => ({
+                          value: size, label: t(`${gender}-${size}`)
+                        }))
+                      ) : (
+                        sizes.childish.map((size) => ({
+                          value: size, label: t(`${gender}-${size}`)
+                        }))
+                      )
+                    }
+                    onChange={e => {
+                      setClothList(list => ({ ...list, [clothe]: {
+                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                      } }));
+                    }}
                   />
                 </Col>
                 <Col xs={5}>

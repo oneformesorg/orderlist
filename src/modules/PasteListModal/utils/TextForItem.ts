@@ -1,22 +1,22 @@
 import { generateId } from '@shared/utils/generateId';
 const sizesForTranslate: [string, [string, string, string]][] = [
-  ['T-PP', ['XS', 'XS', 'PP']],
-  ['T-P', ['S', 'S', 'P']],
-  ['T-M', ['M', 'M', 'M']],
-  ['T-G', ['L', 'L', 'G']],
-  ['T-GG', ['XL', 'XL', 'GG']],
-  ['T-XG', ['XXL', 'XXL', 'XG']],
-  ['T-2XG', ['2XL', '2XL', '2XG']],
-  ['T-3XG', ['3XL', '3XL', '3XG']],
-  ['T-4XG', ['4XL', '4XL', '4XG']],
-  ['T-2A', ['2-3', '2 años', '2 anos']],
-  ['T-4A', ['4-5', '4 años', '4 anos']],
-  ['T-6A', ['6-6X', '6 años', '6 anos']],
-  ['T-8A', ['7-8', '8 años', '8 anos']],
-  ['T-10A', ['10', '10 años', '10 anos']],
-  ['T-12A', ['12', '12 años', '12 anos']],
-  ['T-14A', ['14', '14 años', '14 anos']],
-  ['T-16A', ['16', '16 años', '16 anos']],
+  ['PP', ['XS', 'XS', 'PP']],
+  ['P', ['S', 'S', 'P']],
+  ['M', ['M', 'M', 'M']],
+  ['G', ['L', 'L', 'G']],
+  ['GG', ['XL', 'XL', 'GG']],
+  ['XG', ['XXL', 'XXL', 'XG']],
+  ['2XG', ['2XL', '2XL', '2XG']],
+  ['3XG', ['3XL', '3XL', '3XG']],
+  ['4XG', ['4XL', '4XL', '4XG']],
+  ['2A', ['2-3', '2 años', '2 anos']],
+  ['4A', ['4-5', '4 años', '4 anos']],
+  ['6A', ['6-6X', '6 años', '6 anos']],
+  ['8A', ['7-8', '8 años', '8 anos']],
+  ['10A', ['10', '10 años', '10 anos']],
+  ['12A', ['12', '12 años', '12 anos']],
+  ['14A', ['14', '14 años', '14 anos']],
+  ['16A', ['16', '16 años', '16 anos']],
   
 ];
 
@@ -44,7 +44,7 @@ function createClothList(clothes: [string, boolean][], size=''){
     return {
       ...prev,
       [clothName]: {
-        size: isSelected ? verifySizeForTranslation(size) : '', 
+        size: isSelected ? verifySizeForTranslation(size.toUpperCase()) : '', 
         quantity: isSelected ? 1 : 0
       }
     };
