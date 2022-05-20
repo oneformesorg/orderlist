@@ -21,7 +21,7 @@ const sizesForTranslate: [string, [string, string, string]][] = [
 ];
 
 function verifySizeForTranslation(dirtySize: string) {
-  const size = dirtySize.replace(' ', '');
+  const size = dirtySize.trim();
   const lang = sizesForTranslate.find(([, dirtyLang]) => {
     return size === dirtyLang[0] || size === dirtyLang[1] || size === dirtyLang[2];
   });

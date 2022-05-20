@@ -9,6 +9,7 @@ import styles from './ReportInfos.module.css';
 import Image from 'next/image';
 import { TableForPrint } from './components/TableForPrint';
 import autosize from 'autosize';
+import { ReportInfosComments } from './components/ReportInfosComments';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
@@ -49,6 +50,9 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
   };
 
   useEffect(() => {
+    autosize(document.querySelectorAll('textarea'));
+  }, []);
+  useEffect(() => {
     autosize(document.querySelector('textarea.form-control'));
     const sanitizedList = listState.items.reduce((prev, list) => {
       return [
@@ -63,7 +67,6 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
     ));
     setUniqueList(uniqueList);
   }, [listState]);
-
   useEffect(() => {
     setDefaultList(listState.items.filter(item => item.list === ''));
     setSublists(list.reduce((prev, curr) => ({
@@ -72,165 +75,233 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
   }, [listState, list]);
   return (
     <section className={`${styles.docA4} container-sm`} id='docForPrint'>
-      <section className={styles.headerA4}>
-        <section className="companyInfos">
+      <div className={styles.headerA4}>
+        <section>
           <input 
-            className={styles.companyInfosInput}
-            type="text"
-            defaultValue={projectName}
-            placeholder='Company name'
+            aria-describedby='productTitle' 
+            alt='Company name input' type="text" 
+            placeholder={t('COMPANY_NAME')}
           />
-          <p className={styles.companyInfosParagraph}>
+          <h1 className={styles.reportTitle}>
             {t('PROCESSING_REPORT_TITLE')}
-          </p>
-          <p className={styles.companyInfosTimestamp}>
+          </h1>
+          <p>
             {formatTimestamp(i18n.language)}
           </p>
         </section>
-        <section className="reportInfos">
-          <table>
-            <tbody>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="serviceOrder">{t('SERVICE_ORDER')}</label>
-                </td>
-                <td><input type="text" id="serviceOrder"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="client">{t('CLIENT')}</label>
-                </td>
-                <td><input type="text" id="client"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="requestData">{t('REQUEST_DATE')}</label>
-                </td>
-                <td><input type="date" id="requestData"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="deliveryDate">{t('DELIVERY_DATE')}</label>
-                </td>
-                <td><input type="date" id="deliveryDate"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="responsible">{t('REPONSIBLE')}</label>
-                </td>
-                <td><input type="text" id="responsible"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="payment">{t('PAYMENT_METHOD')}</label>
-                </td>
-                <td><input type="text" id="payment"/></td>
-              </tr>
-              <tr>
-                <td className={styles.tdLabel}>
-                  <label htmlFor="finalValue">{t('ORDERLIST_FINAL_VALUE')}</label>
-                </td>
-                <td><input type="text" id="finalValue"/></td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-      </section>
-      <h1 className='mt-3'>
-        {
-          isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
-        }
-      </h1>
-      {defaultList.length > 0 && (
-        <TableForPrint list={defaultList}/>
-      )}
-      {
-        Object.entries(sublists).map(([key, listItems], i) =>(
-          <section key={`sublist__item__${i}`}>
-            {listItems.length > 0 ? (
-              <section
-                className='mt-4'
-                key={`${key}__section__${i}`}
-              >
-                <h4 className='text-center'>{key}</h4>
-                <TableForPrint list={listItems}/>
-              </section>
-            ) : null}
-          </section> 
-        ))
-      }
-      <section className='my-4'>
-        <h4>{t('REPORT_PIECES_COUNTING')}</h4>
-        <table className='mx-auto'>
+
+        <table>
           <tbody>
-            {uniqueList.map((clothe, i) => (
-              <React.Fragment key={`${clothe}__${i}`}>
-                {countPieces(clothe) ? (
-                  <>
-                    <td className='p-4'>
-                      <Image
-                        src={
-                          isCycling 
-                            ? `/images/cycling/${clothe}.png`
-                            : `/images/${clothe}.png`
-                        }
-                        alt={`${clothe} illustration`}
-                        height={25}
-                        width={25}
-                      />
-                    </td>
-                    <td className='p-4'>
-                      {countPieces(clothe)}
-                    </td>
-                  </>
-                ): null}
-              </React.Fragment>
-            ))}
-            <td className='p-3'>
-              Total
-            </td>
-            <td className='p-4'>
-              {totalCountPieces()}
-            </td>
+            <tr>
+              <td className={styles.orderInfoLabel}>
+                Pedido
+              </td>
+              <td className={styles.orderInfoFields}>
+                <input type="text" name="" id="" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <section className={styles.orderInfo}>
+        <table>
+          <tbody>
+            <tr>
+              <td>Cor meião</td>
+              <td colSpan={2}><input type="text" name="" id="" /></td>
+              
+              <td>Marca meião</td>
+              <td colSpan={2}><input type="text" name="" id="" /></td>
+            </tr>
+            <tr>
+              <td>Tecido calção</td>
+              <td><input type="text" name="" id="" /></td>
+              <td>largura</td>
+              <td><input type="text" name="" id="" /></td>
+              <td 
+                colSpan={2}
+                rowSpan={3}
+              >
+                <p className="text-center">Prova de cor</p>
+                <div className='d-flex gap-2 justify-content-center'>
+                  <div className='d-inline-flex align-items-center'>
+                    <input 
+                      type="radio"
+                      name="teste"
+                      id="yes"
+                    />
+                    <label 
+                      htmlFor="yes"
+                      style={{
+                        marginLeft: '4px'
+                      }}
+                    >
+                      Sim
+                    </label>
+                  </div>
+                  <div className='d-inline-flex align-items-center'>
+                    <input 
+                      type="radio"
+                      name="teste"
+                      id="no"
+                    />
+                    <label 
+                      htmlFor="no"
+                      style={{
+                        marginLeft: '4px'
+                      }}
+                    >
+                      Não
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    borderBottom: '1px solid #000',
+                    height: '24px'
+                  }}
+                >
+                  {' '}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Tecido camisa</td>
+              <td><input type="text" name="" id="" /></td>
+              <td>Largura</td>
+              <td><input type="text" name="" id="" /></td>
+            </tr>
+            <tr>
+              <td>Papel</td>
+              <td><input type="text" name="" id="" /></td>
+              <td>Largura</td>
+              <td><input type="text" /></td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+            <tr>
+              <td>Client</td>
+              <td><input type="text" name="" id="" /></td>
+            </tr>
+            <tr>
+              <td>Request date</td>
+              <td><input type="date" name="" id="" /></td>
+            </tr>
+            <tr>
+              <td>Delivery date</td>
+              <td><input type="date" name="" id="" /></td>
+            </tr>
+            <tr>
+              <td>Vendedor</td>
+              <td><input type="text" name="" id="" /></td>
+            </tr>
           </tbody>
         </table>
       </section>
-      <section className={`m-3 mt-5 form-floating ${textArea ? '' : styles.textArea}`}>
-        <textarea 
-          className="form-control" placeholder="" id="floatingTextarea"
-          value={textArea}
-          onChange={e => setTextArea(e.target.value)}
-        ></textarea>
-        <label htmlFor="floatingTextarea">{t('ANNOTATIONS')}</label>
+      <section className={styles.orderComments}>
+        <section className={`form-floating ${textArea ? '' : styles.textArea}`}>
+          <textarea 
+            className="form-control" placeholder="" id="floatingTextarea"
+            value={textArea}
+            onChange={e => setTextArea(e.target.value)}
+          ></textarea>
+          <label htmlFor="floatingTextarea">{t('ANNOTATIONS')}</label>
+        </section>
+        <ReportInfosComments />
       </section>
-      <section className='mb-5'>
-        {images.length > 0 && (
-          <h2 className='border-bottom'>Images</h2>
+      
+      <section className="clothesTable">
+        <h1 className='mt-3'>
+          {
+            isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
+          }
+        </h1>
+        {defaultList.length > 0 && (
+          <TableForPrint list={defaultList}/>
         )}
-        <section className={`d-flex gap-2 flex-wrap ${styles.cardContainer}`}>
-          {images.map(({ image, description, width }, i) => (
-            <section 
-              key={`card-image__${i}`}
-              className={`card ${styles.imageCard} align-self-start`}
-              style={{ width }}
-            >
-              <button 
-                onClick={() => onDelete(i)}
-                className={`${styles.deleteImageButton} btn btn-danger rounded`}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>    
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} className="card-img-top" alt="..." />
-              {description && (
-                <section className="card-body">
-                  <p className="card-text">
-                    {description}
-                  </p>
+        {
+          Object.entries(sublists).map(([key, listItems], i) =>(
+            <section key={`sublist__item__${i}`}>
+              {listItems.length > 0 ? (
+                <section
+                  className='mt-4'
+                  key={`${key}__section__${i}`}
+                >
+                  <h4 className='text-center'>{key}</h4>
+                  <TableForPrint list={listItems}/>
                 </section>
-              )}
-            </section>
-          ))}
+              ) : null}
+            </section> 
+          ))
+        }
+        <section className='my-4'>
+          <h4>{t('REPORT_PIECES_COUNTING')}</h4>
+          <table className='mx-auto'>
+            <tbody>
+              {uniqueList.map((clothe, i) => (
+                <React.Fragment key={`${clothe}__${i}`}>
+                  {countPieces(clothe) ? (
+                    <>
+                      <td className='p-4'>
+                        <Image
+                          src={
+                            isCycling 
+                              ? `/images/cycling/${clothe}.png`
+                              : `/images/${clothe}.png`
+                          }
+                          alt={`${clothe} illustration`}
+                          height={25}
+                          width={25}
+                        />
+                      </td>
+                      <td className='p-4'>
+                        {countPieces(clothe)}
+                      </td>
+                    </>
+                  ): null}
+                </React.Fragment>
+              ))}
+              <td className='p-3'>
+                Total
+              </td>
+              <td className='p-4'>
+                {totalCountPieces()}
+              </td>
+            </tbody>
+          </table>
+        </section>
+
+        <section className='mb-5'>
+          {images.length > 0 && (
+            <h2 className='border-bottom'>Images</h2>
+          )}
+          <section className={`d-flex gap-2 flex-wrap ${styles.cardContainer}`}>
+            {images.map(({ image, description, width }, i) => (
+              <section 
+                key={`card-image__${i}`}
+                className={`card ${styles.imageCard} align-self-start`}
+                style={{ width }}
+              >
+                <button 
+                  onClick={() => onDelete(i)}
+                  className={`${styles.deleteImageButton} btn btn-danger rounded`}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>    
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image} className="card-img-top" alt="..." />
+                {description && (
+                  <section className="card-body">
+                    <p className="card-text">
+                      {description}
+                    </p>
+                  </section>
+                )}
+              </section>
+            ))}
+          </section>
         </section>
       </section>
     </section>
