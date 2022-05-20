@@ -27,7 +27,7 @@ export function TableForPrint({ list }: Props) {
     if(!size || !quantity){
       return '-';
     }
-    return t(size);
+    return `${quantity}-${t(size)}`;
   };
 
   useEffect(() => {
