@@ -29,7 +29,7 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
     if(!size || !quantity){
       return '-';
     }
-    return t(size);
+    return `${quantity}-${t(size)}`;
   };
 
   useEffect(() => {

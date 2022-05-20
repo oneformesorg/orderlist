@@ -21,8 +21,11 @@ export function DownloadCSVModal() {
 
   return (
     <>
-      <button 
+      <button
         className='btn btn-secondary btn-sm d-flex align-items-center gap-2'
+        style={{
+          zIndex: '2'
+        }}
         onClick={() => modalRef.current.handleOpen()}
       >
         <FontAwesomeIcon icon={faFileCsv} />

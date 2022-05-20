@@ -11,8 +11,8 @@ import { useCatalogState } from '@shared/Catalog/context/catalog';
 export type FormModalRef = {
   showModal: () => void
 }
-const clothes: ClothingParts[] = ['pants', 'shorts', 'tanktop', 'tshirt', 'tshirtLong', 'vest'];
-const cyclingClothes: CyclingClothingParts[] = ['pants', 'shorts', 'tshirt', 'tshirtLong'];
+const clothes: ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest', 'socks'];
+const cyclingClothes: CyclingClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants'];
 const sizes = {
   adult: adultSizes,
   childish: childSize

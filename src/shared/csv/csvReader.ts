@@ -26,20 +26,19 @@ const sizesForTranslate: [string, [string, string, string]][] = [
   ['2XG', ['BL-2XL', 'BL-2XL', 'BL-2XG']],
   ['3XG', ['BL-3XL', 'BL-3XL', 'BL-3XG']],
   ['4XG', ['BL-4XL', 'BL-4XL', 'BL-4XG']],
-  ['CHILDISH-2A', ['2-3', '2 años', '2 anos']],
-  ['CHILDISH-4A', ['4-5', '4 años', '4 anos']],
-  ['CHILDISH-6A', ['6-6X', '6 años', '6 anos']],
-  ['CHILDISH-8A', ['7-8', '8 años', '8 anos']],
-  ['CHILDISH-10A', ['10', '10 años', '10 anos']],
-  ['CHILDISH-12A', ['12', '12 años', '12 anos']],
-  ['CHILDISH-14A', ['14', '14 años', '14 anos']],
-  ['CHILDISH-16A', ['16', '16 años', '16 anos']],
+  ['2A', ['2-3', '2 años', '2 anos']],
+  ['4A', ['4-5', '4 años', '4 anos']],
+  ['6A', ['6-6X', '6 años', '6 anos']],
+  ['8A', ['7-8', '8 años', '8 anos']],
+  ['10A', ['10', '10 años', '10 anos']],
+  ['12A', ['12', '12 años', '12 anos']],
+  ['14A', ['14', '14 años', '14 anos']],
+  ['16A', ['16', '16 años', '16 anos']],
   
 ];
 
 const translateSizeForSystem = (size: string[] | string) => {
   const sizeNormalized = typeof size === 'string' ? size : size.join('-');
-  console.log(size, sizeNormalized);
   const sizeForSystem = sizesForTranslate.filter(([, langs]) => {
     const [en, es, pt] = langs;
     return sizeNormalized === en || sizeNormalized === es || sizeNormalized === pt;

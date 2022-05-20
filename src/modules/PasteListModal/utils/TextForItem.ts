@@ -9,15 +9,6 @@ const sizesForTranslate: [string, [string, string, string]][] = [
   ['2XG', ['2XL', '2XL', '2XG']],
   ['3XG', ['3XL', '3XL', '3XG']],
   ['4XG', ['4XL', '4XL', '4XG']],
-  ['PP', ['BL-XS', 'BL-XS', 'BL-PP']],
-  ['P', ['BL-S', 'BL-S', 'BL-P']],
-  ['M', ['BL-M', 'BL-M', 'BL-M']],
-  ['G', ['BL-L', 'BL-L', 'BL-G']],
-  ['GG', ['BL-XL', 'BL-XL', 'BL-GG']],
-  ['XG', ['BL-XXL', 'BL-XXL', 'BL-XG']],
-  ['2XG', ['BL-2XL', 'BL-2XL', 'BL-2XG']],
-  ['3XG', ['BL-3XL', 'BL-3XL', 'BL-3XG']],
-  ['4XG', ['BL-4XL', 'BL-4XL', 'BL-4XG']],
   ['2A', ['2-3', '2 años', '2 anos']],
   ['4A', ['4-5', '4 años', '4 anos']],
   ['6A', ['6-6X', '6 años', '6 anos']],
@@ -53,7 +44,7 @@ function createClothList(clothes: [string, boolean][], size=''){
     return {
       ...prev,
       [clothName]: {
-        size: isSelected ? verifySizeForTranslation(size) : '', 
+        size: isSelected ? verifySizeForTranslation(size.toUpperCase()) : '', 
         quantity: isSelected ? 1 : 0
       }
     };
