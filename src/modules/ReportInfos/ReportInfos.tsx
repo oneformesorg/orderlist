@@ -211,6 +211,99 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         </section>
         <ReportInfosComments />
       </section>
+      
+      <section className="clothesTable">
+        <h1 className='mt-3'>
+          {
+            isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
+          }
+        </h1>
+        {defaultList.length > 0 && (
+          <TableForPrint list={defaultList}/>
+        )}
+        {
+          Object.entries(sublists).map(([key, listItems], i) =>(
+            <section key={`sublist__item__${i}`}>
+              {listItems.length > 0 ? (
+                <section
+                  className='mt-4'
+                  key={`${key}__section__${i}`}
+                >
+                  <h4 className='text-center'>{key}</h4>
+                  <TableForPrint list={listItems}/>
+                </section>
+              ) : null}
+            </section> 
+          ))
+        }
+        <section className='my-4'>
+          <h4>{t('REPORT_PIECES_COUNTING')}</h4>
+          <table className='mx-auto'>
+            <tbody>
+              {uniqueList.map((clothe, i) => (
+                <React.Fragment key={`${clothe}__${i}`}>
+                  {countPieces(clothe) ? (
+                    <>
+                      <td className='p-4'>
+                        <Image
+                          src={
+                            isCycling 
+                              ? `/images/cycling/${clothe}.png`
+                              : `/images/${clothe}.png`
+                          }
+                          alt={`${clothe} illustration`}
+                          height={25}
+                          width={25}
+                        />
+                      </td>
+                      <td className='p-4'>
+                        {countPieces(clothe)}
+                      </td>
+                    </>
+                  ): null}
+                </React.Fragment>
+              ))}
+              <td className='p-3'>
+                Total
+              </td>
+              <td className='p-4'>
+                {totalCountPieces()}
+              </td>
+            </tbody>
+          </table>
+        </section>
+
+        <section className='mb-5'>
+          {images.length > 0 && (
+            <h2 className='border-bottom'>Images</h2>
+          )}
+          <section className={`d-flex gap-2 flex-wrap ${styles.cardContainer}`}>
+            {images.map(({ image, description, width }, i) => (
+              <section 
+                key={`card-image__${i}`}
+                className={`card ${styles.imageCard} align-self-start`}
+                style={{ width }}
+              >
+                <button 
+                  onClick={() => onDelete(i)}
+                  className={`${styles.deleteImageButton} btn btn-danger rounded`}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>    
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image} className="card-img-top" alt="..." />
+                {description && (
+                  <section className="card-body">
+                    <p className="card-text">
+                      {description}
+                    </p>
+                  </section>
+                )}
+              </section>
+            ))}
+          </section>
+        </section>
+      </section>
     </section>
   );
 }
