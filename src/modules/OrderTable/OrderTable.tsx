@@ -1,14 +1,13 @@
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import React, { useEffect, useRef, useState } from 'react';
-import { TableHead } from './components/TableHead';
-import { TableBody } from './components/TableBody';
 import { ClothingParts } from '@shared/Catalog';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
 import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'next-i18next';
+import { Table } from './components/Table';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -82,10 +81,16 @@ export function OrderTable() {
               />
             </h4>
           )}
-          <table id="tableOrderListItems">
-            <TableHead listName='' isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothings={clothings}/>
-            <TableBody isPrinted={isPrinted} list={normalList} clothingsInPrint={clothList} clothingList={clothings}/>
-          </table>
+          <Table 
+            listName='' 
+            isPrinted={isPrinted} 
+            list={normalList} 
+            clothingsInPrint={clothList} 
+            clothings={clothings} 
+            isCycling={false} 
+            clothingList={clothings}
+          />
+          
         </>
       )}
       {cyclingList.length > 0 && catalogState.isCycling && (
@@ -100,10 +105,15 @@ export function OrderTable() {
               />
             </h4>
           )}
-          <table id="tableOrderListItems">
-            <TableHead listName='' isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothings={cyclingClothings} isCycling={true}/>
-            <TableBody isPrinted={isPrinted} list={cyclingList} clothingsInPrint={cyclingClothList} clothingList={cyclingClothings}/>
-          </table>
+          <Table 
+            listName=''
+            isPrinted={isPrinted}
+            list={cyclingList}
+            clothingsInPrint={cyclingClothList}
+            clothings={cyclingClothings}
+            isCycling={true}
+            clothingList={cyclingClothings}
+          />
         </>
       )}
       {sublists?.map(([name, [normal, cycling]], i) => (
@@ -111,12 +121,19 @@ export function OrderTable() {
     
           {catalogState.isCycling ? (
             <>
-              <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
               {cycling.length > 0 ? (
-                <table id="tableOrderListItems" key={`${i}_sublist--cycling`}>
-                  <TableHead listName={name} isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothings={cyclingClothings} isCycling={true}/>
-                  <TableBody isPrinted={isPrinted} list={cycling} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} clothingList={cyclingClothings}/>
-                </table>
+                <>
+                  <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
+                  <Table 
+                    listName={name} 
+                    isPrinted={isPrinted} 
+                    list={cycling} 
+                    clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][1] : []} 
+                    clothings={cyclingClothings} 
+                    isCycling={true}
+                    clothingList={cyclingClothings}
+                  />
+                </>
               ) : null}
             </>  
           ) : (
@@ -124,10 +141,15 @@ export function OrderTable() {
               {normal.length > 0 ? (
                 <>
                   <h4 className='text-center mt-2' key={`${name}_${i}`}>{name}</h4>
-                  <table id="tableOrderListItems" key={`${i}_sublist--normal`}>
-                    <TableHead listName={name} isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothings={clothings}/>
-                    <TableBody isPrinted={isPrinted} list={normal} clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} clothingList={clothings}/>
-                  </table>
+                  <Table
+                    listName={name} 
+                    isPrinted={isPrinted} 
+                    list={normal} 
+                    clothingsInPrint={sublistsCloths[name] ? sublistsCloths[name][0] : []} 
+                    clothings={clothings}
+                    isCycling={false}
+                    clothingList={clothings}
+                  />
                 </>
               ) : null}
             </>
