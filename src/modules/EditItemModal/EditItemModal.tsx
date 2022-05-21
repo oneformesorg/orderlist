@@ -36,7 +36,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
   const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
-  const [list, setList] = useState(currentItem.list);
+  const [list, setList] = useState(currentItem.list || '');
   const [clothList, setClothList] = useState<ClothList>(
     listState.items.find(({ id: currId }) => id === currId)?.clothes
   );
