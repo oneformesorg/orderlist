@@ -137,21 +137,21 @@ export function Table({
                   >
                     <button onClick={() => {
                       if(!currentOrder){
-                        changeOrderList(cloth, 'HighToLow');
-                        setCurrentOrder([cloth, 'HighToLow']);
+                        changeOrderList(cloth, 'DECREASING');
+                        setCurrentOrder([cloth, 'DECREASING']);
                         return;
                       }
                       if(currentOrder[0] === cloth){
-                        if(currentOrder[1] === 'HighToLow'){
-                          setCurrentOrder([cloth, 'LowToHigh']);
-                          changeOrderList(cloth, 'LowToHigh');
+                        if(currentOrder[1] === 'DECREASING'){
+                          setCurrentOrder([cloth, 'INCREASING']);
+                          changeOrderList(cloth, 'INCREASING');
                         }else {
-                          setCurrentOrder([cloth, 'HighToLow']);
-                          changeOrderList(cloth, 'HighToLow');
+                          setCurrentOrder([cloth, 'DECREASING']);
+                          changeOrderList(cloth, 'DECREASING');
                         }
                       }else {
-                        changeOrderList(cloth, 'HighToLow');
-                        setCurrentOrder([cloth, 'HighToLow']);
+                        changeOrderList(cloth, 'DECREASING');
+                        setCurrentOrder([cloth, 'DECREASING']);
                       }
                     }} aria-label='order list'>
                       <Image

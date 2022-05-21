@@ -42,7 +42,7 @@ const sizeListForLowToHigh = {
   'empty': 100
 };
 
-export type OrderOptions = 'LowToHigh' | 'HighToLow'
+export type OrderOptions = 'INCREASING' | 'DECREASING'
 type orderListFunction = (
   type: OrderOptions, 
   listItems: ListItem[],
@@ -50,7 +50,7 @@ type orderListFunction = (
 ) => ListItem[]
 
 export const orderList:orderListFunction = (orderType, listItems, clotheSelected) => {
-  if(orderType === 'LowToHigh') {
+  if(orderType === 'INCREASING') {
     const orderedList = listItems.sort((a,b) => (
       sizeListForLowToHigh[a.clothes[clotheSelected].size || 'empty'] - 
       sizeListForLowToHigh[b.clothes[clotheSelected].size || 'empty']
@@ -62,6 +62,6 @@ export const orderList:orderListFunction = (orderType, listItems, clotheSelected
     sizeListForHighToLow[b.clothes[clotheSelected].size || 'empty'] - 
     sizeListForHighToLow[a.clothes[clotheSelected].size || 'empty']
   ));
-  
+
   return orderedList;
 };
