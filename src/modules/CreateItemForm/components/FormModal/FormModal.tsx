@@ -1,18 +1,16 @@
-import { ClothingParts, CyclingClothingParts } from '@shared/Catalog';
+import { ClothingParts } from '@shared/Catalog';
 import { useTranslation } from 'next-i18next';
 import React, { useImperativeHandle, useState } from 'react';
 import Image from 'next/image';
 import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { adultSizes, childSize } from '@config/static';
+import { adultSizes, childSize, clothings, cyclingClothings } from '@config/static';
 import { verifyClothList } from '@shared/utils/verifyClothList';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 
 export type FormModalRef = {
   showModal: () => void
 }
-const clothes: ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest', 'socks'];
-const cyclingClothes: CyclingClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants'];
 const sizes = {
   adult: adultSizes,
   childish: childSize
@@ -115,7 +113,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         </InputGroup>
         {isCycling ? (
           <>
-            {cyclingClothes.map((clothe, i) => (
+            {cyclingClothings.map((clothe, i) => (
               <Row className="align-items-center mb-2" key={`${i}_${clothe}`}>
                 <Col xs={2}>
                   <Image 
@@ -162,7 +160,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           </>
         ) : (
           <>
-            {clothes.map((clothe, i) => (
+            {clothings.map((clothe, i) => (
               <Row className="align-items-center mb-2" key={`${i}_${clothe}`}>
                 <Col xs={2}>
                   <Image 

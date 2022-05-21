@@ -1,13 +1,13 @@
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import React, { useEffect, useRef, useState } from 'react';
-import { ClothingParts } from '@shared/Catalog';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
 import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'next-i18next';
 import { Table } from './components/Table';
+import { clothings, cyclingClothings } from '@config/static';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -23,8 +23,6 @@ const selectedClothes = (list: ListItem[]) => {
     .filter((cloth,pos, arr) => arr.indexOf(cloth) === pos);
 };
 
-const clothings:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'tanktop', 'vest', 'socks'];
-const cyclingClothings:ClothingParts[] = ['tshirt', 'tshirtLong', 'shorts', 'pants', 'socks'];
 export function OrderTable() {
   const { state } = useList();
   const { t } = useTranslation();

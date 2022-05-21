@@ -1,3 +1,4 @@
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
@@ -14,7 +15,8 @@ const CSVFileNameModal = forwardRef<CSVModalRef, Props>(function CSVFileNameModa
   const [modalState, setModalState] = useState(false);
   const handleClose = () => setModalState(false);
   const handleOpen = () => setModalState(true);
-  const inputForNameRef = useRef<HTMLInputElement>(null); 
+  const inputForNameRef = useRef<HTMLInputElement>(null);
+  const { isCycling } = useCatalogState();
 
   useImperativeHandle(ref, () => ({
     handleOpen
@@ -39,6 +41,7 @@ const CSVFileNameModal = forwardRef<CSVModalRef, Props>(function CSVFileNameModa
             {t('INFOR_TEXT_USING_DEFAULT')}
           </small>
         </section>
+        {isCycling ? 'ta indo' : 'vish fi'}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
