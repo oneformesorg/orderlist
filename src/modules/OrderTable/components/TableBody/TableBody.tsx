@@ -17,6 +17,16 @@ type Props = {
   isPrinted: boolean
 }
 
+const nameGenerator = (name: string, gender: string) => {
+  const genderList = {
+    'FEMALE': 'FEM',
+    'CHILDISH': 'INF'
+  };
+  if(gender === 'MALE')return name;
+  if(!name) return genderList[gender]; 
+  return `${genderList[gender]}-${name}`;
+};
+
 export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: Props) {
   const { t, i18n } = useTranslation();
   const catalogState = useCatalogState();
@@ -74,7 +84,7 @@ export function TableBody({ list, clothingList, isPrinted, clothingsInPrint }: P
               />
             </td>
             <td className={style.tableCell}>
-              {props.name}
+              {nameGenerator(props.name, props.gender)}
             </td>
             <td className={style.tableCell}>
               {props.number || ''}
