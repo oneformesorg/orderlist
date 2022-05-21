@@ -1,4 +1,4 @@
-import { cyclingClothings } from '@config/static';
+import { clothings, cyclingClothings } from '@config/static';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { OrderOptions } from '@shared/utils/orderList';
 import { useTranslation } from 'next-i18next';
@@ -63,7 +63,15 @@ const CSVFileNameModal = forwardRef<CSVModalRef, Props>(function CSVFileNameModa
                     </Form.Group>
                   ))}
                 </>
-              ) : 'vish fi'}
+              ) : (
+                <>
+                  {clothings.map((clothe, i) => (
+                    <Form.Group key={`ordering#${i}`} controlId="formBasicCheckbox">
+                      <Form.Check onClick={() => setOrderingOpt(clothe)} type="radio" name="clothe" id={`ordering#${i}`} label={t(`CSVID_${clothe.toUpperCase()}`)} />
+                    </Form.Group>
+                  ))}
+                </>
+              )}
             </section>
             <section className='d-flex justify-content-center my-3 gap-4'>
               {orderListType.map((orderType, i) => (
