@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { TableForPrint } from './components/TableForPrint';
 import autosize from 'autosize';
 import { ReportInfosComments } from './components/ReportInfosComments';
+import { orderedItems } from '@shared/utils/groupItemsBySize';
+import { TotalPieces } from './components/TotalPieces';
 
 const formatTimestamp = (locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date)
@@ -18,17 +20,21 @@ const formatTimestamp = (locale: string) => (
 export type ReportInfosProps = {
   onDelete: (id: number) => void
 }
-
 export function ReportInfos({ onDelete }: ReportInfosProps) {
   const { t, i18n } = useTranslation();
-  const { projectName, isCycling } = useCatalogState();
+  const { isCycling } = useCatalogState();
   const { state: listState } = useList();
   const { list } = useCatalogState();
   const [defaultList, setDefaultList] = useState<ListItem[]>([]);
   const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
   const { images } = useContext(imagesCardContext);
-  const [textArea, setTextArea] = useState('');
   const [uniqueList, setUniqueList] = useState<string[]>([]);
+
+  useEffect(() => {
+    orderedItems({
+      clothes: listState.items.map(i => i.clothes)
+    });
+  }, [listState]);
 
   const countPieces = (piece: string) => {
     return listState.items
@@ -77,13 +83,12 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
     <section className={`${styles.docA4} container-sm`} id='docForPrint'>
       <div className={styles.headerA4}>
         <section>
-          <input 
-            aria-describedby='productTitle' 
-            alt='Company name input' type="text" 
-            placeholder={t('COMPANY_NAME')}
-          />
           <h1 className={styles.reportTitle}>
-            {t('PROCESSING_REPORT_TITLE')}
+            <input 
+              type="text" 
+              placeholder={t('PROCESSING_REPORT_TITLE')} 
+              defaultValue={t('PROCESSING_REPORT_TITLE')}
+            />
           </h1>
           <p>
             {formatTimestamp(i18n.language)}
@@ -201,17 +206,41 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         </table>
       </section>
       <section className={styles.orderComments}>
-        <section className={`form-floating ${textArea ? '' : styles.textArea}`}>
-          <textarea 
-            className="form-control" placeholder="" id="floatingTextarea"
-            value={textArea}
-            onChange={e => setTextArea(e.target.value)}
-          ></textarea>
-          <label htmlFor="floatingTextarea">{t('ANNOTATIONS')}</label>
-        </section>
         <ReportInfosComments />
       </section>
-      
+      <section className='mb-2'>
+        {images.length > 0 && (
+          <h2 className='border-bottom'>Images</h2>
+        )}
+        <section className={`${styles.cardContainer}`}>
+          {images.map(({ image, description, width }, i) => (
+            <section 
+              key={`card-image__${i}`}
+              className={`card ${styles.imageCard} align-self-start`}
+              style={{
+                width
+              }}
+            >
+              <button 
+                onClick={() => onDelete(i)}
+                className={`${styles.deleteImageButton} btn btn-danger rounded`}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>    
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image} className="card-img-top" alt="..." />
+              {description && (
+                <section className="card-body">
+                  <p className="card-text">
+                    {description}
+                  </p>
+                </section>
+              )}
+            </section>
+          ))}
+        </section>
+      </section>
+
       <section className="clothesTable">
         <h1 className='mt-3'>
           {
@@ -238,7 +267,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         }
         <section className='my-4'>
           <h4>{t('REPORT_PIECES_COUNTING')}</h4>
-          <table className='mx-auto'>
+          <table className='mx-auto mb-3'>
             <tbody>
               {uniqueList.map((clothe, i) => (
                 <React.Fragment key={`${clothe}__${i}`}>
@@ -271,36 +300,10 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
               </td>
             </tbody>
           </table>
-        </section>
-
-        <section className='mb-5'>
-          {images.length > 0 && (
-            <h2 className='border-bottom'>Images</h2>
-          )}
-          <section className={`d-flex gap-2 flex-wrap ${styles.cardContainer}`}>
-            {images.map(({ image, description, width }, i) => (
-              <section 
-                key={`card-image__${i}`}
-                className={`card ${styles.imageCard} align-self-start`}
-                style={{ width }}
-              >
-                <button 
-                  onClick={() => onDelete(i)}
-                  className={`${styles.deleteImageButton} btn btn-danger rounded`}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>    
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={image} className="card-img-top" alt="..." />
-                {description && (
-                  <section className="card-body">
-                    <p className="card-text">
-                      {description}
-                    </p>
-                  </section>
-                )}
-              </section>
-            ))}
+          <TotalPieces />
+          <section>
+            <label htmlFor="annotations" className={styles.textAreaLabel}>{t('ANNOTATIONS')}</label>
+            <textarea id="annotations" className={styles.textArea}/>
           </section>
         </section>
       </section>
