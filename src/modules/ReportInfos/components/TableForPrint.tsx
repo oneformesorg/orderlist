@@ -63,6 +63,9 @@ export function TableForPrint({ list }: Props) {
             {t(clotheTranslated[clotheName])}
           </td>
         )) }
+        <td>
+          Observações
+        </td>
       </thead>
       <tbody>
         {list.map(({ gender, name, number, clothes, id }) => (
@@ -93,6 +96,7 @@ export function TableForPrint({ list }: Props) {
                 }
               </td>
             ))}
+            <td>ㅤ</td>
           </tr>
         ))}
       </tbody>

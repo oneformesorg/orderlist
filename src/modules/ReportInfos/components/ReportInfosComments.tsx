@@ -18,43 +18,38 @@ export function ReportInfosComments() {
 
   return (
     <section className='d-flex flex-column align-items-center justify-content-center h-100'>
-      <section className='w-100 mb-3'>
+      <section className='w-100 mb-3 d-flex justify-content-center flex-wrap align-items-center'>
         {comments.map(({ title, body }, i) => (
           <div
-            className='position-relative border-bottom' 
+            className='position-relative d-inline' 
             key={`comments__key--${i}`}
           >
-            <div className='d-flex gap-2 align-items-center'>
-              <p 
-                className='mb-0 py-2'
-                style={{
-                  fontWeight: 600,
-                  fontSize: '18px'
-                }}
-              >
-                {title}
-              </p>
-              <p 
-                className='mb-0 py-2'
-                style={{
-                  marginLeft: '2.3rem',
-                  wordBreak: 'break-all'
-                }}
-              >
-                {body}
-              </p>
-            </div>
-            <button 
-              onClick={() => deleteComments(i)}
-              style={{
-                position: 'absolute',
-                right: 0,
-                top: 0
-              }}
-              className='invisible-for-print btn btn-sm btn-danger rounded'
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+            <table>
+              <tr>
+                <td className='p-3'>
+                  {title}  
+                </td>
+                <td
+                  style={{
+                    paddingRight: '38px',
+                    paddingLeft: '8px'
+                  }}
+                >
+                  {body}  
+                  <button 
+                    onClick={() => deleteComments(i)}
+                    style={{
+                      position: 'absolute',
+                      right: '4px',
+                    }}
+                    className='invisible-for-print btn btn-sm btn-danger rounded'
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            </table>
+            
           </div>
         ))}
       </section>
