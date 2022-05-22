@@ -12,7 +12,7 @@ type ListProps = {
 
 const List = ({ arr, t, gender = 'MALE' }: ListProps) => (
   <>
-    {arr.map((arr, mainIndex, arrComplete) => (
+    {arr.map((arr) => (
       <>
         {Object.entries(arr[1]).map(([size, quantity], mainIndex, arrComplete) => (
           <React.Fragment key={generateId()}>
@@ -56,11 +56,9 @@ export function TotalPieces() {
           }}>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>{t('MALE')}</td>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>
               <List t={t} arr={male}/>
             </td>
@@ -72,7 +70,6 @@ export function TotalPieces() {
           }}>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>{t('FEMALE')}</td>
             <td style={{
               padding: '4px 12px',
