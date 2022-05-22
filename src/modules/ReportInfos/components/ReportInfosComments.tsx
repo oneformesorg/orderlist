@@ -17,17 +17,20 @@ export function ReportInfosComments() {
   );
 
   return (
-    <section className='d-flex flex-column align-items-center justify-content-center h-100'>
-      <section className='w-100 mb-3 d-flex justify-content-center flex-wrap align-items-center'>
+    <section className='d-flex flex-column align-items-center justify-content-center w-100'>
+      <section style={{ width: '100%' }} className='mb-3 d-flex flex-wrap align-items-center'>
         {comments.map(({ title, body }, i) => (
           <div
-            className='position-relative d-inline' 
+            className='position-relative' 
             key={`comments__key--${i}`}
+            style={{ width: '50%' }}
           >
-            <table>
+            <table style={{ width: '100%' }}>
               <tr>
-                <td className='p-3'>
-                  {title}  
+                <td className='p-3' style={{ width: '30%' }}>
+                  <b>
+                    {title}
+                  </b>
                 </td>
                 <td
                   style={{

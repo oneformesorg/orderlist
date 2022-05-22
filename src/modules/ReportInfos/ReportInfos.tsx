@@ -239,6 +239,39 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
             </section>
           ))}
         </section>
+        <table className='mx-auto my-3'>
+          <tbody>
+            {uniqueList.map((clothe, i) => (
+              <React.Fragment key={`${clothe}__${i}`}>
+                {countPieces(clothe) ? (
+                  <>
+                    <td className='p-4'>
+                      <Image
+                        src={
+                          isCycling 
+                            ? `/images/cycling/${clothe}.png`
+                            : `/images/${clothe}.png`
+                        }
+                        alt={`${clothe} illustration`}
+                        height={25}
+                        width={25}
+                      />
+                    </td>
+                    <td className='p-4'>
+                      {countPieces(clothe)}
+                    </td>
+                  </>
+                ): null}
+              </React.Fragment>
+            ))}
+            <td className='p-3'>
+                Total
+            </td>
+            <td className='p-4'>
+              {totalCountPieces()}
+            </td>
+          </tbody>
+        </table>
       </section>
 
       <section className="clothesTable">
@@ -267,39 +300,6 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         }
         <section className='my-4'>
           <h4>{t('REPORT_PIECES_COUNTING')}</h4>
-          <table className='mx-auto mb-3'>
-            <tbody>
-              {uniqueList.map((clothe, i) => (
-                <React.Fragment key={`${clothe}__${i}`}>
-                  {countPieces(clothe) ? (
-                    <>
-                      <td className='p-4'>
-                        <Image
-                          src={
-                            isCycling 
-                              ? `/images/cycling/${clothe}.png`
-                              : `/images/${clothe}.png`
-                          }
-                          alt={`${clothe} illustration`}
-                          height={25}
-                          width={25}
-                        />
-                      </td>
-                      <td className='p-4'>
-                        {countPieces(clothe)}
-                      </td>
-                    </>
-                  ): null}
-                </React.Fragment>
-              ))}
-              <td className='p-3'>
-                Total
-              </td>
-              <td className='p-4'>
-                {totalCountPieces()}
-              </td>
-            </tbody>
-          </table>
           <TotalPieces />
           <section>
             <label htmlFor="annotations" className={styles.textAreaLabel}>{t('ANNOTATIONS')}</label>
