@@ -12,13 +12,13 @@ type ListProps = {
 
 const List = ({ arr, t, gender = 'MALE' }: ListProps) => (
   <>
-    {arr.map((arr, mainIndex, { length }) => (
+    {arr.map((arr) => (
       <>
-        {Object.entries(arr[1]).map(([size, quantity]) => (
+        {Object.entries(arr[1]).map(([size, quantity], mainIndex, arrComplete) => (
           <React.Fragment key={generateId()}>
             <>
               {t(`CSVID_${arr[0].toUpperCase()}`)}-{quantity}-{t(`${gender}-${size}`)}
-              {mainIndex === length-1 ? '' : ', '} 
+              {arrComplete.length-1 === mainIndex  ? '' : ', '} 
             </>
           </React.Fragment>
         ))}
@@ -46,7 +46,6 @@ export function TotalPieces() {
       clothes: listState.items.filter(i => i.gender === 'MALE').map(i => i.clothes)
     })
   ));
-  if(childish.length === 0 && male.length === 0 && female.length === 0) return null;
 
   return (
     <table style={{ margin: 'auto', marginBottom: '12px', width: '100%' }}>
@@ -57,11 +56,9 @@ export function TotalPieces() {
           }}>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>{t('MALE')}</td>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>
               <List t={t} arr={male}/>
             </td>
@@ -73,7 +70,6 @@ export function TotalPieces() {
           }}>
             <td style={{
               padding: '4px 12px',
-              fontSize: '1.2rem'
             }}>{t('FEMALE')}</td>
             <td style={{
               padding: '4px 12px',
