@@ -191,11 +191,11 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
               <td><input type="text" name="" id="" /></td>
             </tr>
             <tr>
-              <td>Request date</td>
+              <td style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('REQUEST_DATE')}</td>
               <td><input type="date" name="" id="" /></td>
             </tr>
             <tr>
-              <td>Delivery date</td>
+              <td style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('DELIVERY_DATE')}</td>
               <td><input type="date" name="" id="" /></td>
             </tr>
             <tr>
@@ -210,7 +210,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
       </section>
       <section className='mb-2'>
         {images.length > 0 && (
-          <h2 className='border-bottom'>Images</h2>
+          <h2 className='border-bottom'>{t('PHOTO')}</h2>
         )}
         <section className={`${styles.cardContainer}`}>
           {images.map(({ image, description, width }, i) => (
