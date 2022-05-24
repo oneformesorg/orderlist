@@ -1,32 +1,72 @@
+import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { orderedItems } from '@shared/utils/groupItemsBySize';
 import { TFunction, useTranslation } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type ListProps = {
   arr:  [string, unknown][]
   t: TFunction
   gender?: 'MALE' | 'CHILDISH'
 }
+type ListSizeClothe = Record<string, Record<string, number>>
+const List = ({ arr, t, gender = 'MALE' }: ListProps) => {
+  const [head, setHed] = useState<string[]>();
+  const [sizeSidebar, setSizeSidebar] = useState<string[]>();
+  const [sizeCothe, setSizeClothe] = useState<ListSizeClothe>();
+  const { isCycling } = useCatalogState();
+  useEffect(() => {
+    setHed(arr.map(i => i[0]));
+    setSizeSidebar(arr.reduce((prev,i) => [...prev, ...Object.entries(i[1]).reduce((prev, [key]) => [...prev,key], [])],[]));
+    setSizeClothe(arr.reduce((prev, [key, value]) => {
+      prev[key] = value;
+      return prev;
+    },{}));
+  }, [arr]);
 
-const List = ({ arr, t, gender = 'MALE' }: ListProps) => (
-  <>
-    {arr.map((arr) => (
-      <>
-        {Object.entries(arr[1]).map(([size, quantity], mainIndex, arrComplete) => (
+  return (
+    <table>
+      <thead>
+        <tr>
+          <td className='p-2 text-center'> -</td>
+          {head?.map(cloth => (
+            <td className='p-2 text-center' key={generateId()}>
+              <Image
+                alt={'cloths illustration'}
+                src={
+                  isCycling && cloth !== 'socks' ? `/images/cycling/${cloth}.png` : `/images/${cloth}.png`
+                }
+                height={25}
+                width={25}
+              />
+            </td>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {sizeSidebar?.map(size => (
           <React.Fragment key={generateId()}>
-            <>
-              {t(`CSVID_${arr[0].toUpperCase()}`)}-{quantity}-{t(`${gender}-${size}`)}
-              {arrComplete.length-1 === mainIndex  ? '' : ', '} 
-            </>
+            <tr>
+              <td className='p-2 text-center'>
+                {
+                  `${t(`${gender}-${size}`)}`
+                }
+              </td>
+              {head?.map(clotheName => (
+                <td className='p-2 text-center' key={generateId()}>
+                  {sizeCothe[clotheName][size]}
+                </td>
+              ))}
+              
+            </tr>
           </React.Fragment>
         ))}
-      </>  
-    )
-    )}
-  </>
-);
+      </tbody>
+    </table>
+  );
+};
 
 export function TotalPieces() {
   const { t } = useTranslation();
@@ -52,52 +92,27 @@ export function TotalPieces() {
     );
   }, [listState.items]);
   return (
-    <table style={{ margin: 'auto', marginBottom: '12px', width: '100%' }}>
-      <tbody>
+    <>
+      <section className='d-flex gap-2 justify-content-center'>
         {male.length > 0 && (
-          <tr style={{
-            border: '1px solid #000'
-          }}>
-            <td style={{
-              padding: '4px 12px',
-            }}>{t('MALE')}</td>
-            <td style={{
-              padding: '4px 12px',
-            }}>
-              <List t={t} arr={male}/>
-            </td>
-          </tr>
+          <section>
+            <p className='m-0'>{t('MALE').toUpperCase()}</p>
+            <List t={t} arr={male}/>
+          </section >
         )}
         {female.length > 0 && (
-          <tr style={{
-            border: '1px solid #000'
-          }}>
-            <td style={{
-              padding: '4px 12px',
-            }}>{t('FEMALE')}</td>
-            <td style={{
-              padding: '4px 12px',
-              fontSize: '1.2rem'
-            }}>
-              <List t={t} arr={female}/>
-            </td>
-          </tr>
+          <section>
+            <p className='m-0'>{t('FEMALE').toUpperCase()}</p>
+            <List t={t} arr={female}/>
+          </section >
         )}
         {childish.length > 0 && (
-          <tr style={{
-            border: '1px solid #000'
-          }}>
-            <td style={{
-              padding: '4px 12px'
-            }}>{t('CHILDISH')}</td>
-            <td style={{
-              padding: '4px 12px'
-            }}>
-              <List t={t} arr={childish} gender="CHILDISH"/>
-            </td>
-          </tr>
+          <section>
+            <p className='m-0'>{t('CHILDISH').toUpperCase()}</p>
+            <List t={t} arr={childish} gender="CHILDISH"/>
+          </section >
         )}
-      </tbody>
-    </table>
+      </section>
+    </>
   );
 }
