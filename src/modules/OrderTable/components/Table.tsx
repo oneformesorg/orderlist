@@ -47,7 +47,7 @@ export function Table({
   const [pieces, setPieces] = useState(0);
   const catalogState = useCatalogState();
   const { dispatch } = useList();
-  const [totalValue, setTotalValue] = useState(0);
+  const [tablePrice, setTablePrice] = useState(0);
   const [listForRender, setListForRender] = useState(() => list);
   const [currentOrder, setCurrentOrder] = useState<[string, OrderOptions]>();
   const renderSize = (quantity: number, size: string, clothName?: string) => {
@@ -61,18 +61,17 @@ export function Table({
   };
 
   useEffect(() => {
-    const value = list.reduce((prev, props) => (
-      prev+sanitizeValue(catalogState, props.gender, props.isCycling, props.clothes)
-    ), 0);
-
-    setTotalValue(value);
-  }, [list, catalogState]);
+    setTablePrice(list.reduce((prev ,{ clothes, isCycling, gender }) => {
+      return prev += sanitizeValue(catalogState, gender, isCycling, clothes);
+    }, 0));
+  }, [catalogState, list]);
+  
   const currencyConv = currencyConvert(
     i18n.language,
     i18n.language === 'pt-BR' ? 'BRL' : 'USD'
   );
-  const [deleteList, setDeleteList] = useState<string[]>([]);
 
+  const [deleteList, setDeleteList] = useState<string[]>([]);
   const changeOrderList = useCallback((clothe: string, orderType: OrderOptions) => {
     const orderedList = orderList(orderType, list, clothe);
     setListForRender(orderedList);
@@ -297,7 +296,7 @@ export function Table({
               <p className='d-flex m-0 justify-content-end'>
               Total:
                 <span className='mx-2'>
-                  {currencyConv(totalValue)}
+                  {currencyConv(tablePrice)}
                 </span>
               </p>
             </td>
