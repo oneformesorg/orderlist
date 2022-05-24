@@ -210,7 +210,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
       </section>
       <section className='mb-2'>
         {images.length > 0 && (
-          <h1 className='border-bottom'>{t('PHOTO')}</h1>
+          <h3 className='border-bottom'>{t('PHOTO')}</h3>
         )}
         <section className={`${styles.cardContainer}`}>
           {images.map(({ image, description, width }, i) => (
@@ -275,11 +275,11 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
       </section>
 
       <section className="clothesTable">
-        <h1 className='mt-3'>
+        <h3 className='mt-3'>
           {
             isCycling ? t('CYCLING_CLOTHING') : t('CLOTHES')
           }
-        </h1>
+        </h3>
         {defaultList.length > 0 && (
           <TableForPrint list={defaultList}/>
         )}
@@ -299,7 +299,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
           ))
         }
         <section className='my-4'>
-          <h1>{t('MAIN_TITLE')}</h1>
+          <h3>{t('MAIN_TITLE')}</h3>
           <TotalPieces />
           <section>
             <label htmlFor="annotations" className={styles.textAreaLabel}>{t('ANNOTATIONS')}</label>
