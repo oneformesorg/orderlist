@@ -24,16 +24,6 @@ type Props = {
   clothingList: ClothingParts[]
 }
 
-const nameGenerator = (name: string, gender: string) => {
-  const genderList = {
-    'FEMALE': 'FEM',
-    'CHILDISH': 'INF'
-  };
-  if(gender === 'MALE')return name;
-  if(!name) return genderList[gender]; 
-  return `${genderList[gender]}-${name}`;
-};
-
 export function Table({
   clothings, 
   isCycling, 
@@ -50,12 +40,24 @@ export function Table({
   const [tablePrice, setTablePrice] = useState(0);
   const [listForRender, setListForRender] = useState(() => list);
   const [currentOrder, setCurrentOrder] = useState<[string, OrderOptions]>();
-  const renderSize = (quantity: number, size: string, clothName?: string) => {
-    if(clothName === 'socks'){
-      return quantity || '-';
-    }
+  const renderSize = (quantity: number, size: string, clothName: string, gender: string) => {
     if(!size || !quantity){
       return '-';
+    }
+    if(clothName === 'socks'){
+      if(gender === 'FEMALE' && quantity){
+        return `FEM-${quantity}`;
+      }
+      if(gender === 'CHILDISH' && quantity){
+        return `INF-${quantity}`;
+      }
+      return quantity || '-';
+    }
+    if(gender === 'FEMALE' && quantity){
+      return `FEM-${quantity}-${t(size)}`;
+    }
+    if(gender === 'CHILDISH' && quantity){
+      return `INF-${quantity}-${t(size)}`;
     }
     return `${quantity}-${t(size)}`;
   };
@@ -210,7 +212,7 @@ export function Table({
                   />
                 </td>
                 <td className={style.tableCell}>
-                  {nameGenerator(props.name, props.gender)}
+                  {props.name}
                 </td>
                 <td className={style.tableCell}>
                   {props.number || ''}
@@ -223,7 +225,8 @@ export function Table({
                           renderSize(
                             props.clothes[currCloth].quantity,
                             `${props.gender}-${props.clothes[currCloth].size}`,
-                            currCloth
+                            currCloth,
+                            props.gender
                           )
                         }
                       </td>
@@ -237,7 +240,8 @@ export function Table({
                           renderSize(
                             props.clothes[currCloth].quantity,
                             `${props.gender}-${props.clothes[currCloth].size}`,
-                            currCloth
+                            currCloth,
+                            props.gender
                           )
                         }
                       </td>
