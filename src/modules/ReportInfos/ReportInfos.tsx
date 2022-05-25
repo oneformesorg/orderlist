@@ -87,7 +87,7 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
             <input 
               type="text" 
               placeholder={t('PROCESSING_REPORT_TITLE')} 
-              defaultValue={t('PROCESSING_REPORT_TITLE')}
+              defaultValue="OS"
             />
           </h1>
           <p>
