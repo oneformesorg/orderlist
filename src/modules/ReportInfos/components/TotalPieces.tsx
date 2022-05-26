@@ -19,12 +19,17 @@ const List = ({ arr, t, gender = 'MALE' }: ListProps) => {
   const { isCycling } = useCatalogState();
   useEffect(() => {
     setHed(arr.map(i => i[0]));
-    setSizeSidebar(arr.reduce((prev,i) => [...prev, ...Object.entries(i[1]).reduce((prev, [key]) => [...prev,key], [])],[]));
+    setSizeSidebar(
+      arr
+        .reduce((prev,i) => [...prev, ...Object.entries(i[1]).reduce((prev, [key]) => [...prev,key], [])],[])
+        .filter((i,index, arr) => arr.indexOf(i) === index)
+    );
     setSizeClothe(arr.reduce((prev, [key, value]) => {
       prev[key] = value;
       return prev;
     },{}));
   }, [arr]);
+  console.log('size',sizeSidebar);
 
   return (
     <table>
