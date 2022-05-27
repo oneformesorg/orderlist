@@ -177,14 +177,14 @@ export function OrderTable() {
           
         </section>
       ))}
-      {state.items.length && isPrinted && (
+      {state.items.length && isPrinted ? (
         <section style={{ border: '1px solid #616160' }} className='p-2 mt-4 w-100 text-align-center'>
           {t('GRAND_TOTAL')}: {currencyConvert(
             i18n.language,
             i18n.language === 'pt-BR' ? 'BRL' : 'USD',
           )(totalPrice())}
         </section>
-      )}
+      ) : null}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
         <div className="position-relative d-flex justify-content-center mt-2 mb-3 p-3">
           <section className='position-relative d-flex justify-content-center gap-3'>
