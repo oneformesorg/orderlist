@@ -29,7 +29,6 @@ const List = ({ arr, t, gender = 'MALE' }: ListProps) => {
       return prev;
     },{}));
   }, [arr]);
-  console.log('size',sizeSidebar);
 
   return (
     <table>
