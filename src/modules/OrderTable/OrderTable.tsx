@@ -1,5 +1,5 @@
 import { useCatalogState } from '@shared/Catalog/context/catalog';
-import { ListItem, useList } from '@shared/List';
+import { Gender, ListItem, useList } from '@shared/List';
 import React, { useEffect, useRef, useState } from 'react';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
 import { SendEmailModal } from '@modules/SendEmailModal/SendEmailModal';
@@ -8,6 +8,7 @@ import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'next-i18next';
 import { Table } from './components/Table';
 import { clothings, cyclingClothings } from '@config/static';
+import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -25,7 +26,7 @@ const selectedClothes = (list: ListItem[]) => {
 
 export function OrderTable() {
   const { state } = useList();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [sublists, setSublist] = useState<Lists>([]);
   const [isPrinted, setIsPrinted] = useState(false);
   const [normalList, setNormalList] = useState([]);
@@ -36,6 +37,27 @@ export function OrderTable() {
   const [cyclingClothList, setCyclingClothList] = useState<string[]>([]);
   const defaultListNameRef = useRef<HTMLInputElement>(null);
 
+  const totalPrice = () => { 
+    const valueCalc = (gender: Gender, listItem: ListItem[]) => (
+      listItem.reduce((prev, { clothes }) => {
+        prev += sanitizeValue(
+          catalogState,
+          gender,
+          catalogState.isCycling,
+          clothes  
+        );
+        return prev;
+      },0)
+    );
+    const female = state.items.filter(i => i.gender === 'FEMALE');
+    const male = state.items.filter(i => i.gender === 'MALE');
+    const childish = state.items.filter(i => i.gender === 'CHILDISH');
+    const femalePrice = valueCalc('FEMALE', female);
+    const malePrice = valueCalc('MALE', male);
+    const childishPrice = valueCalc('CHILDISH', childish);
+
+    return femalePrice + malePrice + childishPrice;
+  };
   useEffect(() => {
     catalogState.list.map((name) => {
       const cycling = state.items.filter(({ list, isCycling }) => list === name && isCycling);
@@ -155,6 +177,14 @@ export function OrderTable() {
           
         </section>
       ))}
+      {state.items.length && isPrinted && (
+        <section style={{ border: '1px solid #616160' }} className='p-2 mt-4 w-100 text-align-center'>
+          {t('GRAND_TOTAL')}: {currencyConvert(
+            i18n.language,
+            i18n.language === 'pt-BR' ? 'BRL' : 'USD',
+          )(totalPrice())}
+        </section>
+      )}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
         <div className="position-relative d-flex justify-content-center mt-2 mb-3 p-3">
           <section className='position-relative d-flex justify-content-center gap-3'>
