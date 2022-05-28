@@ -4,6 +4,7 @@ import { ClothingParts } from '@shared/Catalog';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
+import { generateId } from '@shared/utils/generateId';
 import { orderList, OrderOptions } from '@shared/utils/orderList';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
@@ -46,18 +47,18 @@ export function Table({
     }
     if(clothName === 'socks'){
       if(gender === 'FEMALE' && quantity){
-        return `FEM-${quantity}`;
+        return `${quantity}-FEM`;
       }
       if(gender === 'CHILDISH' && quantity){
-        return `INF-${quantity}`;
+        return `${quantity}-INF`;
       }
       return quantity || '-';
     }
     if(gender === 'FEMALE' && quantity){
-      return `FEM-${quantity}-${t(size)}`;
+      return `${quantity}-FEM-${t(size)}`;
     }
     if(gender === 'CHILDISH' && quantity){
-      return `INF-${quantity}-${t(size)}`;
+      return `${quantity}-INF-${t(size)}`;
     }
     return `${quantity}-${t(size)}`;
   };
@@ -198,7 +199,7 @@ export function Table({
         ) : (
           <>
             {listForRender.map((props) => (
-              <tr key={`${props.id}_checkbox`}>
+              <tr key={`${generateId()}_checkbox`}>
                 <td className={style.tableCell}>
                   <label className={style.ghostLabel} htmlFor={`checkbox_${props.id}`} />
                   <input

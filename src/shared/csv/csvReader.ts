@@ -89,7 +89,6 @@ const sanitizeClothes = (cloth: string[]): GenericClothStructure => {
  * This function returns a list array for use in reducer
  */
 export function csvReader(
-  header: string[],
   items: string[],
   isCycling: boolean,
   list: string,
