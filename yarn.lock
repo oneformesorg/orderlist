@@ -623,6 +623,11 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
   integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
+"@types/uuid@^8.3.4":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
+
 "@types/warning@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/warning/-/warning-3.0.0.tgz#0d2501268ad8f9962b740d387c4654f5f8e23e52"
@@ -3815,6 +3820,11 @@ utrie@^1.0.2:
   integrity sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==
   dependencies:
     base64-arraybuffer "^1.0.2"
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache-lib@^3.0.0:
   version "3.0.1"

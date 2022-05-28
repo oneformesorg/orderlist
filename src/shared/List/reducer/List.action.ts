@@ -34,6 +34,10 @@ export const listActionReducer:ListReducerType = (state, { type, payload }) => {
         ({ list }) => list !== (payload ? payload : '')
       )  
     };
+  case 'deleteAllItems':
+    return {
+      ...state, items: []
+    };
   default:
     return state;
   }

@@ -34,11 +34,10 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
   const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
-  const [list, setList] = useState(currentItem.list || '');
+  const [list, setList] = useState(currentItem?.list || '');
   const [clothList, setClothList] = useState<ClothList>(
     listState.items.find(({ id: currId }) => id === currId)?.clothes
   );
-  const { isCycling } = currentItem;
 
   const formNumberNameRef = useRef<FormNameNumberRef>(null);
   const { t } = useTranslation();
@@ -53,7 +52,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   useImperativeHandle(ref, () => ({
     showModal
   }));
-
+  if(!currentItem) return null;
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -88,7 +87,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
           />
         </InputGroup>
 
-        {isCycling ? (
+        {currentItem?.isCycling ? (
           <>
             {cyclingClothings.map((clothe, i) => (
               <Row className="align-items-center mb-2" key={`${i}_${clothe}`}>
@@ -249,7 +248,7 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                 listItem: {
                   clothes: clothList,
                   gender,
-                  isCycling,
+                  isCycling: currentItem.isCycling,
                   list,
                   name: nameRef.current.value,
                   number: numberRef.current.valueAsNumber || ''
