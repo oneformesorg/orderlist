@@ -20,6 +20,7 @@ const formatTimestamp = (locale: string) => (
 export type ReportInfosProps = {
   onDelete: (id: number) => void
 }
+const annotationText = 'O COMPRADOR(a), acima identificado, declara a realização da retirada dos produtos listados no pedido, cujas informações estão detalhadas nos layouts e na lista O COMPRADOR declara que recebeu todas as orientações de conferencia';
 export function ReportInfos({ onDelete }: ReportInfosProps) {
   const { t, i18n } = useTranslation();
   const { isCycling } = useCatalogState();
@@ -191,12 +192,22 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
               <td><input type="text" name="" id="" /></td>
             </tr>
             <tr>
-              <td style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('REQUEST_DATE')}</td>
-              <td><input type="date" name="" id="" /></td>
+              <td style={{ fontSize: '18px' }}>{t('REQUEST_DATE')}</td>
+              <td>
+                <input 
+                  style={{ fontWeight: 'bold' }} 
+                  type="date"
+                />
+              </td>
             </tr>
             <tr>
-              <td style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('DELIVERY_DATE')}</td>
-              <td><input type="date" name="" id="" /></td>
+              <td style={{ fontSize: '18px' }}>{t('DELIVERY_DATE')}</td>
+              <td>
+                <input 
+                  style={{ fontWeight: 'bold' }} 
+                  type="date"
+                />
+              </td>
             </tr>
             <tr>
               <td>Vendedor</td>
@@ -301,9 +312,15 @@ export function ReportInfos({ onDelete }: ReportInfosProps) {
         <section className='my-4'>
           <h3>{t('MAIN_TITLE')}</h3>
           <TotalPieces />
-          <section>
-            <label htmlFor="annotations" className={styles.textAreaLabel}>{t('ANNOTATIONS')}</label>
-            <textarea id="annotations" className={styles.textArea}/>
+          <section className={styles.textArea}>
+            <p>{annotationText}</p>
+            <div>
+              <p>__/__/____</p>
+              <p className={styles.assign}>
+                ㅤ
+                <span className={styles.footerText}>Assinatura</span>
+              </p>
+            </div>
           </section>
         </section>
       </section>
