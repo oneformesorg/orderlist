@@ -32,7 +32,7 @@ export default function ClearList() {
             <Button 
               onClick={() => {
                 listDispatch({
-                  type: 'clearList'
+                  type: 'deleteAllItems'
                 });
                 onClose();
               }}

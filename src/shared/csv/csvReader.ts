@@ -26,14 +26,14 @@ const sizesForTranslate: [string, [string, string, string]][] = [
   ['2XG', ['BL-2XL', 'BL-2XL', 'BL-2XG']],
   ['3XG', ['BL-3XL', 'BL-3XL', 'BL-3XG']],
   ['4XG', ['BL-4XL', 'BL-4XL', 'BL-4XG']],
-  ['2A', ['2-3', '2 años', '2 anos']],
-  ['4A', ['4-5', '4 años', '4 anos']],
-  ['6A', ['6-6X', '6 años', '6 anos']],
-  ['8A', ['7-8', '8 años', '8 anos']],
-  ['10A', ['10', '10 años', '10 anos']],
-  ['12A', ['12', '12 años', '12 anos']],
-  ['14A', ['14', '14 años', '14 anos']],
-  ['16A', ['16', '16 años', '16 anos']],
+  ['2A', ['2-3', '2', '2']],
+  ['4A', ['4-5', '4', '4']],
+  ['6A', ['6-6X', '6', '6']],
+  ['8A', ['7-8', '8', '8']],
+  ['10A', ['10', '10', '10']],
+  ['12A', ['12', '12', '12']],
+  ['14A', ['14', '14', '14']],
+  ['16A', ['16', '16', '16']],
   
 ];
 
@@ -43,8 +43,12 @@ const translateSizeForSystem = (size: string[] | string) => {
     const [en, es, pt] = langs;
     return sizeNormalized === en || sizeNormalized === es || sizeNormalized === pt;
   });
-
-  return sizeForSystem[0][0];
+  try {
+    return sizeForSystem[0][0];
+  }
+  catch {
+    return '';
+  }
 };
 
 /**
@@ -97,9 +101,9 @@ export function csvReader(
   return items.map((row) => {
     const cells = row.split(',');
     return {
-      gender: genderCSV[cells[0].toLocaleLowerCase()],
-      name: cells[1],
-      number: cells[2],
+      gender: genderCSV[cells[0]?.toLocaleLowerCase()] || '',
+      name: cells[1] || '',
+      number: cells[2] || '',
       isCycling,
       id: generateId(),
       list: catalogList.some(name => name === list) ? list : '',
