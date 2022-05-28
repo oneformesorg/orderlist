@@ -7,7 +7,7 @@ import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPrint, faTags } from '@fortawesome/free-solid-svg-icons';
 import { AddImage, ImageState } from '@modules/AddImage/AddImage';
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { ListActionProvider } from '@shared/List';
 import dynamic from 'next/dynamic';
@@ -29,8 +29,21 @@ const ReportInfosWithoutSSR = dynamic<ReportInfosProps>(
 export const imagesCardContext = createContext<ImagesContext>(null);
 const Relatorio:NextPage = () => {
   const [images, setImages] = useState<ImageState>([]);
+  const [canReset, setCanReset] = useState(0);
   const { t } = useTranslation();
-  
+  useEffect(() => {
+    const images = localStorage.getItem('@orderlist/report-images');
+
+    if(JSON.parse(images)){
+      setImages(JSON.parse(images));
+      setCanReset(1);
+    }
+  }, []);
+  useEffect(() => {
+    if(images.length || canReset){
+      localStorage.setItem('@orderlist/report-images', JSON.stringify(images));
+    }
+  }, [images, canReset]);
   return(
     <>
       <Head>
