@@ -16,11 +16,9 @@ export function ImportCSVButton() {
   const { dispatch: dispatchList } = useList();
   useEffect(() => {
     try {
-      const csvHeader = csvResult.split('\n')[0].split(','); 
       const csvItems = csvResult.split('\n').splice(1);
       setListItem(
         csvReader(
-          csvHeader, 
           csvItems,
           catalogState.isCycling,
           csvTitle,
