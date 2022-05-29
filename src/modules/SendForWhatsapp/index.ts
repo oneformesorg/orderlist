@@ -1,0 +1,1 @@
+export { SendForWhatsapp } from './SendForWhatsapp';
