@@ -9,6 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { Table } from './components/Table';
 import { clothings, cyclingClothings } from '@config/static';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
+import { SendForWhatsapp } from '@modules/SendForWhatsapp';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -31,7 +32,7 @@ export function OrderTable() {
   const [isPrinted, setIsPrinted] = useState(false);
   const [normalList, setNormalList] = useState([]);
   const [cyclingList, setCyclingList] = useState([]);
-  const catalogState = useCatalogState();
+  const { whatsappContact, ...catalogState } = useCatalogState();
   const [sublistsCloths, setSublistCloths] = useState<{[key: string]: [string[], string[]]}>({});
   const [clothList, setClothList] = useState<string[]>([]);
   const [cyclingClothList, setCyclingClothList] = useState<string[]>([]);
@@ -41,7 +42,7 @@ export function OrderTable() {
     const valueCalc = (gender: Gender, listItem: ListItem[]) => (
       listItem.reduce((prev, { clothes }) => {
         prev += sanitizeValue(
-          catalogState,
+          { ...catalogState, whatsappContact },
           gender,
           catalogState.isCycling,
           clothes  
@@ -186,13 +187,16 @@ export function OrderTable() {
         </section>
       ) : null}
       {(sublists?.length > 0 || normalList.length > 0 || cyclingList.length > 0) && !isPrinted ? (
-        <div className="position-relative d-flex justify-content-center mt-2 mb-3 p-3">
-          <section className='position-relative d-flex justify-content-center gap-3'>
+        <div className="d-flex justify-content-between mt-2 mb-3 p-3">
+          <section className='d-flex justify-content-center gap-3'>
             <DownloadCSVModal/>
             <SendEmailModal />
+            {whatsappContact ? (
+              <SendForWhatsapp />
+            ) : null }
           </section>
           <section
-            className='position-absolute w-100 d-flex align-items-center justify-content-end'
+            className='d-flex align-items-center justify-content-end'
           >
             <button 
               className='btn btn-primary d-flex align-items-center'
