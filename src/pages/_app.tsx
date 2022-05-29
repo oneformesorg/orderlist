@@ -7,6 +7,7 @@ import { CatalogActionProvider } from '@shared/Catalog/context/catalog';
 import Head from 'next/head';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { ListActionProvider } from '@shared/List';
 config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -20,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <CatalogActionProvider>
-        <Component {...pageProps} />
+        <ListActionProvider>
+          <Component {...pageProps} />
+        </ListActionProvider>
       </CatalogActionProvider>
     </SSRProvider>
   );
