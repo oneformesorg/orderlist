@@ -12,6 +12,7 @@ import { CopyToClipboard } from '@modules/CopyToClipboard/CopyToClipboard';
 import Switch from 'react-input-switch';
 import { CreateListModal } from '@modules/CreateListModal/CreateListModal';
 import Link from 'next/link';
+import msk from 'msk';
 
 export function FormInputs() {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ export function FormInputs() {
   const emailCompanyRef = React.useRef<HTMLInputElement>(null);
   const projectNameRef = React.useRef<HTMLInputElement>(null);
   const socksRef = React.useRef<HTMLInputElement>(null);
+  const whatsappContactRef = React.useRef<HTMLInputElement>(null);
   const [catalogQuery, setCatalogQuery] = React.useState('');
   const [cyclingMode, setCyclingMode] = React.useState(false);
   
@@ -63,6 +65,7 @@ export function FormInputs() {
       payload: {
         companyEmail: emailCompanyRef.current.value,
         projectName: projectNameRef.current.value,
+        whatsappContact: whatsappContactRef.current.value
       }
     });
     dispatch({
@@ -113,6 +116,20 @@ export function FormInputs() {
                 type="email"
                 placeholder="sample@server.com"
                 defaultValue={state.companyEmail}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Whatsapp:</Form.Label>
+              <Form.Control
+                onChange={e => {
+                  e.target.value = msk.fit(e.target.value, '(99) 99999-9999');
+                }}
+                ref={whatsappContactRef}
+                type='tel'
+                placeholder="(xx) xxxxx-xxxx"
+                defaultValue={state.whatsappContact}
               />
             </Form.Group>
           </Col>
