@@ -5,7 +5,6 @@ import { useList } from '@shared/List';
 import React, { useEffect, useState } from 'react';
 
 export function openWhatsappLink(url: string, telPhone: string){
-  alert(telPhone);
   const wppLink = `https://api.whatsapp.com/send/?phone=55${telPhone}&text=link: ${url}`;
   window.open(wppLink, '__blank').focus();
 }
@@ -26,16 +25,6 @@ export function SendForWhatsapp() {
     <button 
       onClick={() => {
         const items = Buffer.from(JSON.stringify(state.items));
-        // axios
-        //   .post<{fileName: string}>(
-        //     'list/create', 
-        //     {
-        //       items: items.toString('base64')
-        //     },
-        //     {
-        //       baseURL: 'api'
-        //     }
-        //   ).then(r => setUrl(r.data.fileName));
         fetch('/api/list/create', {
           method: 'POST',
           headers: {

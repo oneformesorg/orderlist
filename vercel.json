@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/list/*": {
+      "includeFiles": "_temp/**"
+    }
+  }
+}
