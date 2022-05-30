@@ -1,9 +1,10 @@
 import { faPlus, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useList } from '@shared/List';
+import { ListItem, useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { useTranslation } from 'next-i18next';
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
 import { MicInput } from './components/MicInput/MicInput';
@@ -17,11 +18,32 @@ export function CreateItemForm() {
   const { t, i18n } = useTranslation();
   const [hasWindow, setHasWindow] = useState(false);
   const formModalRef = useRef<FormModalRef>(null);
-  // const nameRef = useRef<HTMLInputElement>(null);
-  // const numberRef = useRef<HTMLInputElement>(null);
+  const { query: { list } } = useRouter();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const { dispatch } = useList();
+  const addNewItem = useCallback((JSONItems: unknown) => {
+    dispatch({
+      type: 'deleteAllItems'
+    });
+    dispatch({
+      type: 'addItems',
+      payload: JSONItems as ListItem[]
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(list){
+      fetch(`/api/list/${list}`)
+        .then(r => r.json())
+        .then(r => {
+          const parsed = r;
+          if(!parsed?.message){
+            addNewItem(JSON.parse(parsed.items));
+          }
+        });
+    }
+  }, [addNewItem, list]);
   useEffect(() => {
     if(typeof window !== 'undefined'){
       setHasWindow(true);

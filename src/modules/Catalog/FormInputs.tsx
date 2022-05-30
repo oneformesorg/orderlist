@@ -1,7 +1,7 @@
 import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useCallback } from 'react';
 import { faLink, faTable } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
@@ -37,17 +37,7 @@ export function FormInputs() {
   React.useEffect(() => {
     setCyclingMode(state.isCycling);
   }, [state]);
-  const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
-    e.preventDefault();
-    if(cyclingMode){
-      cyclingMaleTableRef.current.submitEvent();
-      cyclingFemaleTableRef.current.submitEvent();
-      cyclingChildishTableRef.current.submitEvent();
-    } else {
-      childishTableRef.current.submitEvent();
-      maleTableRef.current.submitEvent();
-      femaleTableRef.current.submitEvent();
-    }
+  const saveChanges = useCallback(() => {
     dispatch({
       type: 'cyclingMode',
       payload: !!cyclingMode
@@ -68,6 +58,19 @@ export function FormInputs() {
         whatsappContact: whatsappContactRef.current.value
       }
     });
+  },[cyclingMode, dispatch]);
+  const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
+    e.preventDefault();
+    if(cyclingMode){
+      cyclingMaleTableRef.current.submitEvent();
+      cyclingFemaleTableRef.current.submitEvent();
+      cyclingChildishTableRef.current.submitEvent();
+    } else {
+      childishTableRef.current.submitEvent();
+      maleTableRef.current.submitEvent();
+      femaleTableRef.current.submitEvent();
+    }
+    saveChanges();
     dispatch({
       type: 'currentInfos',
       stateFunction: (state) => {
@@ -88,6 +91,12 @@ export function FormInputs() {
           </a>
         </Link>
         <CreateListModal />
+        <button onClick={() => {
+          saveChanges();
+          alert(t('TOAST_PRICES_LIST_SAVED'));
+        }} className="btn btn-primary sm-btn">
+          {t('SAVE_CHANGES')}
+        </button>
       </section>
       <Form
         onSubmit={submitHandler}
