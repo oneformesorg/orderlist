@@ -191,7 +191,7 @@ export function OrderTable() {
           <section className=' d-flex justify-content-center gap-3'>
             <DownloadCSVModal/>
             <SendEmailModal />
-            {catalogState.whatsappContact && (
+            {whatsappContact && (
               <SendForWhatsapp />
             )}
           </section>
