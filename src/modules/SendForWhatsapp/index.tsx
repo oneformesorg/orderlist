@@ -2,7 +2,7 @@ import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export function openWhatsappLink(url: string, telPhone: string){
   const wppLink = `https://api.whatsapp.com/send/?phone=55${telPhone}&text=link: ${url}`;
@@ -12,15 +12,8 @@ export function openWhatsappLink(url: string, telPhone: string){
 export function SendForWhatsapp() {
   const { state } = useList();
   const { whatsappContact } = useCatalogState();
-  const [url, setUrl] = useState('');
   const [contact] = useState(whatsappContact.replaceAll(/\(|\)| |-/gm, ''));
 
-  useEffect(() => {
-    if(url){
-      const listUrl = `${window.location.origin}?list=${url}`;
-      openWhatsappLink(listUrl, contact);
-    }
-  }, [url, contact]);
   return (
     <button 
       onClick={() => {
@@ -34,7 +27,10 @@ export function SendForWhatsapp() {
           body: JSON.stringify({ items: items.toString('base64') })
         })
           .then(r => r.json())
-          .then(r => setUrl(r.fileName));
+          .then(r => {
+            const listUrl = `${window.location.origin}?list=${r.fileName}`;
+            openWhatsappLink(listUrl, contact);
+          });
       }}
       className="btn btn-success d-flex align-items-center gap-2"
     >

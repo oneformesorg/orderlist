@@ -4,7 +4,7 @@ import { ListItem, useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ButtonGroup, Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FormModal, FormModalRef } from './components/FormModal/FormModal';
 import { MicInput } from './components/MicInput/MicInput';
@@ -22,15 +22,6 @@ export function CreateItemForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const { dispatch } = useList();
-  const addNewItem = useCallback((JSONItems: unknown) => {
-    dispatch({
-      type: 'deleteAllItems'
-    });
-    dispatch({
-      type: 'addItems',
-      payload: JSONItems as ListItem[]
-    });
-  }, [dispatch]);
 
   useEffect(() => {
     if(list){
@@ -39,11 +30,17 @@ export function CreateItemForm() {
         .then(r => {
           const parsed = r;
           if(!parsed?.message){
-            addNewItem(JSON.parse(parsed.items));
+            dispatch({
+              type: 'deleteAllItems'
+            });
+            dispatch({
+              type: 'addItems',
+              payload: JSON.parse(r.items) as ListItem[]
+            });
           }
         });
     }
-  }, [addNewItem, list]);
+  }, [list, dispatch]);
   useEffect(() => {
     if(typeof window !== 'undefined'){
       setHasWindow(true);
