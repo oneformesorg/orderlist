@@ -40,6 +40,7 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
 const initialCatalog: CatalogContent = {
   list: [],
   companyEmail: '',
+  whatsappContact: '',
   projectName: '',
   whatsappContact: '',
   isCycling: false,

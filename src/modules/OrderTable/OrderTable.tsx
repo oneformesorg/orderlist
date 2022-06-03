@@ -32,7 +32,7 @@ export function OrderTable() {
   const [isPrinted, setIsPrinted] = useState(false);
   const [normalList, setNormalList] = useState([]);
   const [cyclingList, setCyclingList] = useState([]);
-  const catalogState = useCatalogState();
+  const { whatsappContact, ...catalogState } = useCatalogState();
   const [sublistsCloths, setSublistCloths] = useState<{[key: string]: [string[], string[]]}>({});
   const [clothList, setClothList] = useState<string[]>([]);
   const [cyclingClothList, setCyclingClothList] = useState<string[]>([]);
@@ -42,7 +42,7 @@ export function OrderTable() {
     const valueCalc = (gender: Gender, listItem: ListItem[]) => (
       listItem.reduce((prev, { clothes }) => {
         prev += sanitizeValue(
-          catalogState,
+          { ...catalogState, whatsappContact },
           gender,
           catalogState.isCycling,
           clothes  

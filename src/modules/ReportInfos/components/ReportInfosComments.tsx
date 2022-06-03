@@ -1,6 +1,6 @@
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CommentsModal, CommentsModalRef } from './CommentsModal';
 
 type Comments = {
@@ -11,7 +11,22 @@ type Comments = {
 export function ReportInfosComments() {
   const modalRef = useRef<CommentsModalRef>(null);
   const [comments, setComments] = useState<Comments[]>([]);
-  
+  const [canReset, setCanReset] = useState(0);
+
+  useEffect(() => {
+    const comments = localStorage.getItem('@orderlist/reportInfosComments');
+    if(comments){
+      setComments(JSON.parse(comments));
+      setCanReset(1);
+    }
+  }, []);
+  useEffect(() => {
+    if(canReset || comments.length){
+      localStorage
+        .setItem('@orderlist/reportInfosComments', JSON.stringify(comments));
+    }
+  }, [canReset, comments]);
+
   const deleteComments = (position: number) => (
     setComments(old => old.filter((props, i) => i !== position))
   );

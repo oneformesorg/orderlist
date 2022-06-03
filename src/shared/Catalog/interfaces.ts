@@ -21,6 +21,7 @@ export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTable
 export type CatalogContent = {
   projectName: string
   companyEmail: string
+  whatsappContact: string
   list: string[]
   isCycling: boolean
   whatsappContact: string
