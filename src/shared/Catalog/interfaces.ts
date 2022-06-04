@@ -24,7 +24,6 @@ export type CatalogContent = {
   whatsappContact: string
   list: string[]
   isCycling: boolean
-  whatsappContact: string
   cyclingPriceTableFemale: CyclingPriceTable
   cyclingPriceTableMale: CyclingPriceTable
   cyclingPriceTableChildish: CyclingPriceTable

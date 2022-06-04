@@ -42,7 +42,6 @@ const initialCatalog: CatalogContent = {
   companyEmail: '',
   whatsappContact: '',
   projectName: '',
-  whatsappContact: '',
   isCycling: false,
   priceTableChildish: {
     pants: [0, 0, 0, 0, 0, 0, 0, 0],
