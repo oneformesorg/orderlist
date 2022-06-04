@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 export function openWhatsappLink(url: string, telPhone: string){
   const wppLink = `https://api.whatsapp.com/send/?phone=55${telPhone}&text=link: ${url}`;
@@ -15,7 +15,7 @@ export function openWhatsappLink(url: string, telPhone: string){
   anchorELement.remove();
 }
 
-export function SendForWhatsapp() {
+export const SendForWhatsapp = memo(function SendForWhatsapp() {
   const { state } = useList();
   const { whatsappContact } = useCatalogState();
   const [url, setUrl] = useState('');
@@ -48,4 +48,4 @@ export function SendForWhatsapp() {
       Enviar por whatsapp
     </button>
   );
-}
+});
