@@ -86,31 +86,33 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <p>
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
-        {catalogState.list.length > 0 ? (
+        <section className='d-flex gap-3'>
+          {catalogState.list.length > 0 ? (
+            <InputGroup className='d-flex flex-column mb-3'>
+              <label>{t('LIST')}:</label>
+              <Select 
+                isSearchable={false}
+                options={[
+                  { value: '', label: '' },
+                  ...catalogState.list.map(item => ({ value: item, label: item })),
+                ]}
+                onChange={(e) => setList(e.value)}
+              />
+            </InputGroup>
+          ) : null}
           <InputGroup className='d-flex flex-column mb-3'>
-            <label>{t('LIST')}:</label>
-            <Select 
+            <label>{t('GENDER')}</label>
+            <Select
               isSearchable={false}
-              options={[
-                { value: '', label: '' },
-                ...catalogState.list.map(item => ({ value: item, label: item })),
-              ]}
-              onChange={(e) => setList(e.value)}
+              defaultValue={[{ value: 'MALE', label: t('MALE') }]}
+              options={genderList}
+              onChange={(e) => {
+                setClothList(initialClothList);
+                setGender(e.value as Gender);
+              }}
             />
           </InputGroup>
-        ) : null}
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('GENDER')}</label>
-          <Select
-            isSearchable={false}
-            defaultValue={[{ value: 'MALE', label: t('MALE') }]}
-            options={genderList}
-            onChange={(e) => {
-              setClothList(initialClothList);
-              setGender(e.value as Gender);
-            }}
-          />
-        </InputGroup>
+        </section>
         {isCycling ? (
           <>
             {cyclingClothings.map((clothe, i) => (
