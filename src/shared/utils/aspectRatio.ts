@@ -3,12 +3,12 @@ const calcHeight = (aspectRatio: number, width: number) => (
 );
 
 /**
- * return new width and height based in aspect ratio 3:4
+ * return new width and height based in aspect ratio 16:9
  */
 export function aspectRatio(width: number){
   const ratio = {
-    width: 3,
-    height: 4,
+    width: 16,
+    height: 9,
   };
   const aspectRatio = ratio.width / ratio.height;
   const heightBasedInAspectRatio = calcHeight(aspectRatio, width);
