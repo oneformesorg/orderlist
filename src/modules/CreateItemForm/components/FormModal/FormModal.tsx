@@ -162,7 +162,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           </>
         ) : (
           <>
-            {clothings.map((clothe, i) => (
+            {clothings.filter(clothe => clothe !== 'socks').map((clothe, i) => (
               <Row className="align-items-center mb-2" key={`${i}_${clothe}`}>
                 <Col xs={2}>
                   <Image 
