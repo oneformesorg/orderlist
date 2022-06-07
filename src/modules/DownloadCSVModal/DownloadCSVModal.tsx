@@ -5,7 +5,6 @@ import { useTranslation } from 'next-i18next';
 import React, { useRef } from 'react';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { CSVFileNameModal, CSVModalRef } from './CSVFileNameModal';
-import { orderList } from '@shared/utils/orderList';
 
 const timestampForTitle = (locale: string) => (
   new Intl.DateTimeFormat(locale, { 
@@ -36,13 +35,7 @@ export function DownloadCSVModal() {
       </button>
       <CSVFileNameModal 
         ref={modalRef}
-        onSubmit={(name, orderBy, orderType) => {
-          if(orderBy){
-            const orderedList = orderList(orderType || 'INCREASING', listState.items, orderBy);
-            import('@shared/csv/csvCreate')
-              .then(mod => mod.createCSV({ items: orderedList }, catalogState, t, `${name} ${timestampForTitle(i18n.language)}`));
-            return; 
-          }
+        onSubmit={(name) => {
           import('@shared/csv/csvCreate')
             .then(mod => mod.createCSV(listState, catalogState, t, `${name} ${timestampForTitle(i18n.language)}`));
         }}
