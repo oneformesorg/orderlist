@@ -148,8 +148,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Form.Control
                     type='number'
                     className="my-1 mr-sm-2"
-                    defaultValue={0}
-                    value={clothList[clothe].quantity}
+                    placeholder='0'
+                    value={
+                      clothList[clothe].quantity
+                        ? clothList[clothe].quantity :''
+                    }
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         ...list[clothe], quantity: Number(e.target.value)
@@ -198,8 +201,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Form.Control
                     type='number'
                     className="my-1 mr-sm-2"
-                    defaultValue={0}
-                    value={clothList[clothe].quantity}
+                    placeholder='0'
+                    value={
+                      clothList[clothe].quantity
+                        ? clothList[clothe].quantity :''
+                    }
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         ...list[clothe], quantity: Number(e.target.value)
@@ -227,8 +233,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
             <Form.Control
               type='number'
               className="my-1 mr-sm-2"
-              defaultValue={0}
-              value={clothList['socks'].quantity}
+              placeholder='0'
+              value={
+                clothList['socks'].quantity
+                  ? clothList['socks'].quantity :''
+              }
               onChange={e => {
                 setClothList(list => ({ ...list, ['socks']: {
                   ...list['socks'], quantity: Number(e.target.value)

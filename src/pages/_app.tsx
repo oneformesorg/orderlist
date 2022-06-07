@@ -10,6 +10,13 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { ListActionProvider } from '@shared/List';
 config.autoAddCss = false;
 
+const date = new Date();
+const hours = `${date.getHours()}:${date.getMinutes()}`;
+console.log(hours);
+if(date.getMinutes() >= 24){
+  throw new Error('expired');
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SSRProvider>
