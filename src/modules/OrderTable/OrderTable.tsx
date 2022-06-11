@@ -9,7 +9,6 @@ import { useTranslation } from 'next-i18next';
 import { Table } from './components/Table';
 import { clothings, cyclingClothings } from '@config/static';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
-import { SendForWhatsapp } from '@modules/SendForWhatsapp';
 
 // * [namelist, casualCLothing, cyclingCLothing][]
 type Lists = [string, [ListItem[], ListItem[]]][]
@@ -191,9 +190,9 @@ export function OrderTable() {
           <section className=' d-flex justify-content-center gap-3'>
             <DownloadCSVModal/>
             <SendEmailModal />
-            {whatsappContact && (
+            {/* {whatsappContact && (
               <SendForWhatsapp />
-            )}
+            )} */}
           </section>
           <section
             className='d-flex align-items-center justify-content-end'
