@@ -1,31 +1,29 @@
 import { generateId } from '@shared/utils/generateId';
-const sizesForTranslate: [string, [string, string, string]][] = [
-  ['PP', ['XS', 'XS', 'PP']],
-  ['P', ['S', 'S', 'P']],
-  ['M', ['M', 'M', 'M']],
-  ['G', ['L', 'L', 'G']],
-  ['GG', ['XL', 'XL', 'GG']],
-  ['XG', ['XXL', 'XXL', 'XG']],
-  ['2XG', ['2XL', '2XL', '2XG']],
-  ['3XG', ['3XL', '3XL', '3XG']],
-  ['4XG', ['4XL', '4XL', '4XG']],
-  ['2A', ['2-3', '2', '2']],
-  ['4A', ['4-5', '4', '4']],
-  ['6A', ['6-6X', '6', '6']],
-  ['8A', ['7-8', '8', '8']],
-  ['10A', ['10', '10', '10']],
-  ['12A', ['12', '12', '12']],
-  ['14A', ['14', '14', '14']],
-  ['16A', ['16', '16', '16']],
+const sizesForTranslate: string[] = [
+  'PP',
+  'P',
+  'M',
+  'G',
+  'GG',
+  'XG',
+  '2XG',
+  '3XG',
+  '4XG',
+  '2A',
+  '4A',
+  '6A',
+  '8A',
+  '10A',
+  '12A',
+  '14A',
+  '16A',
 ];
 
 function verifySizeForTranslation(dirtySize: string) {
   const size = dirtySize.trim();
-  const lang = sizesForTranslate.find(([, dirtyLang]) => {
-    return size === dirtyLang[0] || size === dirtyLang[1] || size === dirtyLang[2];
-  });
+  const lang = sizesForTranslate.find(size => dirtySize === size);
   if(!lang)throw new Error(`"${size}" is not valid size`);
-  return lang[0];
+  return lang;
 }
 
 function createClothList(clothes: [string, boolean][], size=''){
@@ -65,7 +63,7 @@ function createClothList(clothes: [string, boolean][], size=''){
  */
 export function sanitizeText(text: string, clothes: [string, boolean][], isCycling: boolean, gender: string, listItem: string){
   const queryArray = text.split('\n').map((query) => {
-    const sanitizedQuery = query.split(','); 
+    const sanitizedQuery = query.split(/,|-/); 
     if(sanitizedQuery.length > 3) throw new Error('sanitizeText, query out of range!');
     return sanitizedQuery;
   });

@@ -1,7 +1,6 @@
-import { useList } from '@shared/List';
+import { GenericClothStructure, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import styles from './ticket.module.css';
 
 type Props = {
@@ -13,41 +12,41 @@ type Props = {
 
 export function Tickets({ tagSize }: Props) {
   const { state: { items } } = useList();
-  const [listItems, setListItems] = useState<string[][]>();
   const { t } = useTranslation();
-  useEffect(() => {
-    const sanitizedItems = items.reduce((prev, curr) => {
-      const arr = Object.entries(curr.clothes).map(([key, { quantity, size }]) => {
-        if(quantity > 0){
-          return [key, size, curr.gender];
-        }
-        return;
-      }).filter(item => item);
-
-      return [...prev, ...arr];
-    }, []);
-
-    setListItems(sanitizedItems);
-  }, [items]);
-
+  
+  const calcClothe = useCallback((clothe: GenericClothStructure) => (
+    Object.entries(clothe).reduce((prev, [,{ size }]) => (
+      size ? [...prev, size] : prev
+    ),[])
+  ), []);
   return (
     <section className='d-flex flex-wrap justify-content-center'>
       {
-        listItems?.map(([clothe, size, gender], i) => (
+        items?.map(({ clothes, gender, name, number }, i) => (
           <div 
             key={`tag__${i}`} 
             className={styles.card}
-            style={tagSize}
+            style={{
+              minWidth: tagSize.width,
+              minHeight: tagSize.height
+            }}
           >
-            <p>
-              {t(size)}
-            </p>
-            <Image 
-              src={`/images/${clothe}.png`}
-              height={54}
-              width={54}
-              alt=''
-            />
+            <section>
+              <p>
+                {name}
+              </p>
+              <p>
+                {number}
+              </p>
+            </section>
+            <section className='d-flex align-items-center flex-wrap'>
+              {calcClothe(clothes).map((size, i, arr) => (
+                <span key={i}>
+                  {t(`${gender}-${size}`)}
+                  {i !== arr.length-1 ? '-' : ''}
+                </span>
+              ))}
+            </section>
             <p>
               {t(gender)}
             </p>

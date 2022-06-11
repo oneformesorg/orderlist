@@ -86,31 +86,33 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
         <p>
           {t('HEADER_PHRASE_NO_NAME')}
         </p>
-        {catalogState.list.length > 0 ? (
+        <section className='d-flex gap-3'>
+          {catalogState.list.length > 0 ? (
+            <InputGroup className='d-flex flex-column mb-3'>
+              <label>{t('LIST')}:</label>
+              <Select 
+                isSearchable={false}
+                options={[
+                  { value: '', label: '' },
+                  ...catalogState.list.map(item => ({ value: item, label: item })),
+                ]}
+                onChange={(e) => setList(e.value)}
+              />
+            </InputGroup>
+          ) : null}
           <InputGroup className='d-flex flex-column mb-3'>
-            <label>{t('LIST')}:</label>
-            <Select 
+            <label>{t('GENDER')}</label>
+            <Select
               isSearchable={false}
-              options={[
-                { value: '', label: '' },
-                ...catalogState.list.map(item => ({ value: item, label: item })),
-              ]}
-              onChange={(e) => setList(e.value)}
+              defaultValue={[{ value: 'MALE', label: t('MALE') }]}
+              options={genderList}
+              onChange={(e) => {
+                setClothList(initialClothList);
+                setGender(e.value as Gender);
+              }}
             />
           </InputGroup>
-        ) : null}
-        <InputGroup className='d-flex flex-column mb-3'>
-          <label>{t('GENDER')}</label>
-          <Select
-            isSearchable={false}
-            defaultValue={[{ value: 'MALE', label: t('MALE') }]}
-            options={genderList}
-            onChange={(e) => {
-              setClothList(initialClothList);
-              setGender(e.value as Gender);
-            }}
-          />
-        </InputGroup>
+        </section>
         {isCycling ? (
           <>
             {cyclingClothings.map((clothe, i) => (
@@ -146,8 +148,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Form.Control
                     type='number'
                     className="my-1 mr-sm-2"
-                    defaultValue={0}
-                    value={clothList[clothe].quantity}
+                    placeholder='0'
+                    value={
+                      clothList[clothe].quantity
+                        ? clothList[clothe].quantity :''
+                    }
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         ...list[clothe], quantity: Number(e.target.value)
@@ -160,7 +165,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
           </>
         ) : (
           <>
-            {clothings.map((clothe, i) => (
+            {clothings.filter(clothe => clothe !== 'socks').map((clothe, i) => (
               <Row className="align-items-center mb-2" key={`${i}_${clothe}`}>
                 <Col xs={2}>
                   <Image 
@@ -196,8 +201,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Form.Control
                     type='number'
                     className="my-1 mr-sm-2"
-                    defaultValue={0}
-                    value={clothList[clothe].quantity}
+                    placeholder='0'
+                    value={
+                      clothList[clothe].quantity
+                        ? clothList[clothe].quantity :''
+                    }
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         ...list[clothe], quantity: Number(e.target.value)
@@ -225,8 +233,11 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
             <Form.Control
               type='number'
               className="my-1 mr-sm-2"
-              defaultValue={0}
-              value={clothList['socks'].quantity}
+              placeholder='0'
+              value={
+                clothList['socks'].quantity
+                  ? clothList['socks'].quantity :''
+              }
               onChange={e => {
                 setClothList(list => ({ ...list, ['socks']: {
                   ...list['socks'], quantity: Number(e.target.value)

@@ -7,7 +7,15 @@ import { CatalogActionProvider } from '@shared/Catalog/context/catalog';
 import Head from 'next/head';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { ListActionProvider } from '@shared/List';
 config.autoAddCss = false;
+
+// const date = new Date();
+// const hours = `${date.getHours()}:${date.getMinutes()}`;
+// console.log(hours);
+// if(date.getMinutes() >= 24){
+//   throw new Error('expired');
+// }
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,7 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <CatalogActionProvider>
-        <Component {...pageProps} />
+        <ListActionProvider>
+          <Component {...pageProps} />
+        </ListActionProvider>
       </CatalogActionProvider>
     </SSRProvider>
   );

@@ -4,10 +4,11 @@ import { ClothingParts } from '@shared/Catalog';
 import { useCatalogState } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
+import { generateId } from '@shared/utils/generateId';
 import { orderList, OrderOptions } from '@shared/utils/orderList';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import DeleteListAndItems from './DeleteListAndItems';
@@ -24,7 +25,7 @@ type Props = {
   clothingList: ClothingParts[]
 }
 
-export function Table({
+function TableComponent({
   clothings, 
   isCycling, 
   isPrinted, 
@@ -46,18 +47,18 @@ export function Table({
     }
     if(clothName === 'socks'){
       if(gender === 'FEMALE' && quantity){
-        return `FEM-${quantity}`;
+        return `${quantity}-FEM`;
       }
       if(gender === 'CHILDISH' && quantity){
-        return `INF-${quantity}`;
+        return `${quantity}-INF`;
       }
       return quantity || '-';
     }
     if(gender === 'FEMALE' && quantity){
-      return `FEM-${quantity}-${t(size)}`;
+      return `${quantity}-FEM-${t(size)}`;
     }
     if(gender === 'CHILDISH' && quantity){
-      return `INF-${quantity}-${t(size)}`;
+      return `${quantity}-INF-${t(size)}`;
     }
     return `${quantity}-${t(size)}`;
   };
@@ -79,15 +80,17 @@ export function Table({
     setListForRender(orderedList);
   }, [list]);
 
-  useEffect(() => {
-    const countedPieces = list.reduce((prev, { clothes }) => {
+  const countPieces = useMemo(() => (
+    list.reduce((prev, { clothes }) => {
       const clotheCount = Object.entries(clothes)
         .reduce((prev, [,{ quantity }]) => prev+quantity, 0);
       return prev + clotheCount;
-    }, 0);
-    setPieces(countedPieces);
+    }, 0)
+  ), [list]);
+  useEffect(() => {
+    setPieces(countPieces);
     currentOrder ? changeOrderList(currentOrder[0], currentOrder[1]) : setListForRender(list);
-  }, [changeOrderList, currentOrder, list]);
+  }, [changeOrderList, countPieces, currentOrder, list]);
 
   useEffect(() => {
     currentOrder?.length > 0 ?? 
@@ -198,7 +201,7 @@ export function Table({
         ) : (
           <>
             {listForRender.map((props) => (
-              <tr key={`${props.id}_checkbox`}>
+              <tr key={`${generateId()}_checkbox`}>
                 <td className={style.tableCell}>
                   <label className={style.ghostLabel} htmlFor={`checkbox_${props.id}`} />
                   <input
@@ -209,6 +212,7 @@ export function Table({
                         ? setDeleteList(old => [...old, props.id])
                         : setDeleteList(old => old.filter(id => id !== props.id))
                     )}
+                    checked={deleteList.some(id => id === props.id)}
                   />
                 </td>
                 <td className={style.tableCell}>
@@ -310,3 +314,9 @@ export function Table({
     </table>
   );
 }
+export const Table = memo(TableComponent, (
+  { ...prevProps }, 
+  { ...nextProps }
+) => {
+  return JSON.stringify(prevProps) === JSON.stringify(nextProps);
+});

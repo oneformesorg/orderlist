@@ -14,8 +14,7 @@ import { aspectRatio } from '@shared/utils/aspectRatio';
 const Relatorio:NextPage = () => {
   const { t } = useTranslation();
   const [tagSize, setTagSize] = useState({
-    width: 124,
-    height: 165.33
+    ...aspectRatio(124)
   });
   return(
     <>
@@ -38,7 +37,7 @@ const Relatorio:NextPage = () => {
           <label htmlFor="customRange1" className="form-label">{t('SIZE')}</label>
           <input 
             type="range"
-            min={100} 
+            min={200} 
             max={300}
             defaultValue={tagSize.width} 
             className="form-range" 

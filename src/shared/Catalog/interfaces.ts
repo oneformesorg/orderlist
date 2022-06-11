@@ -21,6 +21,7 @@ export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTable
 export type CatalogContent = {
   projectName: string
   companyEmail: string
+  whatsappContact: string
   list: string[]
   isCycling: boolean
   cyclingPriceTableFemale: CyclingPriceTable
@@ -35,7 +36,7 @@ export type CatalogContent = {
 }
 export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables' | 'currentInfos'
 export type CatalogReducerAction =
-| { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'companyEmail' | 'projectName'> }
+| { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'companyEmail' | 'projectName' | 'whatsappContact'> }
 | { type: 'setPriceTables', payload: {
     target: TablesName
     priceTable: PriceTable | CyclingPriceTable

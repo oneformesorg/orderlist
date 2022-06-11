@@ -5,10 +5,11 @@
   align-items: center;
   justify-content: center;
   page-break-inside: avoid;
-  padding: 1rem;
-  gap: 10%;
+  padding: 0.2rem;
   p {
-    font-weight: 700;
-    font-size: clamp(0.2rem, calc( 12px + 1.100vw ), 1.650rem);
+    /* font-weight: 700;
+    font-size: clamp(0.2rem, calc( 12px + 1.100vw ), 1.650rem); */
+    margin-block: 0;
+    text-align: center;
   }
 } 
