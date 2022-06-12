@@ -1,23 +1,19 @@
 import { ClothingParts } from '@shared/Catalog';
 import { useTranslation } from 'next-i18next';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { adultSizes, childSize, clothings, cyclingClothings } from '@config/static';
+import { clothings, cyclingClothings } from '@config/static';
 import { useList } from '@shared/List';
 import { FormNameNumber, FormNameNumberRef } from './components/FormNameNumber/FormNameNumber';
 import { verifyClothList } from '@shared/utils/verifyClothList';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 
 export type EditItemModalRef = {
   showModal: () => void
 }
 
-const sizes = {
-  adult: adultSizes,
-  childish: childSize
-};
 type Gender = 'MALE' | 'FEMALE' | 'CHILDISH'
 type ClothList = Record<ClothingParts, {
   quantity: number
@@ -30,7 +26,7 @@ type Props = {
 // TODO: Improve this component!!
 export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function EditItemModal({ id }, ref) {
   const { dispatch: listDispatch, state: listState } = useList();
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | 'CHILDISH'>('MALE');
   const [currentItem] = useState(listState.items.filter(({ id: currId }) => id === currId)[0]);
@@ -52,6 +48,15 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
   useImperativeHandle(ref, () => ({
     showModal
   }));
+  const sanitizeSizes = useCallback((arr: Record<string, string>) => {
+    return Object.entries<string>(arr)
+      .filter(([,v]) => v)
+      .map(([size, sizeValue]) => {
+        return {
+          value: size, label: sizeValue
+        };
+      });
+  }, []);
   if(!currentItem) return null;
   return (
     <Modal show={show} onHide={handleClose}>
@@ -105,22 +110,12 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                     defaultValue={
                       clothList[clothe].quantity ? 
                         {
-                          label: t(`${gender}-${clothList[clothe].size}`),
+                          label: catalogState.sizeList[gender.toLowerCase()][clothList[clothe].size],
                           value: clothList[clothe].size
                         } :
                         {}
                     }
-                    options={
-                      gender !== 'CHILDISH' ? (
-                        sizes.adult.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      ) : (
-                        sizes.childish.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      )
-                    }
+                    options={sanitizeSizes(catalogState.sizeList[gender.toLowerCase()])}
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
@@ -161,26 +156,16 @@ export const EditItemModal = React.forwardRef<EditItemModalRef, Props>(function 
                     defaultValue={
                       clothList[clothe].quantity ? 
                         {
-                          label: t(`${gender}-${clothList[clothe].size}`),
+                          label: catalogState.sizeList[gender.toLowerCase()][clothList[clothe].size],
                           value: clothList[clothe].size
                         } :
                         {}
                     }
                     isSearchable={false} 
-                    options={
-                      gender !== 'CHILDISH' ? (
-                        sizes.adult.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      ) : (
-                        sizes.childish.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      )
-                    }
+                    options={sanitizeSizes(catalogState.sizeList[gender.toLowerCase()])}
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
-                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                        size: e.value, quantity: list[clothe].quantity ? 1 : list[clothe].quantity
                       } }));
                     }}
                   />

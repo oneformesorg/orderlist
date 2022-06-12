@@ -1,7 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Menu } from '@modules/Menu/Menu';
-import { CatalogStateProvider } from '@shared/Catalog/context/catalog';
 import styles from '@styles/relatorio.module.css';
 import { ImportCSVButton } from '@modules/ImportCSVButton/ImportCSVButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -71,9 +70,7 @@ const Relatorio:NextPage = () => {
               </a>
             </Link>
             <AddImage />
-            <CatalogStateProvider>
-              <ImportCSVButton />
-            </CatalogStateProvider>
+            <ImportCSVButton />
             <button 
               onClick={() =>{
                 window.print();
@@ -83,15 +80,13 @@ const Relatorio:NextPage = () => {
               <FontAwesomeIcon icon={faPrint} /> Print
             </button>
           </section>
-          <CatalogStateProvider>
-            <ReportInfosWithoutSSR
-              onDelete={(id) => {
-                setImages(old => (
-                  old.filter((item, index) => index !== id)
-                ));
-              }}
-            />
-          </CatalogStateProvider>
+          <ReportInfosWithoutSSR
+            onDelete={(id) => {
+              setImages(old => (
+                old.filter((item, index) => index !== id)
+              ));
+            }}
+          />
         </imagesCardContext.Provider>
       </ListActionProvider>
     </>

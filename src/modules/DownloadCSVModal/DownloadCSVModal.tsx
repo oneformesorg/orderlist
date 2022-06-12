@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useRef } from 'react';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { CSVFileNameModal, CSVModalRef } from './CSVFileNameModal';
 
 const timestampForTitle = (locale: string) => (
@@ -16,7 +16,7 @@ const timestampForTitle = (locale: string) => (
 export function DownloadCSVModal() {
   const { t, i18n } = useTranslation();
   const { state: listState } = useList();
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   const modalRef = useRef<CSVModalRef>(null);
 
   return (

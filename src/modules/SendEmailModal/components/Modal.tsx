@@ -1,4 +1,4 @@
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { createCSV } from '@shared/csv/csvCreate';
 import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
@@ -34,7 +34,7 @@ const ModalEmail = forwardRef<ModalEMailRef>(function ModalEmail(props, ref){
   const [apiIsLoaded, setApiIsLoading] = useState<'PROMISE' | 'FINISH' | 'NOT INITIALIZED'>('NOT INITIALIZED');
 
   const { state: listState } = useList();
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   
   const showModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);

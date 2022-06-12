@@ -5,8 +5,7 @@ import React, { ComponentProps, useCallback } from 'react';
 import { faLink, faTable } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Form, Col, Row, Tab, Tabs, Table } from 'react-bootstrap';
-import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable';
-import { adultSizes, childSize } from '@config/static';
+import { CatalogRef, CatalogTable } from './components/CatalogTable/CatalogTable'; 
 import { OneformesAPI } from '@shared/api/useAxios';
 import { CopyToClipboard } from '@modules/CopyToClipboard/CopyToClipboard';
 import Switch from 'react-input-switch';
@@ -29,15 +28,21 @@ export function FormInputs() {
   const whatsappContactRef = React.useRef<HTMLInputElement>(null);
   const [catalogQuery, setCatalogQuery] = React.useState('');
   const [cyclingMode, setCyclingMode] = React.useState(false);
-  
-  const sanitizeSizes = (arr: string[], gender: string) => (
-    arr.map((item) => gender+'-'+item)
-  );
 
   React.useEffect(() => {
     setCyclingMode(state.isCycling);
   }, [state]);
   const saveChanges = useCallback(() => {
+    if(cyclingMode){
+      cyclingMaleTableRef.current.submitEvent();
+      cyclingFemaleTableRef.current.submitEvent();
+      cyclingChildishTableRef.current.submitEvent();
+    } else {
+      childishTableRef.current.submitEvent();
+      maleTableRef.current.submitEvent();
+      femaleTableRef.current.submitEvent();
+    }
+
     dispatch({
       type: 'cyclingMode',
       payload: !!cyclingMode
@@ -59,17 +64,8 @@ export function FormInputs() {
       }
     });
   },[cyclingMode, dispatch]);
-  const submitHandler: ComponentProps<'form'>['onSubmit'] = e => {
+  const submitHandler: ComponentProps<'form'>['onSubmit'] = useCallback(e => {
     e.preventDefault();
-    if(cyclingMode){
-      cyclingMaleTableRef.current.submitEvent();
-      cyclingFemaleTableRef.current.submitEvent();
-      cyclingChildishTableRef.current.submitEvent();
-    } else {
-      childishTableRef.current.submitEvent();
-      maleTableRef.current.submitEvent();
-      femaleTableRef.current.submitEvent();
-    }
     saveChanges();
     dispatch({
       type: 'currentInfos',
@@ -80,7 +76,9 @@ export function FormInputs() {
         }).then(q => setCatalogQuery(q));
       }
     });
-  }; 
+  }, [dispatch, saveChanges]);
+  
+
   return (
     <Container>
       <section className='d-flex justify-content-end gap-3'>
@@ -146,25 +144,25 @@ export function FormInputs() {
         {cyclingMode ? (
           <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="male" title={t('MALE')}>
-              <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={sanitizeSizes(adultSizes, 'MALE')} reference={'cyclingPriceTableMale'} />
+              <CatalogTable ref={cyclingMaleTableRef} isCycling={true} prices={state.cyclingPriceTableMale} sizes={state.sizeList.male} reference={'cyclingPriceTableMale'} />
             </Tab>
             <Tab eventKey="female" title={t('FEMALE')}>
-              <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={sanitizeSizes(adultSizes, 'FEMALE')} reference={'cyclingPriceTableFemale'} />
+              <CatalogTable ref={cyclingFemaleTableRef} isCycling={true} prices={state.cyclingPriceTableFemale} sizes={state.sizeList.female} reference={'cyclingPriceTableFemale'} />
             </Tab>
             <Tab eventKey="childish" title={t('CHILDISH')}>
-              <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={sanitizeSizes(childSize, 'CHILDISH')} reference={'cyclingPriceTableChildish'} />
+              <CatalogTable ref={cyclingChildishTableRef} isCycling={true} prices={state.cyclingPriceTableChildish} sizes={state.sizeList.childish} reference={'cyclingPriceTableChildish'} />
             </Tab>
           </Tabs>
         ) : (
           <Tabs defaultActiveKey="male" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="male" title={t('MALE')}>
-              <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={sanitizeSizes(adultSizes, 'MALE')} reference={'priceTableMale'} />
+              <CatalogTable ref={maleTableRef} prices={state.priceTableMale} sizes={state.sizeList.male} reference={'priceTableMale'} />
             </Tab>
             <Tab eventKey="female" title={t('FEMALE')}>
-              <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={sanitizeSizes(adultSizes, 'FEMALE')} reference={'priceTableFemale'} />
+              <CatalogTable ref={femaleTableRef} prices={state.priceTableFemale} sizes={state.sizeList.female} reference={'priceTableFemale'} />
             </Tab>
             <Tab eventKey="childish" title={t('CHILDISH')}>
-              <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={sanitizeSizes(childSize, 'CHILDISH')} reference={'priceTableChildish'} />
+              <CatalogTable ref={childishTableRef} prices={state.priceTableChildish} sizes={state.sizeList.childish} reference={'priceTableChildish'} />
             </Tab>
           </Tabs>
         )}

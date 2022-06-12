@@ -32,8 +32,16 @@ function reducer(state: CatalogContent, action: CatalogReducerAction): CatalogCo
     return { ...state, list: state.list.filter((listName) => listName !== action.payload) || [] };
   case 'setCompany':
     return action.payload;
+  case 'setSizeList':
+    return {
+      ...state, 
+      sizeList: {
+        ...state.sizeList, 
+        [action.payload.target]: action.payload.sizeList
+      }
+    };
   default:
-    throw new Error();
+    throw new Error('Invalid action type');
   }
 }
 
@@ -43,6 +51,40 @@ const initialCatalog: CatalogContent = {
   whatsappContact: '',
   projectName: '',
   isCycling: false,
+  sizeList: {
+    childish: {
+      '2A': '2A', 
+      '4A': '4A', 
+      '6A': '6A', 
+      '8A': '8A', 
+      '10A': '10A', 
+      '12A': '12A',
+      '14A': '14A', 
+      '16A': '16A'
+    },
+    female: {
+      'PP': 'PP', 
+      'P': 'P', 
+      'M': 'M', 
+      'G': 'G', 
+      'GG': 'GG', 
+      'XG': 'XG', 
+      '2XG': '2XG', 
+      '3XG': '3XG', 
+      '4XG': '4XG'
+    },
+    male: {
+      'PP': 'PP', 
+      'P': 'P', 
+      'M': 'M', 
+      'G': 'G', 
+      'GG': 'GG', 
+      'XG': 'XG', 
+      '2XG': '2XG', 
+      '3XG': '3XG', 
+      '4XG': '4XG'
+    },
+  },
   priceTableChildish: {
     pants: [0, 0, 0, 0, 0, 0, 0, 0],
     shorts: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -94,14 +136,14 @@ export function CatalogReducer() {
   const [state, dispatch] = useReducer(reducer, initialCatalog);
   useEffect(() => {
     const catalog = localStorage.getItem('@orderlist/catalog');
-    if(catalog){
+    if(catalog && catalog !== JSON.stringify(initialCatalog)){
       dispatch({ type: 'setCompany', payload: JSON.parse(catalog) as unknown as CatalogContent });
     }
   }, []);
   useEffect(() => {
     const catalog = localStorage.getItem('@orderlist/catalog');
     if(
-      catalog !== JSON.stringify(state) && JSON.stringify(state) !== JSON.stringify(initialCatalog)
+      catalog !== JSON.stringify(state) || JSON.stringify(state) !== JSON.stringify(initialCatalog) 
     ){
       localStorage.setItem('@orderlist/catalog', JSON.stringify(state));
     }

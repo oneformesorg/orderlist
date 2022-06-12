@@ -1,4 +1,4 @@
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { Gender, ListItem, useList } from '@shared/List';
 import React, { useEffect, useRef, useState } from 'react';
 import { DownloadCSVModal } from '@modules/DownloadCSVModal/DownloadCSVModal';
@@ -31,7 +31,7 @@ export function OrderTable() {
   const [isPrinted, setIsPrinted] = useState(false);
   const [normalList, setNormalList] = useState([]);
   const [cyclingList, setCyclingList] = useState([]);
-  const { whatsappContact, ...catalogState } = useCatalogState();
+  const { state: { whatsappContact, ...catalogState } } = useCatalog();
   const [sublistsCloths, setSublistCloths] = useState<{[key: string]: [string[], string[]]}>({});
   const [clothList, setClothList] = useState<string[]>([]);
   const [cyclingClothList, setCyclingClothList] = useState<string[]>([]);

@@ -5,7 +5,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import { CatalogProvider } from '@shared/Catalog/context/catalog';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 
@@ -26,9 +25,7 @@ const Catalog: NextPage = () => {
             {t('GOBACK')}
           </a>
         </Link>
-        <CatalogProvider>
-          <FormInputs />
-        </CatalogProvider>
+        <FormInputs />
       </main>
     </>
   );

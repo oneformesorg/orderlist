@@ -1,6 +1,6 @@
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ export function openWhatsappLink(url: string, telPhone: string){
 
 export const SendForWhatsapp = memo(function SendForWhatsapp() {
   const { state } = useList();
-  const { whatsappContact } = useCatalogState();
+  const { state: { whatsappContact } } = useCatalog();
   const [url, setUrl] = useState('');
   const [contact] = useState(whatsappContact.replaceAll(/\(|\)| |-/gm, ''));
 

@@ -1,7 +1,7 @@
 import { faCoins, faEdit, faEye, faHandHoldingUsd, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ClothingParts } from '@shared/Catalog';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { currencyConvert, sanitizeValue } from '@shared/utils/currencyCalc';
 import { generateId } from '@shared/utils/generateId';
@@ -36,7 +36,7 @@ function TableComponent({
 }: Props) {
   const { t, i18n } = useTranslation();
   const [pieces, setPieces] = useState(0);
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   const { dispatch } = useList();
   const [tablePrice, setTablePrice] = useState(0);
   const [listForRender, setListForRender] = useState(() => list);
@@ -55,12 +55,12 @@ function TableComponent({
       return quantity || '-';
     }
     if(gender === 'FEMALE' && quantity){
-      return `${quantity}-FEM-${t(size)}`;
+      return `${quantity}-FEM-${catalogState.sizeList.female[size]}`;
     }
     if(gender === 'CHILDISH' && quantity){
-      return `${quantity}-INF-${t(size)}`;
+      return `${quantity}-INF-${catalogState.sizeList.childish[size]}`;
     }
-    return `${quantity}-${t(size)}`;
+    return `${quantity}-${catalogState.sizeList.male[size]}`;
   };
 
   useEffect(() => {
@@ -228,7 +228,7 @@ function TableComponent({
                         {
                           renderSize(
                             props.clothes[currCloth].quantity,
-                            `${props.gender}-${props.clothes[currCloth].size}`,
+                            props.clothes[currCloth].size,
                             currCloth,
                             props.gender
                           )
@@ -243,7 +243,7 @@ function TableComponent({
                         {
                           renderSize(
                             props.clothes[currCloth].quantity,
-                            `${props.gender}-${props.clothes[currCloth].size}`,
+                            props.clothes[currCloth].size,
                             currCloth,
                             props.gender
                           )

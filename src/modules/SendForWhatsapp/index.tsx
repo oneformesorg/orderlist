@@ -1,6 +1,6 @@
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import React, { useState } from 'react';
 
@@ -11,7 +11,7 @@ export function openWhatsappLink(url: string, telPhone: string){
 
 export function SendForWhatsapp() {
   const { state } = useList();
-  const { whatsappContact } = useCatalogState();
+  const { state: { whatsappContact } } = useCatalog();
   const [contact] = useState(whatsappContact.replaceAll(/\(|\)| |-/gm, ''));
 
   return (

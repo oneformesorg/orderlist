@@ -1,6 +1,6 @@
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useRef } from 'react';
@@ -10,7 +10,7 @@ export function PasteListModal() {
   const { t } = useTranslation();
   const modalPasteListRef = useRef<ModalPasteListRef>(null);
   const { dispatch: listDispatch } = useList();
-  const { isCycling, list } = useCatalogState();
+  const { state: { isCycling, list } } = useCatalog();
   return (
     <>
       <button 

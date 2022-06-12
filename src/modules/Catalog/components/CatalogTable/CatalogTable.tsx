@@ -21,14 +21,13 @@
 
 import { CyclingPriceTable, PriceTable, TablesName } from '@shared/Catalog';
 import { useCatalog } from '@shared/Catalog/context/catalog';
-import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { TableItemInput } from '../TableItemInput/TableItemInput';
 
 type Props = {
-  sizes: string[]
+  sizes: Record<string, string>
   prices: PriceTable | CyclingPriceTable
   reference: TablesName
   isCycling?: boolean
@@ -50,17 +49,26 @@ function sanitizeForReducer(arr: Array<number | string>[]){
   }), {}) as unknown as PriceTable;
 }
 
+const sanitizeSizes = (sizeList: Record<string, string>) => {
+  const response = Object.entries(sizeList).map(([,v]) => v);
+  return response; 
+};
+
 export const CatalogTable = React.forwardRef<CatalogRef, Props>(function CatalogTable({ sizes, prices, reference, isCycling }, ref) {
-  const { t } = useTranslation();
   const [tablePrices, setTablePrices] = useState([] as Array<string | number>[]);
   const { dispatch }= useCatalog();
-
+  const [sizeList, setSizeList] = useState(sizes);
+  
   useEffect(() => {
     setTablePrices(sanitizeForTable(prices));
   }, [prices]);
-  
+
   useImperativeHandle(ref, () => ({
     submitEvent() {
+      const compareSizes = (regex: RegExp) => (
+        reference.match(regex) && JSON.stringify(sizeList) !== JSON.stringify(sizes)
+      );
+
       dispatch({
         type: 'setPriceTables',
         payload: {
@@ -68,17 +76,62 @@ export const CatalogTable = React.forwardRef<CatalogRef, Props>(function Catalog
           priceTable: sanitizeForReducer(tablePrices)
         }
       });
+      if(compareSizes(/childish/i)){
+        dispatch({
+          type: 'setSizeList',
+          payload: {
+            target: 'childish',
+            sizeList: sizeList
+          }
+        });
+      }
+      if(compareSizes(/male/i)){
+        console.log(sizeList);
+        dispatch({
+          type: 'setSizeList',
+          payload: {
+            target: 'male',
+            sizeList: sizeList
+          }
+        });
+      }
+      if(compareSizes(/female/i)){
+        dispatch({
+          type: 'setSizeList',
+          payload: {
+            target: 'female',
+            sizeList: sizeList
+          }
+        });
+      }
     }
-  }), [tablePrices, dispatch, reference]);
+  }), [dispatch, reference, tablePrices, sizeList, sizes]);
 
   return (
     <Table bordered hover>
       <thead>
         <tr className="text-center">
           <th style={{ width: '50px' }}>-</th>
-          {sizes.map((size, i) => (
+          {sanitizeSizes(sizes).map((size, i) => (
             <th key={`size_${size}_${i}`}>
-              {t(size)}
+              <input
+                onChange={e => setSizeList(old => {
+                  if(!size){
+                    return old;
+                  }
+                  old[size] = e.target.value;
+                  return old;
+                })}
+                type="text"
+                defaultValue={size}
+                style={{
+                  background: 'none',
+                  outline: 'none',
+                  width: '100%',
+                  border: 0,
+                  textAlign: 'center'
+                }}
+              />
             </th>
           ))}
         </tr>

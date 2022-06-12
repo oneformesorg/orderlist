@@ -1,6 +1,6 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useContext, useEffect, useState } from 'react';
@@ -23,9 +23,8 @@ export type ReportInfosProps = {
 const annotationText = 'O COMPRADOR(a), acima identificado, declara a realização da retirada dos produtos listados no pedido, cujas informações estão detalhadas nos layouts e na lista O COMPRADOR declara que recebeu todas as orientações de conferencia';
 export function ReportInfos({ onDelete }: ReportInfosProps) {
   const { t, i18n } = useTranslation();
-  const { isCycling } = useCatalogState();
+  const { state: { isCycling, list } } = useCatalog();
   const { state: listState } = useList();
-  const { list } = useCatalogState();
   const [defaultList, setDefaultList] = useState<ListItem[]>([]);
   const [sublists, setSublists] = useState<Record<string, ListItem[]>>({});
   const { images } = useContext(imagesCardContext);

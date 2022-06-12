@@ -16,13 +16,18 @@ export type CyclingPriceTable = {
 }
 
 export type TablesName = 'priceTableChildish' | 'priceTableFemale' | 'priceTableMale' | 'cyclingPriceTableMale' | 'cyclingPriceTableFemale' | 'cyclingPriceTableChildish'
-
-// export type CyclingTablesName = 
+export type SizeList = 'male' | 'female' | 'childish'
+ 
 export type CatalogContent = {
   projectName: string
   companyEmail: string
   whatsappContact: string
   list: string[]
+  sizeList: {
+    childish: Record<string, string>,
+    female: Record<string, string>,
+    male: Record<string, string>
+  }
   isCycling: boolean
   cyclingPriceTableFemale: CyclingPriceTable
   cyclingPriceTableMale: CyclingPriceTable
@@ -37,10 +42,19 @@ export type CatalogContent = {
 export type ReducerActionType = 'setCompanyInfos' | 'setPriceTables' | 'setPriceUniqueTables' | 'currentInfos'
 export type CatalogReducerAction =
 | { type: 'setCompanyInfos', payload: Pick<CatalogContent, 'companyEmail' | 'projectName' | 'whatsappContact'> }
-| { type: 'setPriceTables', payload: {
-    target: TablesName
-    priceTable: PriceTable | CyclingPriceTable
+| { 
+    type: 'setPriceTables', 
+    payload: {
+      target: TablesName
+      priceTable: PriceTable | CyclingPriceTable
+    }
   } 
+| {
+  type: 'setSizeList', 
+  payload: {
+    target: SizeList
+    sizeList: Record<string, string>
+  }
 }
 | { type: 'setPriceUniqueTables', payload: Pick<CatalogContent, 'priceTableUnique'>}
 | { type: 'currentInfos', stateFunction: (catalog: CatalogContent) => void }

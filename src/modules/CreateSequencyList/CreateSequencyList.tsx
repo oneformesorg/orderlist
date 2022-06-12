@@ -2,7 +2,7 @@
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ClothingParts } from '@shared/Catalog';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { Gender, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
 import React, { useState } from 'react';
@@ -39,7 +39,7 @@ export function CreateSequencyList() {
 
   const { t } = useTranslation();
   const { dispatch: listDispatch } = useList();
-  const { isCycling, list: catalogList } = useCatalogState();
+  const { state: { isCycling, list: catalogList } } = useCatalog();
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 

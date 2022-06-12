@@ -1,4 +1,4 @@
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { useList } from '@shared/List';
 import { generateId } from '@shared/utils/generateId';
 import { orderedItems } from '@shared/utils/groupItemsBySize';
@@ -16,7 +16,7 @@ const List = ({ arr, t, gender = 'MALE' }: ListProps) => {
   const [head, setHed] = useState<string[]>();
   const [sizeSidebar, setSizeSidebar] = useState<string[]>();
   const [sizeCothe, setSizeClothe] = useState<ListSizeClothe>();
-  const { isCycling } = useCatalogState();
+  const { state: { isCycling } } = useCatalog();
   useEffect(() => {
     setHed(arr.map(i => i[0]));
     setSizeSidebar(

@@ -1,20 +1,16 @@
 import { ClothingParts } from '@shared/Catalog';
 import { useTranslation } from 'next-i18next';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useCallback, useImperativeHandle, useState } from 'react';
 import Image from 'next/image';
 import { Modal, Button, Row, Col, InputGroup, Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { adultSizes, childSize, clothings, cyclingClothings } from '@config/static';
+import { clothings, cyclingClothings } from '@config/static';
 import { verifyClothList } from '@shared/utils/verifyClothList';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 
 export type FormModalRef = {
   showModal: () => void
 }
-const sizes = {
-  adult: adultSizes,
-  childish: childSize
-};
 type Gender = 'MALE' | 'FEMALE' | 'CHILDISH'
 
 type ClothList = Record<ClothingParts, {
@@ -63,14 +59,22 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
   const [list, setList] = useState('');
   const [clothList, setClothList] = useState<ClothList>(initialClothList);
   const { t } = useTranslation();
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   const isCycling = catalogState.isCycling;
   const genderList = [
     { value: 'MALE', label: t('MALE') },
     { value: 'FEMALE', label: t('FEMALE') },
     { value: 'CHILDISH', label: t('CHILDISH') }
   ];
-
+  const sanitizeSizes = useCallback((arr: Record<string, string>) => {
+    return Object.entries<string>(arr)
+      .filter(([,v]) => v)
+      .map(([size, sizeValue]) => {
+        return {
+          value: size, label: sizeValue
+        };
+      });
+  }, []);
   const handleClose = () => setShow(false);
   const showModal = () => setShow(true);
   useImperativeHandle(ref, () => ({
@@ -126,22 +130,14 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   />
                 </Col>
                 <Col xs={5}>
-                  <Select isSearchable={false} options={
-                    gender !== 'CHILDISH' ? (
-                      sizes.adult.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    ) : (
-                      sizes.childish.map((size) => ({
-                        value: size, label: t(`${gender}-${size}`)
-                      }))
-                    )
-                  }
-                  onChange={e => {
-                    setClothList(list => ({ ...list, [clothe]: {
-                      size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
-                    } }));
-                  }}
+                  <Select 
+                    isSearchable={false} 
+                    options={sanitizeSizes(catalogState.sizeList[gender.toLowerCase()])}
+                    onChange={e => {
+                      setClothList(list => ({ ...list, [clothe]: {
+                        size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity
+                      } }));
+                    }}
                   />
                 </Col>
                 <Col xs={5}>
@@ -179,17 +175,7 @@ export const FormModal = React.forwardRef<FormModalRef, Props>(function FormModa
                   <Select 
                     isSearchable={false}
                     value={{ value: clothList[clothe].size, label: t(clothList[clothe].size) }}
-                    options={
-                      gender !== 'CHILDISH' ? (
-                        sizes.adult.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      ) : (
-                        sizes.childish.map((size) => ({
-                          value: size, label: t(`${gender}-${size}`)
-                        }))
-                      )
-                    }
+                    options={sanitizeSizes(catalogState.sizeList[gender.toLowerCase()])}
                     onChange={e => {
                       setClothList(list => ({ ...list, [clothe]: {
                         size: e.value, quantity: list[clothe].quantity === 0 ? 1 : list[clothe].quantity

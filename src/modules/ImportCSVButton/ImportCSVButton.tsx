@@ -1,6 +1,6 @@
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCatalogState } from '@shared/Catalog/context/catalog';
+import { useCatalog } from '@shared/Catalog/context/catalog';
 import { csvReader } from '@shared/csv/csvReader';
 import { ListItem, useList } from '@shared/List';
 import { useTranslation } from 'next-i18next';
@@ -11,7 +11,7 @@ export function ImportCSVButton() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [csvResult, setCsvResult] = useState('');
   const [csvTitle, setCsvTitle] = useState('');
-  const catalogState = useCatalogState();
+  const { state: catalogState } = useCatalog();
   const [listItem, setListItem] = useState<ListItem[]>([]);
   const { dispatch: dispatchList } = useList();
   useEffect(() => {
